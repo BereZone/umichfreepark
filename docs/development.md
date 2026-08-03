@@ -1,0 +1,117 @@
+# Development
+
+## Prerequisites
+
+| Tool | Version | Notes |
+|---|---|---|
+| Node | see [`.nvmrc`](../.nvmrc) | `nvm use` in the repo root picks it up |
+| npm | 11+ | ships with Node 24 |
+| Xcode | latest | iOS only. Needed for the Simulator |
+| Expo Go | latest | iOS only. For testing on a physical iPhone |
+
+Nothing else. There is no backend to run, no database to seed, and no API keys anywhere in this project — that is deliberate, and if a step ever seems to need one, it is a design mistake worth raising.
+
+### Xcode points at the wrong developer directory
+
+If `xcodebuild -version` or `xcrun simctl` fails with *"requires Xcode, but active developer directory is a command line tools instance"*, Xcode is installed but not selected:
+
+```bash
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+```
+
+## Install
+
+```bash
+nvm use
+npm install
+```
+
+## Running
+
+```bash
+npm run web      # http://localhost:8081 — React Native Web + MapLibre
+npm run ios      # iOS Simulator — react-native-maps / Apple Maps
+npm start        # dev server with a QR code for Expo Go on a physical iPhone
+```
+
+**Test both.** The two platforms use entirely different map renderers (`Map.web.tsx` via MapLibre, `Map.native.tsx` via Apple Maps), and a change that looks right on web can be wrong on iOS. Metro picks the file by platform suffix automatically — `import Map from './Map'` resolves to the right one.
+
+A physical iPhone is required for anything involving haptics, Dynamic Type at large sizes, or genuine one-handed reach. The Simulator cannot tell you whether a control is thumb-reachable.
+
+## Testing
+
+```bash
+npm test           # Vitest — the pure engine. Fast, no rendering.
+npm run test:watch # Vitest in watch mode
+npm run typecheck  # tsc --noEmit
+npm run lint
+```
+
+The engine tests are the ones that matter most. They cover DST boundaries, floating holidays, midnight rollovers, and the Sunday 4 a.m. structure window — bugs that are silent, expensive, and impossible to notice by clicking around the app in August.
+
+Because no engine function calls `new Date()`, every test passes an explicit `at: Date`. If you find yourself needing to mock the clock, something has reached for ambient time that shouldn't have.
+
+## Regenerating datasets
+
+These are build-time scripts. Their output is committed, so the app stays fully offline at runtime. You only need to run them when parking rules or campus geometry change.
+
+```bash
+npm run data:polygons     # Overpass API → data/raw/parking.geojson
+npm run data:walk-matrix  # Valhalla pedestrian routing → src/engine/data/walk-matrix.json
+```
+
+**`data:polygons`** queries the [Overpass API](https://overpass-api.de/) for `amenity=parking` within an Ann Arbor bounding box. Overpass is a shared public service — it rate-limits, and it sometimes returns HTTP 429 or a timeout under load. Wait a minute and re-run; there is no need to reduce the query.
+
+Output is committed raw and un-edited, so that hand-tagging shows up as a reviewable diff rather than being mixed into a regeneration.
+
+**`data:walk-matrix`** computes walking minutes for every (parking area → building) pair against the public [Valhalla](https://valhalla1.openstreetmap.de/) instance using the `pedestrian` costing model, and writes the result as JSON.
+
+- Results are cached to disk, so re-runs are nearly free.
+- Any pair Valhalla can't route falls back to haversine distance × 1.35.
+- The script prints how many pairs used the fallback. **Read that number.** A high count means the routing degraded silently and the walk times are approximations, which matters most exactly where it's worst — North Campus, across the river, and around the stadium.
+
+Valhalla's public instance is volunteer-run. If it's down, the fallback keeps the build working, but regenerate later rather than committing a fully-fallback matrix.
+
+### Why precompute at all
+
+Routing at runtime would need network, and this app's primary use case is a student in the bottom of a parking structure with no signal. Precomputing also keeps `rank()` a pure synchronous function, which is what makes it testable. See [`AGENTS.md`](../AGENTS.md).
+
+## Verifying data by hand
+
+- Drop `data/raw/parking.geojson` into [geojson.io](https://geojson.io) and confirm the polygons sit on real lots.
+- Spot-check a few walk-matrix entries against Google Maps walking directions. Within a minute or two is fine; ten minutes off is a bug.
+- Every area's `source` URL should open and still say what we claim it says. Rates change.
+
+## Troubleshooting
+
+**Stale bundle after changing config, `app.json`, or a native dependency.**
+
+```bash
+npx expo start --clear
+```
+
+That clears the Metro cache and fixes most "I changed it but nothing happened" symptoms.
+
+**Deeper wedge — module resolution errors, phantom missing packages.**
+
+```bash
+rm -rf node_modules .expo
+npm install
+npx expo start --clear
+```
+
+**Dependency versions don't match the SDK.**
+
+```bash
+npx expo install --check
+```
+
+Expo pins specific versions of `react-native`, `react-native-reanimated`, and friends per SDK. Installing one with plain `npm install` gets you the latest, which is usually the wrong one. Use `npx expo install <pkg>` rather than `npm install <pkg>` for anything with native code.
+
+**Port 8081 already in use.** Another Metro is running. `npx expo start --port 8082`, or kill the old one.
+
+**Web map is blank but iOS is fine (or vice versa).** Expected class of bug — the renderers are separate implementations. Check whether the difference originates in `encoding.ts`; if a color or dash pattern is being decided inside a renderer file rather than in `encoding.ts`, that's the bug, and it's an architecture violation. See [`AGENTS.md`](../AGENTS.md).
+
+**Dark mode flickers or mismatches on first paint on web.** `app.json` sets `web.output: "static"`, so the page is prerendered on a server that has no idea what color scheme the visitor prefers. `useColorScheme()` therefore returns one value during prerender and possibly another after hydration. Gate on a `hasHydrated` flag set from an effect — but set it in a way that doesn't trigger a cascading render, or `eslint-plugin-react-hooks` will (correctly) reject it.
+
+**iOS map renders but polygons don't appear.** Check winding order. GeoJSON wants counter-clockwise exteriors; `react-native-maps` takes a flat coordinate array and handles holes differently. `src/geo/` normalizes this on load — a polygon that skipped that path is the usual cause.

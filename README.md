@@ -1,56 +1,40 @@
-# Welcome to your Expo app 👋
+# CURB
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Find free and cheap parking near University of Michigan buildings — a map that knows Ann Arbor's rules change by the hour. Web and iOS.
 
-## Get started
+Ann Arbor parking is a *timing* problem as much as a location problem. Meters are free evenings, Sundays, and city holidays. Structures are free from 4 a.m. Sunday to 4 a.m. Monday. CURB shows you which parking is free *right now*, what any lot's rules are, and ranks your options by cost against walking distance to the specific building you're headed to.
 
-1. Install dependencies
+It covers both authorities — City of Ann Arbor and U-M — because a student standing on State Street doesn't care who owns the asphalt.
 
-   ```bash
-   npm install
-   ```
+Works offline. No account, no server, no tracking.
 
-2. Start the app
+> **Not affiliated with the University of Michigan or the City of Ann Arbor.** Parking rules change; always check posted signage. Each area in the app shows when its data was last verified.
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Quickstart
 
 ```bash
-npm run reset-project
+nvm use          # Node version from .nvmrc
+npm install
+npm run web      # web
+npm run ios      # iOS simulator or Expo Go
+npm test         # engine tests
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Full setup, troubleshooting, and data-regeneration steps: [`docs/development.md`](docs/development.md).
 
-### Other setup steps
+## Docs
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+- [Development](docs/development.md) — prerequisites, running, testing, regenerating datasets
+- [Data sources](docs/data-sources.md) — where every parking rule comes from, and what's unverified
+- [Releasing](docs/releasing.md) — version bumps, tagging, the release pipeline
+- [Contributing](CONTRIBUTING.md) — commits, changelog, versioning
+- [Spec](docs/spec.md) — the original project brief
+- [Changelog](CHANGELOG.md)
 
-## Learn more
+## Found wrong parking data?
 
-To learn more about developing your project with Expo, look at the following resources:
+That's the bug we most want to hear about. [Open a data correction issue](../../issues/new?template=data-correction.yml) — a link to the posted rule is enough.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## License
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+MIT. See [LICENSE](LICENSE).
