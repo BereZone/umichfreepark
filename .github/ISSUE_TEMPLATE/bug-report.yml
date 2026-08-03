@@ -1,0 +1,68 @@
+name: Bug report
+description: The app misbehaves — a crash, a broken screen, something that does not work as described.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If the problem is that **the parking information itself is wrong** — a rate,
+        an enforcement window, a lot boundary — please use the
+        [parking data is wrong](?template=data-correction.yml) form instead. It is
+        shorter and it routes better.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      placeholder: The countdown froze at 0:00 and never flipped the polygon to free.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Where did you see it?
+      description: Web and iOS use completely different map renderers, so this matters.
+      multiple: true
+      options:
+        - Web (browser)
+        - iOS (Expo Go or a build)
+        - Both
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can we reproduce it?
+      description: Rough steps are fine. If it depends on the time of day, say what time it was.
+      placeholder: |
+        1. Open the map around 5:55 PM
+        2. Select the Maynard Structure
+        3. Wait for 6:00 PM
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: App version (optional)
+      description: Shown on the About screen, or the version in the URL of a deployed build.
+      placeholder: 0.1.0
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshot, recording, or console output (optional)
+    validations:
+      required: false

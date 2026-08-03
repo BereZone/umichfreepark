@@ -1,0 +1,54 @@
+name: Test
+
+# Pushes to main are the expected workflow in this repo (see CONTRIBUTING.md),
+# so CI has to run on push as well as on pull requests. A PR-only trigger would
+# gate nothing, because most changes never open a PR.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: typecheck / lint / test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Runs before the suite: version drift is silent, and the whole point of
+      # scripts/version.mjs is that something checks it on every commit.
+      - name: Check version locations are in sync
+        run: node scripts/version.mjs check
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test (engine)
+        run: npm test
+
+      # Component tests run under jest-expo, which understands React Native's
+      # platform-suffix resolution in a way Vitest does not. Uncomment when the
+      # first ones land; see vitest.config.ts for why the runners are separate.
+      # - name: Test (components)
+      #   run: npm run test:components

@@ -15,6 +15,12 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Expo SDK 57 project skeleton with Expo Router, TypeScript `strict`, and a minimal app shell.
 - Repository conventions: Conventional Commits, Keep a Changelog, Semantic Versioning.
 - `AGENTS.md` documenting the engine purity rule, the `encoding.ts` anti-drift rule, and the data-sourcing rules.
+- Verified City of Ann Arbor parking rates, enforcement windows, and holiday lists in `docs/data-sources.md`, including the two different "free" rules for structures and meters.
+- 80 campus buildings with colloquial aliases ("the Dude", "UgLi", "the Big House"), coordinates sourced from OpenStreetMap.
+- `scripts/version.mjs` as the single owner of every version location, with drift detection that refuses to bump from an inconsistent state.
+- `make` targets for `bump`, `tag`, `untag`, and `check-version`, all delegating to that script.
+- CI on pushes to `main` and on pull requests; a tag-triggered release workflow that validates the tag, verifies version metadata, and builds a web export.
+- Issue templates, including a phone-friendly **parking data is wrong** report that asks only what the sign says and accepts a photo.
 
 ### Changed
 

@@ -1,0 +1,57 @@
+name: Parking data is wrong
+description: The app says something different from the sign on the street. This is the most valuable report you can file.
+title: "Data: "
+labels: ["data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you — this is the most useful thing anyone can send us.
+
+        A wrong "FREE" costs someone a $70 ticket, so a rate, a time window, or
+        a lot boundary that doesn't match the posted sign is a real bug.
+
+        You do not need to know anything about code. Three short answers is plenty,
+        and a photo of the sign is worth more than a perfect description.
+
+  - type: input
+    id: where
+    attributes:
+      label: Which lot, street, or structure?
+      description: A name or a nearby building is enough.
+      placeholder: e.g. Maynard Structure, or S. Forest Ave near the CCRB
+    validations:
+      required: true
+
+  - type: textarea
+    id: app-says
+    attributes:
+      label: What does the app say?
+      placeholder: e.g. "Free after 6 PM" — or "$1.65/hr"
+    validations:
+      required: true
+
+  - type: textarea
+    id: sign-says
+    attributes:
+      label: What does the sign actually say?
+      placeholder: e.g. The sign says metered until 10 PM, seven days a week.
+    validations:
+      required: true
+
+  - type: textarea
+    id: photo
+    attributes:
+      label: Photo of the sign (optional)
+      description: Drag a photo in, or tap to attach one from your phone. Nothing beats a picture of the sign.
+    validations:
+      required: false
+
+  - type: input
+    id: source
+    attributes:
+      label: Link (optional)
+      description: A page on a2gov.org, a2dda.org, pcia2.com, or ltp.umich.edu that backs this up, if you happen to have one.
+      placeholder: https://
+    validations:
+      required: false

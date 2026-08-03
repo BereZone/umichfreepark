@@ -1,0 +1,13 @@
+# Blank issues stay enabled on purpose: a student who noticed something odd
+# should never be blocked by a form that does not fit.
+blank_issues_enabled: true
+contact_links:
+  - name: Wrong parking data (the fastest form)
+    url: https://github.com/BereZone/curb/issues/new?template=data-correction.yml
+    about: A rate, time window, or lot boundary that does not match the sign. Three questions, takes a minute.
+  - name: How to contribute
+    url: https://github.com/BereZone/curb/blob/main/CONTRIBUTING.md
+    about: Commit conventions, changelog, and versioning.
+  - name: Where the parking data comes from
+    url: https://github.com/BereZone/curb/blob/main/docs/data-sources.md
+    about: Which authorities we model and how records are sourced and verified.

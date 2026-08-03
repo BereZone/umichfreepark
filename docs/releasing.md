@@ -2,18 +2,21 @@
 
 ## Why this is more careful than it looks
 
-An Expo app carries its version in **four** places:
+An Expo app carries its version in **four** places, and `package-lock.json` mirrors it twice, so there are five values to keep straight:
 
-| Location | Field |
-|---|---|
-| `package.json` | `version` |
-| `package-lock.json` | `version`, and the mirrored `packages[""].version` |
-| `app.json` | `expo.version` |
-| `app.json` | `expo.ios.buildNumber` |
+| Location | Field | Kind |
+|---|---|---|
+| `package.json` | `version` | semver |
+| `package-lock.json` | `version` | semver |
+| `package-lock.json` | `packages[""].version` | semver (npm writes both) |
+| `app.json` | `expo.version` | semver |
+| `app.json` | `expo.ios.buildNumber` | **counter, not a semver** |
 
 Drift between them is the classic Expo release bug: `package.json` looks correct, CI is green, and the build that reaches TestFlight reports a stale version string. Nothing catches it, because nothing was checking.
 
-So: **never edit a version by hand.** `scripts/version.mjs` owns all four locations, and both the Makefile and CI read from it. There is deliberately no second implementation of bump logic anywhere in this repo.
+The build number is the odd one out and is deliberately **not** derived from the version. App Store Connect refuses an upload that reuses a build number — permanently, even after that build is deleted — so it has to be a monotonic counter that increments on every write. Deriving it from the semver breaks the first time a rejected submission needs a second upload of the same version.
+
+So: **never edit a version by hand.** `scripts/version.mjs` owns every location, and both the Makefile and CI read from it. There is deliberately no second implementation of bump logic anywhere in this repo.
 
 ## The procedure
 
@@ -26,13 +29,14 @@ Do this **first**. The release workflow extracts this section verbatim as the Gi
 ### 2. Bump
 
 ```bash
-make bump          # prompts for the new version
-make check-version # confirms all four locations agree
+make bump PART=minor      # major | minor | patch | prerelease
+make bump VERSION=1.2.0   # or set an explicit version
+make check-version        # confirms every location agrees
 ```
 
-`make bump` shows you the current and computed target version and requires explicit confirmation before writing anything.
+`make bump` prints the current and computed target version, then requires you to **type the target version** to confirm before it writes anything. Anything else aborts and nothing is touched.
 
-If the four locations already disagree when you start, `bump` stops and reports the drift rather than bumping. That usually means a previous bump was interrupted partway. **Reconcile, don't re-bump** — double-bumping is exactly the failure this check exists to prevent.
+If the locations already disagree when you start, `bump` stops and reports the drift rather than bumping, and offers to reconcile them to one version you type. That usually means a previous bump was interrupted partway. **Reconcile, don't re-bump** — double-bumping is exactly the failure this check exists to prevent.
 
 ### 3. Commit
 

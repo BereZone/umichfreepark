@@ -1,0 +1,185 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+# Least privilege: creating a release needs write access to contents, and
+# nothing else in this workflow needs any other scope.
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Publish ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # ---------------------------------------------------------------------
+      # DRAFT POLICY — the single place release behaviour is decided.
+      #
+      #   MAJOR      X.0.0     draft: true   (a human approves before it ships)
+      #   MINOR      x.Y.0     auto-publish
+      #   PATCH      x.y.Z     auto-publish
+      #   PRERELEASE -rc.N     prerelease: true, auto-publish
+      #
+      # Change the four knobs below and nothing else. This step runs first so
+      # the policy is the first thing you read. It is deliberately tolerant of
+      # a malformed tag — "Validate tag" immediately after is what fails the
+      # run, with a message that explains the problem.
+      # ---------------------------------------------------------------------
+      - name: Draft policy
+        id: policy
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          DRAFT_MAJOR=true
+          DRAFT_MINOR=false
+          DRAFT_PATCH=false
+          DRAFT_PRERELEASE=false
+
+          version="${TAG#v}"
+          nobuild="${version%%+*}"   # drop +build metadata; it never affects policy
+          base="${nobuild%%-*}"      # drop -prerelease; leaves MAJOR.MINOR.PATCH
+          major="$(printf '%s' "$base" | cut -d. -f1)"
+          minor="$(printf '%s' "$base" | cut -d. -f2)"
+          patch="$(printf '%s' "$base" | cut -d. -f3)"
+
+          prerelease=false
+          numeric=yes
+          case "$major$minor$patch" in ''|*[!0-9]*) numeric=no ;; esac
+
+          if [ "$numeric" = "no" ]; then
+            # Unparseable tag. Fail safe, and let "Validate tag" below produce
+            # the actual error message.
+            kind=unknown
+            draft=true
+          elif [ "$nobuild" != "$base" ]; then
+            kind=prerelease
+            prerelease=true
+            draft="$DRAFT_PRERELEASE"
+          elif [ "$minor" = "0" ] && [ "$patch" = "0" ]; then
+            kind=major
+            draft="$DRAFT_MAJOR"
+          elif [ "$patch" = "0" ]; then
+            kind=minor
+            draft="$DRAFT_MINOR"
+          else
+            kind=patch
+            draft="$DRAFT_PATCH"
+          fi
+
+          echo "version=$version"       >> "$GITHUB_OUTPUT"
+          echo "kind=$kind"             >> "$GITHUB_OUTPUT"
+          echo "draft=$draft"           >> "$GITHUB_OUTPUT"
+          echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
+
+          echo "Tag $TAG is a $kind release (major=$major minor=$minor patch=$patch)."
+          echo "draft=$draft prerelease=$prerelease"
+
+      # 1. Validate the tag ---------------------------------------------------
+      - name: Validate tag
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          case "$TAG" in
+            vv*)
+              echo "::error::Tag '$TAG' has a doubled 'v'. This happens when a v-prefixed"
+              echo "::error::version is passed to something that adds its own 'v'."
+              echo "::error::Delete it (make untag VERSION=$TAG) and re-tag as v${TAG#vv}."
+              exit 1
+              ;;
+            v*) ;;
+            *)
+              echo "::error::Tag '$TAG' does not start with 'v'. Release tags are v-prefixed."
+              exit 1
+              ;;
+          esac
+
+          VERSION="${TAG#v}"
+          # Strict SemVer — identical to the regex in scripts/version.mjs.
+          if ! printf '%s' "$VERSION" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$'; then
+            echo "::error::'$VERSION' (from tag '$TAG') is not strict SemVer."
+            echo "::error::Expected MAJOR.MINOR.PATCH with optional -prerelease and +build,"
+            echo "::error::no leading zeros. Examples: v1.2.0, v1.2.0-rc.1"
+            exit 1
+          fi
+          echo "Tag $TAG is valid; version is $VERSION."
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # 2. Verify metadata is in sync ----------------------------------------
+      # Delegated to scripts/version.mjs, which owns every version location and
+      # names the file that is out of step. There is no second implementation.
+      - name: Verify version metadata matches the tag
+        run: node scripts/version.mjs check --expect "${{ steps.policy.outputs.version }}"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 3. Never publish an untested tag -------------------------------------
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      # 4. Release body comes from CHANGELOG.md ------------------------------
+      # A release with no changelog entry is a mistake, not a valid state, so
+      # a missing section fails the release rather than publishing empty notes.
+      - name: Extract changelog section
+        env:
+          VERSION: ${{ steps.policy.outputs.version }}
+        run: |
+          awk -v hdr="## [$VERSION]" '
+            index($0, hdr) == 1 { found = 1; next }
+            found && /^## / { exit }
+            found && /^\[[^]]+\]: / { exit }
+            found { print }
+          ' CHANGELOG.md > release-notes.md
+
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "::error::CHANGELOG.md has no non-empty section for $VERSION."
+            echo "::error::Expected a heading like: ## [$VERSION] - YYYY-MM-DD"
+            echo "::error::Add it, commit, and re-tag. See docs/releasing.md."
+            exit 1
+          fi
+
+          echo "Release notes:"
+          echo "---"
+          cat release-notes.md
+          echo "---"
+
+      # 5. Web export as a release asset -------------------------------------
+      - name: Build web export
+        run: npx expo export -p web
+
+      - name: Zip web export
+        env:
+          TAG: ${{ github.ref_name }}
+        run: zip -r -q "curb-web-${TAG}.zip" dist
+
+      # 6. Publish ------------------------------------------------------------
+      # The action upserts: re-running against an existing tag updates that
+      # release rather than creating a duplicate. Do not shell out to `gh`.
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: CURB ${{ steps.policy.outputs.version }}
+          body_path: release-notes.md
+          draft: ${{ steps.policy.outputs.draft }}
+          prerelease: ${{ steps.policy.outputs.prerelease }}
+          files: curb-web-${{ github.ref_name }}.zip
+          fail_on_unmatched_files: true
