@@ -34,6 +34,37 @@ City rules are published as prose and hand-encoded into typed data. They are the
 
 Rates were last raised **July 1, 2026**.
 
+#### Verified city rates — checked 2026-08-03
+
+Read directly off [a2dda.org/parking-rates](https://www.a2dda.org/parking-rates/) and [a2gov.org/services/parking](https://www.a2gov.org/services/parking/).
+
+| Item | Rate |
+|---|---|
+| Parking structures | $1.80/hr |
+| Parking lots | $2.60/hr |
+| On-street meters | $2.60/hr |
+| Half-price meters | $1.30/hr, 10-hour limit |
+| Library Lane | $5.00 after 3pm, out by 6am |
+| 415 W. Washington | $5/entry flat |
+| Monthly permit, standard | $265/mo |
+| Monthly permit, reserved | $365/mo |
+
+Half-price meters are on the 300 block of S. First, the 300 and 400 blocks of N. Ashley, the 300 block of W. William, the 400 block of S. Ashley, and the 700 block of Packard.
+
+**Fines:** $15 by end of next business day, $25 within 14 days, **$60 after 14 days**, $70 after 30. Plus a $3.50 service charge for online or phone payment.
+
+#### Two different free rules — do not conflate them
+
+This is the single easiest way to ship a wrong "FREE", so it gets stated explicitly.
+
+| | Structures and gated lots | On-street meters |
+|---|---|---|
+| Paid | Mon–Sat | Mon–Sat 8am–6pm |
+| Free | **Sunday 4am → Monday 4am** | Evenings, **all day Sunday** |
+| Free holidays | "holidays observed by PCI Municipal Services" | 13 City-observed holidays |
+
+The structure window is Sunday 4am to Monday 4am, **not** midnight-to-midnight. A car parked at 2am Sunday is still in Saturday's paid period; a car still parked at 5am Monday is back in the paid period. A naive day-of-week check gets both ends wrong.
+
 ### University of Michigan
 
 | Source | Covers |
@@ -56,6 +87,24 @@ OSM data is ODbL-licensed, which is what permits us to ship it and to precompute
 Computed at build time by `scripts/build-walk-matrix.mjs` against the public [Valhalla](https://valhalla1.openstreetmap.de/) instance, `pedestrian` costing, over OSM data. Pairs Valhalla can't route fall back to haversine distance × 1.35, and the script reports how many did.
 
 We use an OSM-based router rather than Apple's or Google's specifically because their terms restrict retaining directions results, and this app's entire premise is shipping those results offline in the bundle.
+
+## Open questions
+
+### Which holidays are structures actually free? — UNRESOLVED
+
+The DDA states structures are "free on holidays observed by PCI Municipal Services." **PCI does not appear to publish that list anywhere.** Searched `pcia2.com` — the locations, rates, FAQ, and meter pages contain no observed-holiday list for free parking.
+
+What PCI *does* publish is a list of holidays on which **Limited/Overnight permit holders get unrestricted access**. That is a different rule about permit access hours, and it must not be borrowed as the free-parking list. Doing so would tell a student a structure is free on a day it isn't.
+
+Until someone confirms it with PCI at (734) 761-7235, structures are modeled as **free on Sundays only**, and holiday-free status for structures is `unknown`. The engine must not claim a structure is free on a city holiday.
+
+The meter holiday list, by contrast, is published in full on a2gov.org and is `verified`.
+
+### Address conflict at First & William
+
+PCI's facility page says 300 First St.; the DDA FAQ says 216 W. William St. Both are primary sources. Unresolved — no address ships for that lot until it is.
+
+Its hourly rate is also unclear: the PCI page lists only monthly parking, which suggests it may be permit-only. Not modeled as hourly until confirmed.
 
 ## Known gaps
 
