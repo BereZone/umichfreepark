@@ -1,0 +1,1025 @@
+{
+  "_comment": "Generated from OpenStreetMap via Overpass. Do not hand-edit coordinates; see docs/data-sources.md.",
+  "source": "https://www.openstreetmap.org/ (ODbL) via https://overpass-api.de/",
+  "lastVerified": "2026-08-03",
+  "verification": "79 of 80 coordinates confirmed within 51 m of the named OSM building; all 80 within 49 m of some mapped building.",
+  "buildings": [
+    {
+      "id": "1100-north-university-building",
+      "name": "1100 North University Building",
+      "aliases": [
+        "LSA Building",
+        "C.C. Little",
+        "C.C. Little Building"
+      ],
+      "lat": 42.27742,
+      "lon": -83.73527,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "alice-lloyd-hall",
+      "name": "Alice Lloyd Hall",
+      "aliases": [
+        "Lloyd"
+      ],
+      "lat": 42.28125,
+      "lon": -83.73161,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "angell-hall",
+      "name": "Angell Hall",
+      "aliases": [
+        "Angell"
+      ],
+      "lat": 42.27677,
+      "lon": -83.73975,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "betsy-barbour-residence",
+      "name": "Betsy Barbour Residence",
+      "aliases": [
+        "Barbour"
+      ],
+      "lat": 42.27727,
+      "lon": -83.74155,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "biological-sciences-building",
+      "name": "Biological Sciences Building",
+      "aliases": [
+        "BSB",
+        "Biosciences",
+        "Museum of Natural History",
+        "Nat History Museum"
+      ],
+      "lat": 42.27902,
+      "lon": -83.73449,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "burton-memorial-tower",
+      "name": "Burton Memorial Tower",
+      "aliases": [
+        "Burton Tower",
+        "the Bell Tower"
+      ],
+      "lat": 42.27945,
+      "lon": -83.73871,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "central-campus-classroom-building",
+      "name": "Central Campus Classroom Building",
+      "aliases": [
+        "CCCB"
+      ],
+      "lat": 42.27792,
+      "lon": -83.73401,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "chemistry-building",
+      "name": "Chemistry Building",
+      "aliases": [
+        "Chem Building"
+      ],
+      "lat": 42.27803,
+      "lon": -83.73702,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "couzens-hall",
+      "name": "Couzens Hall",
+      "aliases": [
+        "Couzens"
+      ],
+      "lat": 42.28193,
+      "lon": -83.73263,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "east-hall",
+      "name": "East Hall",
+      "aliases": [
+        "East Hall Math"
+      ],
+      "lat": 42.27575,
+      "lon": -83.7352,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "east-quadrangle",
+      "name": "East Quadrangle",
+      "aliases": [
+        "East Quad"
+      ],
+      "lat": 42.27292,
+      "lon": -83.73513,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "hadley-family-recreation-well-being-center",
+      "name": "Hadley Family Recreation & Well-Being Center",
+      "aliases": [
+        "CCRB",
+        "the CCRB",
+        "Central Campus Rec",
+        "Central Campus Recreation Building"
+      ],
+      "lat": 42.27822,
+      "lon": -83.73271,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "hatcher-graduate-library",
+      "name": "Harlan Hatcher Graduate Library",
+      "aliases": [
+        "Hatcher",
+        "the Grad",
+        "Graduate Library",
+        "Hatcher Library",
+        "Hatcher Graduate Library"
+      ],
+      "lat": 42.27622,
+      "lon": -83.73819,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "haven-hall",
+      "name": "Haven Hall",
+      "aliases": [
+        "Haven"
+      ],
+      "lat": 42.27647,
+      "lon": -83.73923,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "helen-newberry-residence",
+      "name": "Helen Newberry Residence",
+      "aliases": [
+        "Newberry"
+      ],
+      "lat": 42.27695,
+      "lon": -83.74155,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "hill-auditorium",
+      "name": "Hill Auditorium",
+      "aliases": [
+        "Hill Aud",
+        "Hill"
+      ],
+      "lat": 42.27918,
+      "lon": -83.73908,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "lawyers-club",
+      "name": "Lawyers Club",
+      "aliases": [
+        "Law Quad",
+        "the Law Quad"
+      ],
+      "lat": 42.27444,
+      "lon": -83.73941,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "lorch-hall",
+      "name": "Lorch Hall",
+      "aliases": [
+        "Lorch"
+      ],
+      "lat": 42.2737,
+      "lon": -83.7376,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "markley-hall",
+      "name": "Mary Markley Hall",
+      "aliases": [
+        "Markley"
+      ],
+      "lat": 42.28092,
+      "lon": -83.72885,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "mason-hall",
+      "name": "Mason Hall",
+      "aliases": [
+        "Mason"
+      ],
+      "lat": 42.27709,
+      "lon": -83.73952,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "michigan-league",
+      "name": "Michigan League",
+      "aliases": [
+        "the League"
+      ],
+      "lat": 42.27932,
+      "lon": -83.73756,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "michigan-union",
+      "name": "Michigan Union",
+      "aliases": [
+        "the Union"
+      ],
+      "lat": 42.27517,
+      "lon": -83.74155,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "approximate"
+    },
+    {
+      "id": "modern-languages-building",
+      "name": "Modern Languages Building",
+      "aliases": [
+        "MLB",
+        "the MLB",
+        "Modern Languages"
+      ],
+      "lat": 42.27988,
+      "lon": -83.73908,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "mosher-jordan-hall",
+      "name": "Mosher-Jordan Hall",
+      "aliases": [
+        "Mojo"
+      ],
+      "lat": 42.28014,
+      "lon": -83.73151,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "north-quadrangle",
+      "name": "North Quadrangle",
+      "aliases": [
+        "North Quad"
+      ],
+      "lat": 42.28075,
+      "lon": -83.74011,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "power-center",
+      "name": "Power Center for the Performing Arts",
+      "aliases": [
+        "Power Center"
+      ],
+      "lat": 42.28084,
+      "lon": -83.73575,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "rackham-building",
+      "name": "Rackham Graduate School",
+      "aliases": [
+        "Rackham",
+        "Rackham Building"
+      ],
+      "lat": 42.28062,
+      "lon": -83.73726,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "randall-laboratory",
+      "name": "Randall Laboratory",
+      "aliases": [
+        "Randall Lab",
+        "Randall"
+      ],
+      "lat": 42.27657,
+      "lon": -83.73654,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "ross-school-of-business",
+      "name": "Ross School of Business",
+      "aliases": [
+        "Ross",
+        "BBA",
+        "the Business School"
+      ],
+      "lat": 42.27269,
+      "lon": -83.73759,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "school-of-kinesiology",
+      "name": "School of Kinesiology Building",
+      "aliases": [
+        "Kines",
+        "Kinesiology"
+      ],
+      "lat": 42.27803,
+      "lon": -83.73896,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "shapiro-undergraduate-library",
+      "name": "Shapiro Undergraduate Library",
+      "aliases": [
+        "UgLi",
+        "Shapiro",
+        "the UGLi"
+      ],
+      "lat": 42.27563,
+      "lon": -83.73718,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "south-quadrangle",
+      "name": "South Quadrangle",
+      "aliases": [
+        "South Quad"
+      ],
+      "lat": 42.27372,
+      "lon": -83.74215,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "stockwell-hall",
+      "name": "Stockwell Hall",
+      "aliases": [
+        "Stockwell"
+      ],
+      "lat": 42.27886,
+      "lon": -83.73177,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "the-diag",
+      "name": "The Diag",
+      "aliases": [
+        "Diag",
+        "Diagonal Green"
+      ],
+      "lat": 42.27709,
+      "lon": -83.73801,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "the-rock",
+      "name": "The Rock",
+      "aliases": [
+        "Washtenaw Rock"
+      ],
+      "lat": 42.27256,
+      "lon": -83.72849,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "tisch-hall",
+      "name": "Tisch Hall",
+      "aliases": [
+        "Tisch",
+        "Economics Building"
+      ],
+      "lat": 42.27628,
+      "lon": -83.73959,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "trotter-multicultural-center",
+      "name": "Trotter Multicultural Center",
+      "aliases": [
+        "Trotter"
+      ],
+      "lat": 42.27708,
+      "lon": -83.74109,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "umma",
+      "name": "University of Michigan Museum of Art",
+      "aliases": [
+        "UMMA"
+      ],
+      "lat": 42.27559,
+      "lon": -83.73978,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "undergraduate-science-building",
+      "name": "Undergraduate Science Building",
+      "aliases": [
+        "USB"
+      ],
+      "lat": 42.27983,
+      "lon": -83.73491,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "weill-hall",
+      "name": "Gerald R. Ford School of Public Policy - Weill Hall",
+      "aliases": [
+        "Weill Hall",
+        "Ford School"
+      ],
+      "lat": 42.27239,
+      "lon": -83.74029,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "west-hall",
+      "name": "West Hall",
+      "aliases": [
+        "West Hall Physics"
+      ],
+      "lat": 42.27593,
+      "lon": -83.73643,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "west-quadrangle",
+      "name": "West Quadrangle",
+      "aliases": [
+        "West Quad"
+      ],
+      "lat": 42.27491,
+      "lon": -83.74253,
+      "campus": "central",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "dental-building",
+      "name": "Dental Building and Kellogg Institute",
+      "aliases": [
+        "Dental School",
+        "School of Dentistry",
+        "Dent Building"
+      ],
+      "lat": 42.2793,
+      "lon": -83.73624,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "frankel-cardiovascular-center",
+      "name": "Frankel Cardiovascular Center",
+      "aliases": [
+        "CVC",
+        "Cardiovascular Center"
+      ],
+      "lat": 42.28329,
+      "lon": -83.73118,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "kellogg-eye-center",
+      "name": "W. K. Kellogg Eye Center",
+      "aliases": [
+        "Kellogg Eye Center"
+      ],
+      "lat": 42.28797,
+      "lon": -83.73697,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "medical-science-unit-i",
+      "name": "Medical Science Unit I",
+      "aliases": [
+        "Med Sci I",
+        "MSI"
+      ],
+      "lat": 42.28403,
+      "lon": -83.73266,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "medical-sciences-research-building",
+      "name": "Medical Sciences Research Building",
+      "aliases": [
+        "MSRB"
+      ],
+      "lat": 42.28456,
+      "lon": -83.73416,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "mott-childrens-hospital",
+      "name": "Mott Children's Hospital and Von Voigtlander Women's Hospital",
+      "aliases": [
+        "Mott",
+        "C.S. Mott",
+        "Mott Hospital"
+      ],
+      "lat": 42.28211,
+      "lon": -83.72734,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "rogel-cancer-center",
+      "name": "Rogel Cancer Center",
+      "aliases": [
+        "Cancer Center"
+      ],
+      "lat": 42.28445,
+      "lon": -83.73131,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "school-of-nursing-building",
+      "name": "School of Nursing Building",
+      "aliases": [
+        "Nursing School"
+      ],
+      "lat": 42.28402,
+      "lon": -83.73772,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "taubman-health-care-center",
+      "name": "Taubman Health Care Center",
+      "aliases": [
+        "Taubman Center",
+        "Taubman"
+      ],
+      "lat": 42.28355,
+      "lon": -83.72807,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "taubman-health-sciences-library",
+      "name": "Taubman Health Sciences Library",
+      "aliases": [
+        "Taubman Library"
+      ],
+      "lat": 42.28359,
+      "lon": -83.73451,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "university-hospital",
+      "name": "University Hospital",
+      "aliases": [
+        "Main Hospital",
+        "U-M Hospital",
+        "the Hospital"
+      ],
+      "lat": 42.28469,
+      "lon": -83.72939,
+      "campus": "medical",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "art-and-architecture-building",
+      "name": "Art & Architecture Building",
+      "aliases": [
+        "Taubman College",
+        "A&AB",
+        "Art & Arch"
+      ],
+      "lat": 42.28958,
+      "lon": -83.71705,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "baits-i",
+      "name": "Baits I",
+      "aliases": [
+        "Baits",
+        "Baits Hall"
+      ],
+      "lat": 42.29161,
+      "lon": -83.72324,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "baits-ii",
+      "name": "Baits II",
+      "aliases": [
+        "Baits 2"
+      ],
+      "lat": 42.29392,
+      "lon": -83.72394,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "bob-and-betty-beyster-building",
+      "name": "Bob and Betty Beyster Building",
+      "aliases": [
+        "Beyster",
+        "Beyster Building",
+        "CSE Building"
+      ],
+      "lat": 42.29301,
+      "lon": -83.71617,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "bursley-hall",
+      "name": "Bursley Hall",
+      "aliases": [
+        "Bursley"
+      ],
+      "lat": 42.29376,
+      "lon": -83.71996,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "chrysler-center",
+      "name": "Chrysler Center",
+      "aliases": [
+        "Chrysler"
+      ],
+      "lat": 42.29092,
+      "lon": -83.71671,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "duderstadt-center",
+      "name": "Duderstadt Center",
+      "aliases": [
+        "the Dude",
+        "Duderstadt",
+        "the Dude Library"
+      ],
+      "lat": 42.29116,
+      "lon": -83.71577,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "eecs-building",
+      "name": "Electrical Engineering and Computer Science Building",
+      "aliases": [
+        "EECS",
+        "EECS Building",
+        "Electrical Engineering and Computer Science"
+      ],
+      "lat": 42.29239,
+      "lon": -83.71391,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "francois-xavier-bagnoud-building",
+      "name": "François-Xavier Bagnoud Building",
+      "aliases": [
+        "FXB",
+        "Francois-Xavier Bagnoud Building"
+      ],
+      "lat": 42.29345,
+      "lon": -83.71189,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "gg-brown-building",
+      "name": "G. G. Brown Building",
+      "aliases": [
+        "GGB",
+        "GG Brown"
+      ],
+      "lat": 42.2933,
+      "lon": -83.71399,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "herbert-h-dow-building",
+      "name": "Herbert H. Dow Building",
+      "aliases": [
+        "Dow Building",
+        "Dow"
+      ],
+      "lat": 42.29301,
+      "lon": -83.71543,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "leinweber-computer-science-building",
+      "name": "Leinweber Computer Science Building",
+      "aliases": [
+        "Leinweber"
+      ],
+      "lat": 42.29298,
+      "lon": -83.71717,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "lurie-engineering-center",
+      "name": "Robert H. Lurie Engineering Center",
+      "aliases": [
+        "Lurie Engineering Center",
+        "the Lurie"
+      ],
+      "lat": 42.29149,
+      "lon": -83.71383,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "lurie-tower",
+      "name": "Ann and Robert H. Lurie Tower",
+      "aliases": [
+        "Lurie Tower",
+        "the Carillon Tower"
+      ],
+      "lat": 42.292,
+      "lon": -83.71618,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "north-campus-recreation-building",
+      "name": "North Campus Recreation Building",
+      "aliases": [
+        "NCRB"
+      ],
+      "lat": 42.29549,
+      "lon": -83.72017,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "pierpont-commons",
+      "name": "Pierpont Commons",
+      "aliases": [
+        "Pierpont",
+        "the Pierpont"
+      ],
+      "lat": 42.29114,
+      "lon": -83.71753,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "school-of-information-north",
+      "name": "School of Information North",
+      "aliases": [
+        "UMSI North"
+      ],
+      "lat": 42.28915,
+      "lon": -83.71438,
+      "campus": "north",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "cliff-keen-arena",
+      "name": "Cliff Keen Arena",
+      "aliases": [
+        "Cliff Keen"
+      ],
+      "lat": 42.26936,
+      "lon": -83.74128,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "crisler-center",
+      "name": "Crisler Center",
+      "aliases": [
+        "Crisler",
+        "Crisler Arena"
+      ],
+      "lat": 42.26504,
+      "lon": -83.74671,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "glick-field-house",
+      "name": "Glick Field House",
+      "aliases": [
+        "Glick"
+      ],
+      "lat": 42.26522,
+      "lon": -83.74111,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "intramural-sports-building",
+      "name": "Intramural Sports Building",
+      "aliases": [
+        "the IM",
+        "IM Building",
+        "IMSB",
+        "Intramural Building"
+      ],
+      "lat": 42.26972,
+      "lon": -83.74214,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "junge-family-champions-center",
+      "name": "Junge Family Champions Center",
+      "aliases": [
+        "Junge Champions Center"
+      ],
+      "lat": 42.26552,
+      "lon": -83.74711,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "michigan-stadium",
+      "name": "Michigan Stadium",
+      "aliases": [
+        "the Big House",
+        "the Stadium",
+        "the Big H"
+      ],
+      "lat": 42.26588,
+      "lon": -83.74871,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "approximate"
+    },
+    {
+      "id": "oosterbaan-field-house",
+      "name": "Oosterbaan Field House",
+      "aliases": [
+        "Oosterbaan"
+      ],
+      "lat": 42.2659,
+      "lon": -83.74235,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "ross-academic-center",
+      "name": "Stephen M. Ross Academic Center",
+      "aliases": [
+        "Ross Academic Center"
+      ],
+      "lat": 42.26865,
+      "lon": -83.74103,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "schembechler-hall",
+      "name": "Schembechler Hall",
+      "aliases": [
+        "Schembechler"
+      ],
+      "lat": 42.266,
+      "lon": -83.74115,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    },
+    {
+      "id": "yost-ice-arena",
+      "name": "Yost Ice Arena",
+      "aliases": [
+        "Yost"
+      ],
+      "lat": 42.26762,
+      "lon": -83.74102,
+      "campus": "south",
+      "coordSource": "osm",
+      "coordConfidence": "high"
+    }
+  ]
+}
