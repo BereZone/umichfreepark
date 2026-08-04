@@ -19,6 +19,9 @@ import {
   nextTransition,
   statusAt,
 } from '../engine';
+import * as Haptics from 'expo-haptics';
+
+import { useReduceMotion } from '../hooks/use-accessibility';
 import { formatCountdown, useNow } from '../hooks/use-now';
 import { MIN_TOUCH_TARGET, radius, space, tabularNumbers, type } from '../theme';
 import { colorsFor } from '../theme/colors';
@@ -28,6 +31,7 @@ export default function MapScreen() {
   const colors = colorsFor(scheme);
   const insets = useSafeAreaInsets();
   const now = useNow();
+  const reduceMotion = useReduceMotion();
 
   const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
   const [tileError, setTileError] = useState<Error | null>(null);
@@ -61,7 +65,17 @@ export default function MapScreen() {
     };
   }, [selected, now]);
 
-  const handleSelect = useCallback((id: string | null) => setSelectedAreaId(id), []);
+  const handleSelect = useCallback((id: string | null) => {
+    setSelectedAreaId(id);
+    // A light tap confirms the tap landed on a polygon, which matters on a
+    // full-bleed map where the panel animating in is the only other feedback.
+    // Selection only — firing on deselect would make dismissing feel like an error.
+    if (id !== null) {
+      Haptics.selectionAsync().catch(() => {
+        // Haptics are unavailable on web and on some devices. Never a failure.
+      });
+    }
+  }, []);
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
@@ -70,6 +84,7 @@ export default function MapScreen() {
         at={now}
         selectedAreaId={selectedAreaId}
         onSelectArea={handleSelect}
+        reduceMotion={reduceMotion}
         onError={setTileError}
       />
 

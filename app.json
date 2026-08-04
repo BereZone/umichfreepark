@@ -11,7 +11,10 @@
       "icon": "./assets/expo.icon",
       "buildNumber": "1",
       "supportsTablet": true,
-      "bundleIdentifier": "dev.berezone.curb"
+      "bundleIdentifier": "dev.berezone.curb",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "CURB uses your location to show parking near you and how far each lot is to walk. Your location stays on your device and is never sent anywhere."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -34,6 +37,14 @@
           "backgroundColor": "#208AEF",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "CURB uses your location to show parking near you and how far each lot is to walk. Your location stays on your device and is never sent anywhere.",
+          "isIosBackgroundLocationEnabled": false,
+          "isAndroidBackgroundLocationEnabled": false
         }
       ]
     ],
