@@ -66,8 +66,22 @@ export default function ListScreen() {
 
   const best = ranked.find((option) => option.eligibility.eligible) ?? null;
 
-  return (
-    <View style={[styles.root, { backgroundColor: colors.background, paddingTop: insets.top }]}>
+  /*
+   * The controls scroll WITH the results rather than sitting above them.
+   *
+   * As a fixed header this screen failed completely at accessibility text
+   * sizes: the title, the destination, the search field and two rows of chips
+   * grew until they filled the viewport, and the FlatList underneath was
+   * squeezed to nothing. A user at the largest Dynamic Type setting saw zero
+   * parking options on the view that is supposed to be the accessible
+   * equivalent of the map — the worst possible place for that to happen.
+   *
+   * Passing them as ListHeaderComponent means everything shares one scroll
+   * container, so large type makes the page longer instead of making the
+   * content unreachable.
+   */
+  const header = (
+    <>
       <View style={styles.header}>
         <Text style={[type.title, { color: colors.text }]}>Parking near</Text>
         <Text style={[type.heading, { color: colors.textMuted }]}>
@@ -133,11 +147,19 @@ export default function ListScreen() {
           );
         })}
       </View>
+    </>
+  );
 
+  return (
+    <View style={[styles.root, { backgroundColor: colors.background, paddingTop: insets.top }]}>
       <FlatList
         data={ranked}
         keyExtractor={(option) => option.area.id}
+        ListHeaderComponent={header}
         contentContainerStyle={{ paddingBottom: insets.bottom + space.roomy }}
+        // The search field drops a result list over the rows below it; without
+        // this, tapping a result scrolls the list instead of choosing it.
+        keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           <Text style={[type.body, styles.empty, { color: colors.textMuted }]}>
             Pick a destination to see what’s nearby.

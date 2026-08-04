@@ -64,6 +64,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - The iOS build failed in three places because the project path contains a space, each one a path interpolated into a shell command without quotes. Two are patched in dependencies, one in a config plugin; renaming the directory would remove the need for all three.
 - The iOS app did not compile at all under Xcode 26: `expo-modules-jsi` uses Swift that the current compiler rejects. Patched locally until upstream fixes it, with a note saying when to drop the patch.
 - The iOS build declared background-location and motion permissions the app never requests, two of them carrying Expo's placeholder "Allow CURB to access your location" text. Only the When In Use string ships now, and the build fails if the others come back.
+- At large text sizes the list screen showed no parking at all: the header filled the screen and pushed every result out of reach. The controls now scroll with the results.
+- Text at large accessibility sizes had huge gaps between lines and labels stuck to the top of their buttons, because the type scale pinned line height to a fixed number that could not scale with the reader's setting.
 - List rows announced themselves as buttons to a screen reader but did nothing when activated.
 - Tab bar glyphs were read aloud next to their own labels, so VoiceOver said "black diamond, Map".
 - The Learn screen still listed the First & William rate as unknown after it was resolved, and hardcoded a holiday count next to a computed one.

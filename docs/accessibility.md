@@ -102,6 +102,32 @@ the unit tests — worth confirming by eye at least once, because `encoding.ts`
 being correct and `Map.native.tsx` translating it correctly are two different
 claims.
 
+## Dynamic Type — two real bugs, found by looking
+
+Checked at every content size with `xcrun simctl ui <device> content_size …`.
+Both of these passed typecheck, lint and 236 unit tests, and both made the app
+unusable at accessibility text sizes. Neither was findable without running it.
+
+**1. Hardcoded `lineHeight` in the type scale.** Entries read
+`{ fontSize: 28, lineHeight: 34 }`. A constant line height cannot know the scale
+factor the user chose, so at large settings the line boxes grew out of all
+proportion to the glyphs: headings gained enormous gaps, chips became tall boxes
+with the label pinned to the top, and the duration row spilled off screen.
+Removed — the platform derives line height from the already-scaled font size and
+is correct at every setting. `typography.ts` says not to add it back and why.
+
+**2. The list header was outside the scroll container.** Title, destination,
+search field and two chip rows sat in a fixed `View` above the `FlatList`. At
+large type they filled the viewport and squeezed the list to nothing, so **a
+user at an accessibility text size saw zero parking results** — on the view that
+is the accessible equivalent of the map. Now passed as `ListHeaderComponent`, so
+everything shares one scroll container and large type makes the page longer
+rather than making the content unreachable.
+
+Verified after the fix at `medium`, `extra-extra-extra-large` and
+`accessibility-extra-extra-extra-large`: seven results visible at the size that
+previously showed none, chips correctly sized, and no regression at default.
+
 ## Still open — needs a physical device
 
 These cannot be validated in the Simulator or by any test, and are the
@@ -117,9 +143,6 @@ outstanding part of the phase 6 and phase 8 work:
   close button is a stretch.
 - **Haptics** on selection — `expo-haptics` is wired and fails silently where
   unavailable, but the intensity has never been felt.
-- **Dynamic Type at accessibility sizes.** Type tokens scale, but the chip rows
-  and the status bar have not been seen at the largest settings, where they are
-  most likely to wrap badly.
 - **Keyboard navigation on web** — tab order through search, chips, and rows,
   and whether the focus ring is visible against every surface.
 

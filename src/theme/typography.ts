@@ -58,15 +58,34 @@ export const tabularNumbers = {
  * pixels. They are NOT clamped, so iOS Dynamic Type can scale them — hardcoding
  * a size that ignores the user's accessibility text setting is exactly the
  * failure the accessibility pass exists to catch.
+ *
+ * DO NOT ADD `lineHeight` HERE.
+ *
+ * These entries used to carry explicit line heights — `title` was
+ * `{ fontSize: 28, lineHeight: 34 }` and so on. It looked tidy and it broke the
+ * app at large Dynamic Type settings: line boxes grew out of proportion to the
+ * glyphs, so headings gained enormous gaps, chips became tall boxes with their
+ * label stuck at the top, and on the list screen the header alone filled the
+ * viewport. At the accessibility sizes a user saw ZERO parking results on the
+ * view that is supposed to be the accessible equivalent of the map.
+ *
+ * Verified on the Simulator at every content size: leaving line height to the
+ * platform, which derives it from the already-scaled font size, is correct at
+ * default AND at accessibility sizes. A fixed number cannot be, because it
+ * cannot know the scale factor the user chose.
+ *
+ * If a specific block genuinely needs tighter leading, set `lineHeight` on that
+ * one component as a multiple of its own scaled size — never as a constant, and
+ * never here where it applies to everything.
  */
 export const type = {
   /** The countdown. The one place the app raises its voice. */
-  display: { fontSize: 44, lineHeight: 48, fontWeight: '700' as const },
-  title: { fontSize: 28, lineHeight: 34, fontWeight: '700' as const },
-  heading: { fontSize: 20, lineHeight: 26, fontWeight: '600' as const },
-  body: { fontSize: 16, lineHeight: 22, fontWeight: '400' as const },
-  bodyStrong: { fontSize: 16, lineHeight: 22, fontWeight: '600' as const },
-  caption: { fontSize: 13, lineHeight: 18, fontWeight: '400' as const },
+  display: { fontSize: 44, fontWeight: '700' as const },
+  title: { fontSize: 28, fontWeight: '700' as const },
+  heading: { fontSize: 20, fontWeight: '600' as const },
+  body: { fontSize: 16, fontWeight: '400' as const },
+  bodyStrong: { fontSize: 16, fontWeight: '600' as const },
+  caption: { fontSize: 13, fontWeight: '400' as const },
   /** Map pills and legend keys. Small, so it carries extra weight. */
-  label: { fontSize: 12, lineHeight: 15, fontWeight: '700' as const },
+  label: { fontSize: 12, fontWeight: '700' as const },
 } as const;
