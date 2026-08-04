@@ -4,7 +4,7 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
-    "postinstall": "patch-package",
+    "postinstall": "patch-package && node scripts/sync-maplibre-worker.mjs",
     "start": "expo start",
     "ios": "expo run:ios",
     "web": "expo start --web",
@@ -16,10 +16,12 @@
     "data:polygons": "node scripts/fetch-osm-parking.mjs",
     "data:umich-lots": "node scripts/fetch-umich-lots.mjs",
     "data:umich-areas": "node scripts/build-umich-areas.mjs",
+    "data:umich-locations": "node scripts/fetch-umich-locations.mjs",
     "data:dda": "node scripts/fetch-dda-parking.mjs",
     "data:area-polygons": "node scripts/build-area-polygons.mjs",
     "data:walk-matrix": "node scripts/build-walk-matrix.mjs",
-    "version:check": "node scripts/version.mjs check"
+    "version:check": "node scripts/version.mjs check",
+    "data:maplibre-worker": "node scripts/sync-maplibre-worker.mjs"
   },
   "dependencies": {
     "@date-fns/tz": "^1.5.0",

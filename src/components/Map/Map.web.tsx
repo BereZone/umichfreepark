@@ -20,13 +20,40 @@ import * as maplibregl from 'maplibre-gl';
 import type { GeoJSONSource, Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-import { DEFAULT_PROFILE, eligibilityFor, statusAt } from '../../engine';
+import { DEFAULT_PROFILE, eligibilityFor, statusOf } from '../../engine';
 import { colorsFor } from '../../theme/colors';
 import { encodeArea } from './encoding';
-import { DEFAULT_CAMERA, MAX_VISIBLE_PILLS, PILL_MIN_ZOOM, type MapProps } from './types';
+import { selectPills } from './pills';
+import { DEFAULT_CAMERA, PILL_MIN_ZOOM, type MapProps } from './types';
 
 /** Free, keyless, and swappable for Protomaps behind this one constant. */
 const STYLE_URL = 'https://tiles.openfreemap.org/styles/positron';
+
+/**
+ * Where scripts/sync-maplibre-worker.mjs puts the worker. Absolute, because a
+ * relative URL would resolve against the current route and break on /list.
+ */
+const WORKER_PUBLIC_PATH = '/maplibre/maplibre-gl-worker.mjs';
+
+/**
+ * Tell MapLibre where its worker is, because it cannot work that out here.
+ *
+ * MapLibre derives the worker URL from `import.meta.url`, expecting to be
+ * served as a module next to its own worker file. Metro bundles it into one
+ * script, so that check fails and MapLibre falls back to `new Worker('')` —
+ * which the browser resolves against the document and loads the HTML page as a
+ * module script. The worker dies immediately and nothing surfaces the error.
+ *
+ * The symptom is a map that looks alive and draws nothing: style, sprite and
+ * TileJSON are fetched on the main thread, so the network log is clean, while
+ * tiles, glyphs and every one of our polygons are parsed in the worker that
+ * never started. A blank rectangle in the style's background colour.
+ *
+ * Module scope, so it is set before any Map is constructed. The worker pool is
+ * created lazily on the first map, but only once — setting this from an effect
+ * would be a race with our own first render.
+ */
+maplibregl.setWorkerUrl(WORKER_PUBLIC_PATH);
 
 const SOURCE_ID = 'curb-areas';
 const FILL_LAYER = 'curb-areas-fill';
@@ -49,6 +76,16 @@ export default function Map({
   const map = useRef<MapLibreMap | null>(null);
   const destinationMarker = useRef<maplibregl.Marker | null>(null);
   const [loaded, setLoaded] = useState(false);
+  /**
+   * Bumped on every camera settle, purely to re-run the data effect.
+   *
+   * Pill selection now depends on the viewport, so panning has to recompute it.
+   * A counter rather than the camera itself: the effect reads the live bounds
+   * off the map, and storing a camera object here would mean two copies of the
+   * same truth that can disagree. `moveend` rather than `move`, so a drag costs
+   * one recompute instead of one per frame.
+   */
+  const [cameraSettled, setCameraSettled] = useState(0);
 
   const scheme =
     typeof window !== 'undefined' &&
@@ -109,6 +146,9 @@ export default function Map({
         source: SOURCE_ID,
         // Same threshold the native renderer uses, so both declutter together.
         minzoom: PILL_MIN_ZOOM,
+        // Set by the shared selector in pills.ts. Filtering the layer rather
+        // than emptying `text-field` keeps every polygon's outline intact.
+        filter: ['==', ['get', 'pill'], true],
         layout: {
           'text-field': ['get', 'label'],
           'text-size': 12,
@@ -131,6 +171,7 @@ export default function Map({
         const hits = instance.queryRenderedFeatures(event.point, { layers: [FILL_LAYER] });
         if (hits.length === 0) onSelectArea(null);
       });
+      instance.on('moveend', () => setCameraSettled((n) => n + 1));
       instance.on('mouseenter', FILL_LAYER, () => {
         instance.getCanvas().style.cursor = 'pointer';
       });
@@ -158,10 +199,42 @@ export default function Map({
     const source = instance.getSource(SOURCE_ID) as GeoJSONSource | undefined;
     if (!source) return;
 
-    const features = areas.map((mapArea, index) => {
-      const status = statusAt(mapArea.area.authority, mapArea.area.schedule, at);
+    const encoded = areas.map((mapArea) => {
+      const status = statusOf(mapArea.area, at);
       const eligibility = eligibilityFor(mapArea.area, DEFAULT_PROFILE, status);
-      const encoding = encodeArea(mapArea.area, status, eligibility, scheme);
+      return {
+        mapArea,
+        labelPoint: mapArea.labelPoint,
+        free: !status.paid,
+        encoding: encodeArea(mapArea.area, status, eligibility, scheme),
+      };
+    });
+
+    /**
+     * Which areas carry a pill comes from pills.ts, the same function the
+     * native renderer calls.
+     *
+     * MapLibre's own collision detection would happily do the decluttering, and
+     * it does it better than any hand-rolled rule — but it is not available on
+     * Apple Maps, so leaving the decision to it meant the two platforms showed
+     * different label sets from identical data. Running the shared selector
+     * first and letting collision resolve what remains keeps one design
+     * decision in one place, which is the rule this directory is built on.
+     */
+    const bounds = instance.getBounds();
+    const withPill = new Set(
+      selectPills(encoded, {
+        zoom: instance.getZoom(),
+        bounds: {
+          south: bounds.getSouth(),
+          west: bounds.getWest(),
+          north: bounds.getNorth(),
+          east: bounds.getEast(),
+        },
+      }).map((item) => item.mapArea.area.id)
+    );
+
+    const features = encoded.map(({ mapArea, encoding, free }, index) => {
       const selected = mapArea.area.id === selectedAreaId;
 
       return {
@@ -174,12 +247,16 @@ export default function Map({
           fillOpacity: encoding.fillOpacity,
           borderColor: encoding.borderColor,
           borderWidth: selected ? encoding.borderWidth + 2 : encoding.borderWidth,
+          // Every area keeps its label text; the pill LAYER is filtered on
+          // `pill` instead. Blanking the text here would also blank it for the
+          // polygon, and the outline must be drawn either way.
           label: encoding.label,
           labelColor: encoding.labelColor,
           labelBackground: encoding.labelBackground,
-          // Free areas win the label-collision fight, and the cap is applied by
-          // MapLibre's own overlap avoidance plus this ordering.
-          sortKey: encoding.borderStyle === 'solid' ? 0 : 1,
+          pill: withPill.has(mapArea.area.id),
+          // Free areas win the remaining collisions, matching the order
+          // selectPills applied.
+          sortKey: free ? 0 : 1,
         },
       };
     });
@@ -198,7 +275,7 @@ export default function Map({
         ['literal', [4, 3]], // dashed
       ] as never);
     }
-  }, [areas, at, selectedAreaId, scheme, loaded]);
+  }, [areas, at, selectedAreaId, scheme, loaded, cameraSettled]);
 
   // --- destination pin ------------------------------------------------------
   useEffect(() => {
@@ -234,6 +311,3 @@ export default function Map({
     />
   );
 }
-
-/** Referenced so the shared cap is not silently web-only. */
-export const WEB_MAX_VISIBLE_PILLS = MAX_VISIBLE_PILLS;

@@ -89,10 +89,16 @@ export const DEFAULT_CAMERA: MapCamera = {
 export const PILL_MIN_ZOOM = 14;
 
 /**
- * Most pills to draw at once, after zoom filtering.
+ * Most pills to draw at once, counted AFTER culling to the visible map.
  *
  * On iOS every custom marker is rasterized on re-render by default, so an
  * uncapped count drops frames on a clock tick. The cap is shared so that both
  * platforms show the same set rather than iOS quietly showing fewer.
+ *
+ * It is a budget per screen, not per dataset — `pills.ts` drops off-screen
+ * areas before applying it. That distinction is the whole reason a lot you have
+ * zoomed in on now gets a label: the budget is no longer spent on lots a mile
+ * away. Applied to the dataset instead, this number would hide labels on 137 of
+ * the 161 areas CURB can draw, at every zoom, forever.
  */
-export const MAX_VISIBLE_PILLS = 24;
+export const MAX_VISIBLE_PILLS = 48;

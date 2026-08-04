@@ -20,11 +20,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View, useColorScheme } from 'react-native';
 import MapView, { Marker, Polygon, PROVIDER_DEFAULT, type Region } from 'react-native-maps';
 
-import { DEFAULT_PROFILE, eligibilityFor, statusAt } from '../../engine';
+import { DEFAULT_PROFILE, eligibilityFor, statusOf } from '../../engine';
 import { colorsFor } from '../../theme/colors';
 import { radius, space, tabularNumbers, type } from '../../theme';
 import { encodeArea } from './encoding';
-import { DEFAULT_CAMERA, MAX_VISIBLE_PILLS, PILL_MIN_ZOOM, type MapProps } from './types';
+import { selectPills, type Viewport } from './pills';
+import { DEFAULT_CAMERA, type MapProps } from './types';
 
 /**
  * Apple Maps takes a latitude delta rather than a zoom level. This is the
@@ -49,7 +50,16 @@ export default function Map({
   const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = colorsFor(scheme);
 
-  const [zoom, setZoom] = useState(initialCamera.zoom);
+  /**
+   * The camera, as the pill selector needs it. Bounds start null because Apple
+   * Maps only reports a region after the first camera event; `selectPills`
+   * reads null as "do not cull", so the first paint shows labels rather than
+   * none.
+   */
+  const [viewport, setViewport] = useState<Viewport>({
+    zoom: initialCamera.zoom,
+    bounds: null,
+  });
   // Markers must rasterize once to appear, then stop. Flipping this off after
   // the first paint is what keeps the clock tick cheap.
   const [tracksChanges, setTracksChanges] = useState(true);
@@ -78,24 +88,36 @@ export default function Map({
   const encoded = useMemo(
     () =>
       areas.map((mapArea) => {
-        const status = statusAt(mapArea.area.authority, mapArea.area.schedule, at);
+        const status = statusOf(mapArea.area, at);
         const eligibility = eligibilityFor(mapArea.area, DEFAULT_PROFILE, status);
-        return { mapArea, encoding: encodeArea(mapArea.area, status, eligibility, scheme) };
+        return { mapArea, status, encoding: encodeArea(mapArea.area, status, eligibility, scheme) };
       }),
     [areas, at, scheme]
   );
 
-  const visiblePills = useMemo(() => {
-    if (zoom < PILL_MIN_ZOOM) return [];
-    // Free areas first: at city scale the useful signal is where you can stop
-    // paying, so that is what survives the cap.
-    return [...encoded]
-      .sort((a, b) => Number(b.encoding.borderStyle === 'solid') - Number(a.encoding.borderStyle === 'solid'))
-      .slice(0, MAX_VISIBLE_PILLS);
-  }, [encoded, zoom]);
+  // Which areas get a pill is decided in pills.ts, shared with the web
+  // renderer. This file only supplies the camera and draws the result.
+  const visiblePills = useMemo(
+    () =>
+      selectPills(
+        encoded.map((item) => ({ ...item, labelPoint: item.mapArea.labelPoint, free: !item.status.paid })),
+        viewport
+      ),
+    [encoded, viewport]
+  );
 
   const handleRegionChange = useCallback((region: Region) => {
-    setZoom(deltaToZoom(region.latitudeDelta));
+    // Apple reports the region as a centre plus a span; the selector wants
+    // edges, so convert here rather than teaching pills.ts about Apple's shape.
+    setViewport({
+      zoom: deltaToZoom(region.latitudeDelta),
+      bounds: {
+        south: region.latitude - region.latitudeDelta / 2,
+        north: region.latitude + region.latitudeDelta / 2,
+        west: region.longitude - region.longitudeDelta / 2,
+        east: region.longitude + region.longitudeDelta / 2,
+      },
+    });
   }, []);
 
   const handleReady = useCallback(() => {

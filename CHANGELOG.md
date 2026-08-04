@@ -49,7 +49,12 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - `docs/accessibility.md` — the accessibility audit, saying which properties are enforced by tests and which still need a real device.
 - CI builds the iOS app on pushes to `main` and fails if the app declares a permission it does not request. Everything else runs on Linux and never touches the native half.
 
+- U-M's own published lot coordinates, used to find polygons for lots OpenStreetMap has mapped but never labelled. Coordinates only — the same source's enforcement hours disagree with the parking office for 100 of the 104 lots they share, so they are not carried at all.
+
 ### Changed
+
+- The map draws 161 parking areas, up from 101. Sixty more U-M lots now have a boundary and a label.
+- Which lots get a price label is now decided in one shared place instead of separately per platform, and the limit counts labels on your screen rather than in the whole dataset — so zooming in labels everything you can see, instead of spending the budget on lots a mile away.
 
 ### Deprecated
 
@@ -57,6 +62,11 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 ### Fixed
 
+- The web map drew nothing at all — no streets, no lots, no labels, just an empty rectangle. MapLibre could not locate its own background worker inside our bundle and failed without reporting it, so everything the worker draws was silently absent.
+- The "free right now" count was measured against the 101 areas the map could draw rather than the 262 CURB knows about, so both the count and the total it was shown against were wrong.
+- U-M's park-and-ride lots read as paid at every hour. They are free to anyone with no permit, but they also carry posted hours — the hours say who the lot is for, not what it costs — and the app was pricing the hours.
+- Sixty U-M lots were absent from the map because the join only read OpenStreetMap's `name`. The lot code usually lives in `ref` (`M28`, `NC60`, `M15`), and U-M publishes coordinates for lots that carry no code at all.
+- On iPhone the map labelled only 24 lots no matter how far you zoomed in, while the web labelled as many as fit. Both platforms now use the same rule.
 - About 93 U-M lots, including `M28` and `NC60`, were missing entirely. A third of U-M's published rows leave the permit-tier column blank, and the parser had been discarding every row that did.
 - 160 more U-M lots were absent because the map data decided whether a lot existed: a lot nobody had drawn in OpenStreetMap never appeared, even with published hours. Lots now ship with their rules whether or not anyone has mapped them.
 - First & William showed no rate at all. The city publishes it as permit-only, so it now says so.

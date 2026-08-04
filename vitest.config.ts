@@ -18,6 +18,14 @@ export default defineConfig({
       // rather than under the component runner.
       'src/components/Map/encoding.test.ts',
       'src/components/Map/geometry.test.ts',
+      // Which areas get a label is a pure function of camera and data, so it
+      // is testable without either renderer — which is the point of it living
+      // outside them.
+      'src/components/Map/pills.test.ts',
+      // Checks that MapLibre's worker has been copied into public/ and matches
+      // the installed version. It reads files, not a rendering, so it belongs
+      // with the runner that has no browser.
+      'src/components/Map/worker-asset.test.ts',
       // Colour and scalar tokens are plain data, so the accessibility audit
       // over them needs no renderer either. It imports theme/colors and
       // theme/metrics directly, never the barrel — the barrel pulls in
