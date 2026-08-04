@@ -160,6 +160,46 @@ As of 2026-08-03: **1,646 features** — 1,634 polygons and 12 multipolygons —
 
 OSM data is ODbL-licensed, which is what permits us to ship it and to precompute walking times from it.
 
+#### Joining U-M lots to those polygons
+
+`scripts/build-umich-areas.mjs` runs three passes, strongest evidence first, and records which one won in each lot's `geometryVia`:
+
+| Pass | Evidence | Lots |
+|---|---|---|
+| `code` | The official lot code in OSM's `ref`, `name`, or `alt_name` | 116 |
+| `contains` | U-M's own published coordinate falls inside exactly one parking area | 20 |
+| `near` | That coordinate sits within 25 m of an unclaimed, uncoded parking area | 6 |
+
+Reading only `name` — which is what the first version did — found 82. `ref` is the tag OSM actually documents for a feature's code, and mappers use it that way here (`ref=NC60`, `ref=M28`); ignoring it hid 34 lots that had been mapped all along.
+
+Guards, because a wrong polygon means a student reads the wrong lot's rules:
+
+- Every match is checked against the campus LTP files the lot under. Five satellite lots legitimately fall outside their campus and are allowlisted individually, each with the LTP address that justifies it.
+- A polygon that carries its own lot code is off limits to the coordinate passes, so a stray point cannot take a shape from a lot that named itself.
+- The coordinate passes reject a polygon whose OSM `operator` names someone other than U-M. `NC37` is why: U-M's coordinate for it lands inside the **AATA-operated** Green Road Park & Ride, and accepting that would have drawn LTP's permit hours over a lot with a different authority, different signage, and a different enforcer.
+
+#### U-M's published lot coordinates — geometry only
+
+The official campus map at <https://maps.studentlife.umich.edu/> is backed by `https://apibuilder.studentlife.umich.edu/api/1/type/parking?limit=-1`, fetched by `scripts/fetch-umich-locations.mjs` (`npm run data:umich-locations`). 120 lots with a coordinate.
+
+**We keep the coordinates and discard everything else.** The endpoint also carries `enforcementhours` and a permit `type`, and those disagree with LTP for **100 of the 104 lots the two sources share**. Some is formatting, some is not:
+
+| Lot | Campus map | LTP |
+|---|---|---|
+| `C2` | M-F 6am-6pm | 24 hrs, 7 days |
+| `W3` | M-F 6am-6pm | 6am – 6pm, Mon – Sat |
+| `W9` | M-F 6am-6pm | 6am – 5pm, Mon – Sat |
+
+Believing the campus map on `W9` would tell a student the lot goes free at 5pm on a Saturday when LTP says it does not. LTP is the parking authority; Student Life's map is a directory of where things are. On rules LTP wins, and the way we hold that line is to not carry the other numbers at all — a field that is not in the file cannot be read by mistake later.
+
+A wrong coordinate also fails safe in a way a wrong hour does not: the join simply drops it.
+
+#### What is still not drawn
+
+161 of 262 areas have a polygon. Of the 101 that do not, 99 are U-M rows, and they are overwhelmingly **loading docks rather than parking lots** — "Mason Hall Dock", "Chemistry Dock", "Pharmacy Service Center" — with addresses like `Canal Street (behind building)` or none at all. LTP lists them because they carry permit rules. Nobody has mapped them because they are not places anyone parks.
+
+They ship with their rules and no geometry. Geocoding a building's street address and drawing a boundary there would put a lot across a lecture hall, which is a worse answer than no answer.
+
 ### Walk times
 
 Computed at build time by `scripts/build-walk-matrix.mjs` against the public [Valhalla](https://valhalla1.openstreetmap.de/) instance, `pedestrian` costing, over OSM data. Pairs Valhalla can't route fall back to haversine distance × 1.35, and the script reports how many did.

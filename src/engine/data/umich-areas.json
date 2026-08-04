@@ -3,7 +3,8 @@
   "source": "https://ltp.umich.edu/parking/locations-and-enforcement",
   "retrievedVia": "https://web.archive.org/ (ltp.umich.edu returns 403 to automated requests)",
   "generatedAt": "2026-08-04",
-  "note": "Lots are joined to OSM polygons by the lot code in the OSM name, then validated against the campus LTP assigns them to.",
+  "locationSource": "https://maps.studentlife.umich.edu/",
+  "note": "Lots are joined to OSM polygons in three passes — the lot code in the OSM ref/name/alt_name tag, then U-M's own published coordinate falling inside a parking area, then that coordinate within 25m of an unclaimed one. Every match is validated against the campus LTP assigns it to. `geometryVia` records which pass won. Rules come from LTP only; the coordinate source is never read for hours or permit tier.",
   "areas": [
     {
       "id": "umich-c1",
@@ -11,6 +12,7 @@
       "lot": "C1",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "800 North University Street"
@@ -21,6 +23,7 @@
       "lot": "C10",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "900 South University Street"
@@ -30,7 +33,8 @@
       "name": "Kraus Natural Science Building",
       "lot": "C2",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/578595792",
+      "geometryVia": "near 6m",
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "800 North University Street"
@@ -41,6 +45,7 @@
       "lot": "C3",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "500 East University Street"
@@ -51,6 +56,7 @@
       "lot": "C5",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "900 South University Street"
@@ -61,6 +67,7 @@
       "lot": "C7",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "800 South University Street"
@@ -71,6 +78,7 @@
       "lot": "C9",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "902 North University Street"
@@ -80,7 +88,8 @@
       "name": "North University Court",
       "lot": "E1",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/1106219693",
+      "geometryVia": "contains",
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1300 N. University Street"
@@ -91,6 +100,7 @@
       "lot": "E10",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "530 Church Street"
@@ -100,7 +110,8 @@
       "name": "Weiser Hall",
       "lot": "E15",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/591140514",
+      "geometryVia": "near 11m",
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "500 Church Street"
@@ -111,6 +122,7 @@
       "lot": "E16",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Fri",
       "address": "1443 Washtenaw Ave"
@@ -121,6 +133,7 @@
       "lot": "E17",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Sat",
       "address": "1333 Wilmot St"
@@ -131,6 +144,7 @@
       "lot": "E2",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1308 N. University Street"
@@ -140,7 +154,8 @@
       "name": "Ruthven Museum",
       "lot": "E3",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/308924349",
+      "geometryVia": "contains",
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1200 Geddes"
@@ -151,6 +166,7 @@
       "lot": "E6",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "400 Block Church"
@@ -160,7 +176,8 @@
       "name": "Church Street Parking Structure",
       "lot": "E8",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/97181956",
+      "geometryVia": "contains",
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, Mon – Sat",
       "address": "525 Church Street"
@@ -171,6 +188,7 @@
       "lot": "E9",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "500 South Forest"
@@ -181,6 +199,7 @@
       "lot": "EC1",
       "campus": "medical",
       "osmId": "way/952438276",
+      "geometryVia": "code",
       "permitTier": "Other",
       "enforcementHours": "24 hrs, 7 days",
       "address": "4442 Plymouth Rd",
@@ -191,7 +210,8 @@
       "name": "UMH Emergency Room",
       "lot": "M10",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162240",
+      "geometryVia": "code",
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1502 E. Medical Center"
@@ -202,6 +222,7 @@
       "lot": "M100",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Catherine and Zina Pitcher"
@@ -212,6 +233,7 @@
       "lot": "M101",
       "campus": "medical",
       "osmId": "way/1484146655",
+      "geometryVia": "code",
       "permitTier": "Gold",
       "enforcementHours": "24 hrs, 7 days",
       "address": "207 Zina Pitcher Place"
@@ -222,6 +244,7 @@
       "lot": "M102",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": null
@@ -232,6 +255,7 @@
       "lot": "M103",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": null
@@ -242,6 +266,7 @@
       "lot": "M11",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Simpson Circle"
@@ -251,7 +276,8 @@
       "name": "Med Inn",
       "lot": "M13",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162241",
+      "geometryVia": "code",
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "E. Hospital Drive"
@@ -261,7 +287,8 @@
       "name": "North Entrance Structure (M15 or P1)",
       "lot": "M15",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/193910369",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1300 East Medical Center Drive"
@@ -272,6 +299,7 @@
       "lot": "M16",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1500 E. Hospital Drive"
@@ -282,6 +310,7 @@
       "lot": "M18",
       "campus": "medical",
       "osmId": "way/193813106",
+      "geometryVia": "code",
       "permitTier": "Visitor",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1600 East Medical Center Drive"
@@ -292,6 +321,7 @@
       "lot": "M22",
       "campus": "medical",
       "osmId": "relation/3999761",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1535 East Hospital Drive"
@@ -302,6 +332,7 @@
       "lot": "M25",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1500 Washington Heights"
@@ -311,7 +342,8 @@
       "name": "School of Public Health II-East",
       "lot": "M28",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/193911893",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1500 Washington Heights"
@@ -321,7 +353,8 @@
       "name": "The Pit",
       "lot": "M29",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/315562281",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1 Nichols Drive"
@@ -331,7 +364,8 @@
       "name": "East Medical Center Drive – East",
       "lot": "M30",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/315562280",
+      "geometryVia": "code",
       "permitTier": "Visitor",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1601 East Medical Center Drive"
@@ -341,7 +375,8 @@
       "name": "East Medical Center Drive – North",
       "lot": "M31",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162243",
+      "geometryVia": "code",
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "East Medical Center Drive"
@@ -351,7 +386,8 @@
       "name": "School of Public Health II-South",
       "lot": "M34",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/193911886",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "201 Observatory Drive"
@@ -361,7 +397,8 @@
       "name": "Victor Vaughn Dock",
       "lot": "M36",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162244",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1100 West Medical Center Drive"
@@ -372,6 +409,7 @@
       "lot": "M38",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1300 East Catherine Place"
@@ -382,6 +420,7 @@
       "lot": "M39",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Gold",
       "enforcementHours": "24 hrs, 7 days",
       "address": "Canal Street (behind building)"
@@ -391,7 +430,8 @@
       "name": "Kellogg Eye Center",
       "lot": "M40",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/419499949",
+      "geometryVia": "contains",
       "permitTier": "Restricted",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1002 Wall Street"
@@ -401,7 +441,8 @@
       "name": "Alice Lloyd Dock",
       "lot": "M44",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162245",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "100 Observatory"
@@ -411,7 +452,8 @@
       "name": "Mosher Jordan Dock",
       "lot": "M45",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162246",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "202 Observatory"
@@ -422,6 +464,7 @@
       "lot": "M46",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Visitor",
       "enforcementHours": "24 hrs, 7 days",
       "address": "324 Observatory"
@@ -432,6 +475,7 @@
       "lot": "M47",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1200 East Ann Street"
@@ -442,6 +486,7 @@
       "lot": "M48",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1400 Washington Heights"
@@ -452,6 +497,7 @@
       "lot": "M49",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1300 North University Court"
@@ -462,6 +508,7 @@
       "lot": "M5",
       "campus": "medical",
       "osmId": "way/305031998",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1120 Catherine Street"
@@ -472,6 +519,7 @@
       "lot": "M50",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1000 Wall Street"
@@ -482,6 +530,7 @@
       "lot": "M51",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1503 East Medical Center"
@@ -491,7 +540,8 @@
       "name": "UMH Dock V",
       "lot": "M53",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162248",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1506 East Medical Center"
@@ -501,7 +551,8 @@
       "name": "MSRB III Dock",
       "lot": "M54",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162249",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "West Medical Center Drive"
@@ -511,7 +562,8 @@
       "name": "MSRB Dock VI",
       "lot": "M55",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162250",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1202 West Medical Center"
@@ -522,6 +574,7 @@
       "lot": "M61",
       "campus": "medical",
       "osmId": "way/223569638",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Fri",
       "address": "333 Glen Street"
@@ -532,6 +585,7 @@
       "lot": "M62",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1000 Catherine Street"
@@ -542,6 +596,7 @@
       "lot": "M63",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1000 Catherine Street"
@@ -552,6 +607,7 @@
       "lot": "M64",
       "campus": "medical",
       "osmId": "way/1447997784",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1000 Cornwell Place"
@@ -562,6 +618,7 @@
       "lot": "M65",
       "campus": "medical",
       "osmId": "way/1447997787",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1000 Cornwell Place"
@@ -572,6 +629,7 @@
       "lot": "M66",
       "campus": "medical",
       "osmId": "way/1447997785",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "402 North Ingalls"
@@ -582,6 +640,7 @@
       "lot": "M67",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1018 Fuller Road"
@@ -591,7 +650,8 @@
       "name": "School of Nursing",
       "lot": "M69",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162251",
+      "geometryVia": "code",
       "permitTier": "Visitor",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1150 West Medical Center"
@@ -601,7 +661,8 @@
       "name": "Radiation Oncology",
       "lot": "M7",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/537817000",
+      "geometryVia": "code",
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1504 E. Medical Center Drive"
@@ -612,6 +673,7 @@
       "lot": "M70",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Mott Hospital Dock"
@@ -621,7 +683,8 @@
       "name": "City AA/University Lot",
       "lot": "M71",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/97185640",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1407 Fuller Road @ E. Medical Center Drive"
@@ -632,6 +695,7 @@
       "lot": "M72",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "MHRI Dock"
@@ -642,6 +706,7 @@
       "lot": "M75",
       "campus": "medical",
       "osmId": "way/226571543",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 4pm, Mon – Fri",
       "address": "1910 Fuller Road"
@@ -651,7 +716,8 @@
       "name": "Fuller Pool",
       "lot": "M78",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/97185637",
+      "geometryVia": "contains",
       "permitTier": "Yellow",
       "enforcementHours": "5am – 5pm, Mon-Fri",
       "address": "1519 Fuller Road"
@@ -662,6 +728,7 @@
       "lot": "M79",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1600 Washington Heights"
@@ -671,7 +738,8 @@
       "name": "E. Medical Center Drive",
       "lot": "M83",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162253",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "E. Medical Center Drive"
@@ -682,6 +750,7 @@
       "lot": "M84",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Glen Court"
@@ -692,6 +761,7 @@
       "lot": "M85",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Visitor",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1421 E. Ann Street"
@@ -702,6 +772,7 @@
       "lot": "M86",
       "campus": "medical",
       "osmId": "way/305031997",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Fri",
       "address": "1115 Ann Street"
@@ -711,7 +782,8 @@
       "name": "900 Wall Street",
       "lot": "M87",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/314284474",
+      "geometryVia": "near 20m",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "900 Wall Street"
@@ -722,6 +794,7 @@
       "lot": "M88",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "E. Medical Center Dr."
@@ -731,7 +804,8 @@
       "name": "Biomedical Science Research",
       "lot": "M89",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162254",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Ann Street"
@@ -741,7 +815,8 @@
       "name": "Glen @ Ann Street",
       "lot": "M90",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162255",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Glen Avenue"
@@ -752,6 +827,7 @@
       "lot": "M93",
       "campus": "medical",
       "osmId": "way/405678290",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6 am Mon – 1 am Sat",
       "address": "1041 Wall Street"
@@ -761,7 +837,8 @@
       "name": "Arbor Heights",
       "lot": "M95",
       "campus": "medical",
-      "osmId": null,
+      "osmId": "way/316162256",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1447 Washington Heights"
@@ -772,6 +849,7 @@
       "lot": "M97",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "511 Glen Court"
@@ -782,6 +860,7 @@
       "lot": "M98",
       "campus": "medical",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "West Medical Center Dr"
@@ -792,6 +871,7 @@
       "lot": "M99",
       "campus": "medical",
       "osmId": "way/314284478",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6 am Mon – 1 am Sat",
       "address": "959 Wall Street"
@@ -802,6 +882,7 @@
       "lot": "N1",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "6am – 6pm, Mon – Fri",
       "address": "204 South State"
@@ -812,6 +893,7 @@
       "lot": "N13",
       "campus": "central",
       "osmId": "way/132574383",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 10 pm, Mon – Sat",
       "address": "201 Fletcher Street"
@@ -822,6 +904,7 @@
       "lot": "N15",
       "campus": "central",
       "osmId": "way/1338695744",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "203 Fletcher Street"
@@ -832,6 +915,7 @@
       "lot": "N16",
       "campus": "central",
       "osmId": "way/1338975178",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1102 Palmer Drive"
@@ -842,6 +926,7 @@
       "lot": "N19",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "Palmer Drive-North Side"
@@ -852,6 +937,7 @@
       "lot": "N2",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "900 E. Washington Street"
@@ -862,6 +948,7 @@
       "lot": "N20",
       "campus": "central",
       "osmId": "way/1024310717",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "300 Thayer Street"
@@ -872,6 +959,7 @@
       "lot": "N22",
       "campus": "central",
       "osmId": "way/1340667626",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Palmer Drive"
@@ -882,6 +970,7 @@
       "lot": "N26",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "Permit areas 6am – 10 pm, Mon – Sat Visitor area 6am Mon – 10pm Sat, continuously",
       "address": "200 Washtenaw Avenue"
@@ -892,6 +981,7 @@
       "lot": "N27",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Washtenaw Avenue Lot"
@@ -902,6 +992,7 @@
       "lot": "N31",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "617 E Huron St"
@@ -911,7 +1002,8 @@
       "name": "Thayer Street Parking Structure",
       "lot": "N4",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/154202642",
+      "geometryVia": "near 9m",
       "permitTier": "Blue",
       "enforcementHours": "6am – 10 pm, Mon – Sat",
       "address": "216 S Thayer Street"
@@ -922,6 +1014,7 @@
       "lot": "N5",
       "campus": "central",
       "osmId": "relation/18238151",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "300 Thayer Street"
@@ -932,6 +1025,7 @@
       "lot": "N7",
       "campus": "central",
       "osmId": "way/1337794537",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Palmer Drive"
@@ -942,6 +1036,7 @@
       "lot": "N8",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Gold",
       "enforcementHours": "24 hrs, 7 days",
       "address": "900 East Huron Street"
@@ -952,6 +1047,7 @@
       "lot": "N9",
       "campus": "central",
       "osmId": "way/1343525761",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "100 Fletcher Street"
@@ -962,6 +1058,7 @@
       "lot": "NC10",
       "campus": "north",
       "osmId": "way/33690006",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "900 Baits"
@@ -972,6 +1069,7 @@
       "lot": "NC100",
       "campus": "north",
       "osmId": "way/192429436",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -981,7 +1079,8 @@
       "name": "NCRC Parking Lot U",
       "lot": "NC101",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/556872012",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "2800 Plymouth Road"
@@ -992,6 +1091,7 @@
       "lot": "NC102",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -1002,6 +1102,7 @@
       "lot": "NC103",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": null
@@ -1012,6 +1113,7 @@
       "lot": "NC105",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Rd"
@@ -1022,6 +1124,7 @@
       "lot": "NC106",
       "campus": "north",
       "osmId": "way/1071788727",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Hayward"
@@ -1032,6 +1135,7 @@
       "lot": "NC107",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Other",
       "enforcementHours": "24 hrs, 7 days",
       "address": "Dean Road"
@@ -1042,6 +1146,7 @@
       "lot": "NC108",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Visitor",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": null
@@ -1052,6 +1157,7 @@
       "lot": "NC109",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": null
@@ -1062,6 +1168,7 @@
       "lot": "NC110",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Contractor",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Green Road"
@@ -1072,6 +1179,7 @@
       "lot": "NC12",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1300 Beal Avenue"
@@ -1082,6 +1190,7 @@
       "lot": "NC13",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "2100 Bonisteel"
@@ -1092,6 +1201,7 @@
       "lot": "NC14",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1200 Beal Avenue"
@@ -1101,7 +1211,8 @@
       "name": "GG Brown Dock",
       "lot": "NC15",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/1423404579",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1300 Beal Avenue"
@@ -1111,7 +1222,8 @@
       "name": "Gerstacker Bldg & BIRB",
       "lot": "NC16",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/82246920",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1101 Beal"
@@ -1122,6 +1234,7 @@
       "lot": "NC19",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2603 Draper Dr."
@@ -1131,7 +1244,8 @@
       "name": "GG Brown Building",
       "lot": "NC20",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/82004730",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2300 Hayward Avenue"
@@ -1142,6 +1256,7 @@
       "lot": "NC21",
       "campus": "north",
       "osmId": "way/82004729",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, Mon – Fri",
       "address": "2260 Hayward Avenue"
@@ -1152,6 +1267,7 @@
       "lot": "NC22",
       "campus": "north",
       "osmId": "way/305362452",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2600 Draper"
@@ -1162,6 +1278,7 @@
       "lot": "NC23",
       "campus": "north",
       "osmId": "way/1074056798",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "2603 Draper Road"
@@ -1172,6 +1289,7 @@
       "lot": "NC24",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1300 Beal Avenue"
@@ -1182,6 +1300,7 @@
       "lot": "NC26",
       "campus": "north",
       "osmId": "way/82009974",
+      "geometryVia": "code",
       "permitTier": "Visitor",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2500 Hayward Street"
@@ -1191,7 +1310,8 @@
       "name": "Walgreen Drama Center",
       "lot": "NC27",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/82004880",
+      "geometryVia": "contains",
       "permitTier": "Blue",
       "enforcementHours": "6am – 8pm, Mon – Sat",
       "address": "1300 Murfin Avenue"
@@ -1202,6 +1322,7 @@
       "lot": "NC28",
       "campus": "north",
       "osmId": "relation/19507890",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2500 Hayward Street"
@@ -1212,6 +1333,7 @@
       "lot": "NC29",
       "campus": "north",
       "osmId": "way/1075934292",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "2500 Hayward Street"
@@ -1221,7 +1343,8 @@
       "name": "Baits I",
       "lot": "NC32",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/5107838",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1320 Hubbard"
@@ -1232,6 +1355,7 @@
       "lot": "NC34",
       "campus": "north",
       "osmId": "way/292322283",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "3000 Baxter Road"
@@ -1242,9 +1366,11 @@
       "lot": "NC37",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Park & Ride",
       "enforcementHours": "7am – 7pm, Mon – Fri",
-      "address": "1919 Green Road"
+      "address": "1919 Green Road",
+      "envelopeException": "Printing Services, 1919 Green Road — the Green Road service cluster, east of North Campus."
     },
     {
       "id": "umich-nc38",
@@ -1252,6 +1378,7 @@
       "lot": "NC38",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1200 Dean Road"
@@ -1262,6 +1389,7 @@
       "lot": "NC39",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "3241 Baxter"
@@ -1271,7 +1399,8 @@
       "name": "Stearns Building",
       "lot": "NC40",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/305610782",
+      "geometryVia": "contains",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2005 Baits"
@@ -1282,6 +1411,7 @@
       "lot": "NC41",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Fuller Road"
@@ -1291,7 +1421,8 @@
       "name": "Bentley Library",
       "lot": "NC42",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/624463907",
+      "geometryVia": "code",
       "permitTier": "Restricted",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1100 Beal Avenue"
@@ -1302,6 +1433,7 @@
       "lot": "NC43",
       "campus": "north",
       "osmId": "way/82246918",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2109 Fuller Road"
@@ -1311,7 +1443,8 @@
       "name": "North Campus Recreation Bldg (NCRB)",
       "lot": "NC44",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/292082548",
+      "geometryVia": "contains",
       "permitTier": "Visitor",
       "enforcementHours": "6am – 5pm, 7 Days",
       "address": "2375 Hubbard"
@@ -1321,7 +1454,8 @@
       "name": "North Campus Recreation Bldg (NCRB)",
       "lot": "NC45",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/228360914",
+      "geometryVia": "contains",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1501 Murfin"
@@ -1332,6 +1466,7 @@
       "lot": "NC46",
       "campus": "north",
       "osmId": "way/82004462",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2700 Hubbard"
@@ -1342,6 +1477,7 @@
       "lot": "NC47",
       "campus": "north",
       "osmId": "way/305610779",
+      "geometryVia": "code",
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "900 Beal Avenue"
@@ -1352,6 +1488,7 @@
       "lot": "NC48",
       "campus": "north",
       "osmId": "way/1416850523",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2100 Hayward Street"
@@ -1362,6 +1499,7 @@
       "lot": "NC5",
       "campus": "north",
       "osmId": "way/82246919",
+      "geometryVia": "code",
       "permitTier": "Visitor",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Fuller Road"
@@ -1372,6 +1510,7 @@
       "lot": "NC51",
       "campus": "north",
       "osmId": "way/265956889",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2600 Glazier Way"
@@ -1382,6 +1521,7 @@
       "lot": "NC52",
       "campus": "north",
       "osmId": "way/265956891",
+      "geometryVia": "code",
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "2601 Glazier Way"
@@ -1392,6 +1532,7 @@
       "lot": "NC53",
       "campus": "north",
       "osmId": "way/82009972",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2500 Hayward Street"
@@ -1401,7 +1542,8 @@
       "name": "Fire Station",
       "lot": "NC54",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/1443772814",
+      "geometryVia": "near 4m",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Beal Avenue"
@@ -1412,6 +1554,7 @@
       "lot": "NC55",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "2301 Bonisteel Avenue"
@@ -1422,6 +1565,7 @@
       "lot": "NC56",
       "campus": "north",
       "osmId": "way/1072140421",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1200 Draper"
@@ -1432,6 +1576,7 @@
       "lot": "NC57",
       "campus": "north",
       "osmId": "way/1186536867",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "900 Baits"
@@ -1441,7 +1586,8 @@
       "name": "Computing Center",
       "lot": "NC6",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/1161121830",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2200 Glazier Way"
@@ -1451,7 +1597,8 @@
       "name": "Lurie Engineering",
       "lot": "NC60",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/82009863",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1221 Beal Avenue"
@@ -1461,7 +1608,8 @@
       "name": "North Campus Facilities Services Bldg",
       "lot": "NC61",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/346946422",
+      "geometryVia": "contains",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "3231 Baxter Rd"
@@ -1471,17 +1619,20 @@
       "name": "North Campus Facilities Services Bldg",
       "lot": "NC62",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/346946428",
+      "geometryVia": "contains",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
-      "address": "3231 Baxter Rd"
+      "address": "3231 Baxter Rd",
+      "envelopeException": "North Campus Facilities Services Bldg, 3231 Baxter Rd — same service cluster, east of North Campus."
     },
     {
       "id": "umich-nc63",
       "name": "North Campus Administrative Complex",
       "lot": "NC63",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/292320675",
+      "geometryVia": "contains",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2901 Hubbard Road"
@@ -1492,6 +1643,7 @@
       "lot": "NC64",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "2550 Draper"
@@ -1502,6 +1654,7 @@
       "lot": "NC65",
       "campus": "north",
       "osmId": "way/292320670",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2901 Hubbard Road"
@@ -1512,6 +1665,7 @@
       "lot": "NC66",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1665 Dean"
@@ -1522,6 +1676,7 @@
       "lot": "NC67",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1665 Dean Road"
@@ -1532,6 +1687,7 @@
       "lot": "NC68",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Dean Road"
@@ -1541,7 +1697,8 @@
       "name": "Parallel Parking Bonisteel",
       "lot": "NC70",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/1086260028",
+      "geometryVia": "contains",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Bonisteel Avenue"
@@ -1552,6 +1709,7 @@
       "lot": "NC71",
       "campus": "north",
       "osmId": "way/1165291571",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Chiller North"
@@ -1562,6 +1720,7 @@
       "lot": "NC78",
       "campus": "north",
       "osmId": "way/226571631",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "North Fuller Road"
@@ -1572,6 +1731,7 @@
       "lot": "NC8",
       "campus": "north",
       "osmId": "way/1163722019",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2300 Glazier Way"
@@ -1582,6 +1742,7 @@
       "lot": "NC80",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1919 Green Road"
@@ -1592,6 +1753,7 @@
       "lot": "NC81",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Draper Road"
@@ -1602,6 +1764,7 @@
       "lot": "NC82",
       "campus": "north",
       "osmId": "way/242389278",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1600 Huron Parkway"
@@ -1611,7 +1774,8 @@
       "name": "NCRC Parking – East Campus",
       "lot": "NC83",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/993468113",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1600 Huron Parkway"
@@ -1622,6 +1786,7 @@
       "lot": "NC84",
       "campus": "north",
       "osmId": "way/242389279",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1600 Huron Parkway"
@@ -1632,6 +1797,7 @@
       "lot": "NC85",
       "campus": "north",
       "osmId": "way/992493802",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1600 Huron Parkway"
@@ -1642,6 +1808,7 @@
       "lot": "NC86",
       "campus": "north",
       "osmId": "way/242389280",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1600 Huron Parkway"
@@ -1652,6 +1819,7 @@
       "lot": "NC87",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1600 Huron Parkway"
@@ -1662,6 +1830,7 @@
       "lot": "NC88",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1600 Huron Parkway"
@@ -1672,6 +1841,7 @@
       "lot": "NC89",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1600 Huron Parkway"
@@ -1682,6 +1852,7 @@
       "lot": "NC9",
       "campus": "north",
       "osmId": "way/292322288",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "3000 Baxter Road"
@@ -1692,6 +1863,7 @@
       "lot": "NC90",
       "campus": "north",
       "osmId": "way/82246290",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -1702,6 +1874,7 @@
       "lot": "NC91",
       "campus": "north",
       "osmId": "way/242389281",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -1711,7 +1884,8 @@
       "name": "NCRC Parking – West Campus",
       "lot": "NC92",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/242389282",
+      "geometryVia": "contains",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -1721,7 +1895,8 @@
       "name": "NCRC Parking – West Campus",
       "lot": "NC93",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/556872010",
+      "geometryVia": "near 24m",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -1732,6 +1907,7 @@
       "lot": "NC94",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "2800 Plymouth Road"
@@ -1741,7 +1917,8 @@
       "name": "NCRC Parking – West Campus",
       "lot": "NC95",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/556872006",
+      "geometryVia": "contains",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm Sun-Sat",
       "address": "2800 Plymouth Road"
@@ -1751,7 +1928,8 @@
       "name": "NCRC Parking – West Campus",
       "lot": "NC96",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/192429453",
+      "geometryVia": "contains",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -1761,7 +1939,8 @@
       "name": "NCRC Day Care Center Parking",
       "lot": "NC97",
       "campus": "north",
-      "osmId": null,
+      "osmId": "way/1021555991",
+      "geometryVia": "contains",
       "permitTier": "Restricted",
       "enforcementHours": "6:30am – 6:30pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -1772,6 +1951,7 @@
       "lot": "NC98",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -1782,6 +1962,7 @@
       "lot": "NC99",
       "campus": "north",
       "osmId": "way/292333839",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2800 Plymouth Road"
@@ -1792,6 +1973,7 @@
       "lot": "NW1",
       "campus": "north",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Plymouth/Murfin"
@@ -1802,6 +1984,7 @@
       "lot": "S1",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "800 Monroe Street"
@@ -1812,6 +1995,7 @@
       "lot": "S10",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "611 Tappan Street"
@@ -1822,6 +2006,7 @@
       "lot": "S11",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "700 Church Street"
@@ -1832,6 +2017,7 @@
       "lot": "S2",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1000 Hill Street"
@@ -1842,6 +2028,7 @@
       "lot": "S28",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "Forest Street"
@@ -1852,6 +2039,7 @@
       "lot": "S3",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Hill Street"
@@ -1862,6 +2050,7 @@
       "lot": "S30",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "Tappan St."
@@ -1872,6 +2061,7 @@
       "lot": "S5",
       "campus": "central",
       "osmId": "way/572941818",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Sat",
       "address": "Monroe Oakland Street Lot"
@@ -1882,6 +2072,7 @@
       "lot": "S6",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "East University Street"
@@ -1891,7 +2082,8 @@
       "name": "Hill Street Parking Structure",
       "lot": "S8",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/97181955",
+      "geometryVia": "contains",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Sat",
       "address": "1001 Hill Street"
@@ -1902,6 +2094,7 @@
       "lot": "S9",
       "campus": "central",
       "osmId": "way/589346688",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "623 South State"
@@ -1912,6 +2105,7 @@
       "lot": "SC1",
       "campus": "ross-athletic",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "333 E. Stadium Blvd"
@@ -1922,6 +2116,7 @@
       "lot": "SC10",
       "campus": "ross-athletic",
       "osmId": "way/1452141017",
+      "geometryVia": "code",
       "permitTier": "Restricted",
       "enforcementHours": "24 hrs, 7 days",
       "address": "1213 Kipke Drive"
@@ -1932,6 +2127,7 @@
       "lot": "SC11",
       "campus": "ross-athletic",
       "osmId": "way/457363254",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Fri",
       "address": "326 E. Hoover"
@@ -1942,6 +2138,7 @@
       "lot": "SC15",
       "campus": "ross-athletic",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "300 block E. Hoover"
@@ -1952,6 +2149,7 @@
       "lot": "SC16",
       "campus": "ross-athletic",
       "osmId": "way/640615059",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1239 Kipke"
@@ -1961,10 +2159,12 @@
       "name": "Wolverine Tower",
       "lot": "SC17",
       "campus": "ross-athletic",
-      "osmId": null,
+      "osmId": "way/285037323",
+      "geometryVia": "contains",
       "permitTier": "Contractor",
       "enforcementHours": "6am – 5pm, Mon – Fri",
-      "address": "3003 State Street"
+      "address": "3003 State Street",
+      "envelopeException": "Wolverine Tower, 3003 S. State St — an office building two miles south of the athletic campus."
     },
     {
       "id": "umich-sc19",
@@ -1972,6 +2172,7 @@
       "lot": "SC19",
       "campus": "ross-athletic",
       "osmId": "way/1452141016",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Kipke Drive"
@@ -1982,6 +2183,7 @@
       "lot": "SC2",
       "campus": "ross-athletic",
       "osmId": "way/445709913",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1032 Greene Buidling"
@@ -1992,6 +2194,7 @@
       "lot": "SC22",
       "campus": "ross-athletic",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Park & Ride",
       "enforcementHours": "24 hrs, 7 days",
       "address": "2250 State Street, Ann Arbor MI 48109"
@@ -2002,6 +2205,7 @@
       "lot": "SC3",
       "campus": "ross-athletic",
       "osmId": "way/501446761",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1000 Kipke"
@@ -2012,6 +2216,7 @@
       "lot": "SC32",
       "campus": "ross-athletic",
       "osmId": "way/445709915",
+      "geometryVia": "code",
       "permitTier": "Visitor",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1000 Greene Street"
@@ -2022,6 +2227,7 @@
       "lot": "SC34",
       "campus": "ross-athletic",
       "osmId": "way/1021817970",
+      "geometryVia": "code",
       "permitTier": "Park & Ride",
       "enforcementHours": "7am – 7pm, Mon – Fri",
       "address": "2500 S. State Street",
@@ -2033,6 +2239,7 @@
       "lot": "SC35",
       "campus": "ross-athletic",
       "osmId": "way/445709917",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Between Keech & Hoover Streets"
@@ -2043,6 +2250,7 @@
       "lot": "SC36",
       "campus": "ross-athletic",
       "osmId": "way/445709912",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Keech Street @ Main Street"
@@ -2053,6 +2261,7 @@
       "lot": "SC37",
       "campus": "ross-athletic",
       "osmId": "way/382593638",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "348 E. Hoover"
@@ -2063,6 +2272,7 @@
       "lot": "SC4",
       "campus": "ross-athletic",
       "osmId": "way/158896615",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Kipke Drive @ Greene Road"
@@ -2073,6 +2283,7 @@
       "lot": "SC41",
       "campus": "ross-athletic",
       "osmId": "way/445709916",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "East Hoover Street"
@@ -2083,6 +2294,7 @@
       "lot": "SC43",
       "campus": "ross-athletic",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "3600 Varsity Drive"
@@ -2093,6 +2305,7 @@
       "lot": "SC5",
       "campus": "ross-athletic",
       "osmId": "way/382593639",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Kipke Drive"
@@ -2103,6 +2316,7 @@
       "lot": "SC6",
       "campus": "ross-athletic",
       "osmId": "way/158896613",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Kipke Drive"
@@ -2113,6 +2327,7 @@
       "lot": "SC7",
       "campus": "ross-athletic",
       "osmId": "way/133385417",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "Kipke Drive – East"
@@ -2123,6 +2338,7 @@
       "lot": "SC8",
       "campus": "ross-athletic",
       "osmId": "way/1452141018",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "1200 Kipke Drive"
@@ -2133,6 +2349,7 @@
       "lot": "W1",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "600 Monroe Street"
@@ -2143,6 +2360,7 @@
       "lot": "W10",
       "campus": "central",
       "osmId": "way/768781300",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Sat",
       "address": "330 Packard"
@@ -2152,7 +2370,8 @@
       "name": "Krause Street",
       "lot": "W11",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/491437478",
+      "geometryVia": "contains",
       "permitTier": "Orange",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "500 West Liberty"
@@ -2163,6 +2382,7 @@
       "lot": "W12",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "400 Thompson Street"
@@ -2172,7 +2392,8 @@
       "name": "Student Activities Building",
       "lot": "W13",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/506047601",
+      "geometryVia": "code",
       "permitTier": "Visitor",
       "enforcementHours": "6am – 6pm, Mon – Sat",
       "address": "400 Thompson Street"
@@ -2183,6 +2404,7 @@
       "lot": "W14",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "500 Richard C. Kennedy Drive"
@@ -2193,6 +2415,7 @@
       "lot": "W15",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Parallel Parking/Richard Kennedy Drive"
@@ -2203,6 +2426,7 @@
       "lot": "W16",
       "campus": "central",
       "osmId": "way/277368084",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 10 pm, Mon – Sat",
       "address": "600 Thompson Street"
@@ -2213,6 +2437,7 @@
       "lot": "W19",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": "Blue",
       "enforcementHours": "24 hrs, 7 days",
       "address": "Inst for Social Research-Thompson Street"
@@ -2223,6 +2448,7 @@
       "lot": "W21",
       "campus": "central",
       "osmId": "way/1452144509",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Sat",
       "address": "109 East Madison"
@@ -2233,6 +2459,7 @@
       "lot": "W22",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "600 Monroe Street"
@@ -2243,6 +2470,7 @@
       "lot": "W23",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "400 Maynard Street"
@@ -2252,7 +2480,8 @@
       "name": "Argus Building",
       "lot": "W24",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/506304875",
+      "geometryVia": "code",
       "permitTier": "Orange",
       "enforcementHours": "6am – 6pm, Mon – Sat",
       "address": "500 W. William"
@@ -2263,6 +2492,7 @@
       "lot": "W25",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "NA",
       "address": "Helen Newberry Dock"
@@ -2273,6 +2503,7 @@
       "lot": "W27",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "400 South Fourth"
@@ -2283,6 +2514,7 @@
       "lot": "W28",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "NA",
       "address": "Madison Street"
@@ -2293,6 +2525,7 @@
       "lot": "W29",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "NA",
       "address": "Division Street"
@@ -2303,6 +2536,7 @@
       "lot": "W3",
       "campus": "central",
       "osmId": "way/382245084",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Sat",
       "address": "508 Thompson Street"
@@ -2313,6 +2547,7 @@
       "lot": "W30",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "426 Thompson Street"
@@ -2323,6 +2558,7 @@
       "lot": "W31",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "Division Street"
@@ -2332,7 +2568,8 @@
       "name": "The Coliseum",
       "lot": "W32",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/190113113",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "300 block Hill"
@@ -2343,6 +2580,7 @@
       "lot": "W33",
       "campus": "central",
       "osmId": "way/1452144505",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "800 Greene St"
@@ -2353,6 +2591,7 @@
       "lot": "W34",
       "campus": "central",
       "osmId": "way/1452144501",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "800 Greene St"
@@ -2363,6 +2602,7 @@
       "lot": "W35",
       "campus": "central",
       "osmId": "way/501446763",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "201 East Hoover"
@@ -2373,6 +2613,7 @@
       "lot": "W36",
       "campus": "central",
       "osmId": "way/1452144506",
+      "geometryVia": "code",
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "200 Hill St"
@@ -2383,6 +2624,7 @@
       "lot": "W39",
       "campus": "central",
       "osmId": "way/1358242374",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "East of S Fifth St"
@@ -2393,6 +2635,7 @@
       "lot": "W4",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "24 hrs, 7 days",
       "address": "420 Maynard St"
@@ -2402,7 +2645,8 @@
       "name": "East Side of 5th Ave",
       "lot": "W40",
       "campus": "central",
-      "osmId": null,
+      "osmId": "way/1349391354",
+      "geometryVia": "code",
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "721 S 5th Ave"
@@ -2413,6 +2657,7 @@
       "lot": "W6",
       "campus": "central",
       "osmId": null,
+      "geometryVia": null,
       "permitTier": null,
       "enforcementHours": "6am – 6pm, Mon – Sat",
       "address": "400 Maynard Street"
@@ -2423,6 +2668,7 @@
       "lot": "W9",
       "campus": "central",
       "osmId": "way/768781299",
+      "geometryVia": "code",
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Sat",
       "address": "330 Packard"
