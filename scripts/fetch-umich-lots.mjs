@@ -118,9 +118,19 @@ const stripTags = (html) =>
     .trim();
 
 /**
- * Rows are (Lot, Name, Address, Enforcement Hours, Tier). We key off that arity
- * rather than a CSS selector because the page also contains nav and layout
- * tables; a five-cell row with a non-header first cell is unambiguously a lot.
+ * Rows are (Lot, Name, Address, Enforcement Hours[, Tier]).
+ *
+ * THE TIER COLUMN IS OPTIONAL AND THAT MATTERS.
+ *
+ * Roughly a third of LTP's rows omit it — service docks, loading bays and
+ * restricted areas that belong to no permit colour. An earlier version of this
+ * parser required five cells and silently dropped every one of them, losing
+ * about 93 lots including M28 and NC60. Nothing failed; the dataset was simply
+ * short, which is the worst way for parking data to be wrong.
+ *
+ * So: four cells is a valid lot with an unknown tier. The arity check is still
+ * what separates lot rows from the page's nav and layout tables, but the floor
+ * is four, not five.
  */
 function parseLots(html) {
   const lots = [];
@@ -128,9 +138,15 @@ function parseLots(html) {
     const cells = [...rowHtml.matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map((m) =>
       stripTags(m[1])
     );
-    if (cells.length < 5) continue;
-    const [rawLot, name, address, hours, tier] = cells;
+    if (cells.length < 4) continue;
+    const [rawLot, name, address, hours] = cells;
+    // Absent tier is recorded as null rather than guessed. A lot with no
+    // published permit colour is not a Blue lot.
+    const tier = cells.length >= 5 && cells[4] ? cells[4] : null;
     if (!rawLot || rawLot === 'Lot') continue;
+    // A row with no enforcement hours is not usable and must not become a lot
+    // whose schedule silently parses to null-means-enforced.
+    if (!hours) continue;
 
     // A trailing asterisk marks a footnote on the page (relocated accessible
     // spaces, mostly). Keep the flag, drop it from the id so the id joins
@@ -165,7 +181,10 @@ async function main() {
       );
     }
     const tiers = {};
-    for (const l of lots) tiers[l.tier] = (tiers[l.tier] ?? 0) + 1;
+    for (const l of lots) {
+      const key = l.tier ?? '(no tier published)';
+      tiers[key] = (tiers[key] ?? 0) + 1;
+    }
     console.log(`${id.padEnd(14)} ${String(lots.length).padStart(3)} lots  capture ${ts}`);
     console.log(`               ${JSON.stringify(tiers)}`);
     campuses.push({ campus: id, source: url, capturedAt: isoFromTimestamp(ts), lots });

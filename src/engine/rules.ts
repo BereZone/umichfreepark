@@ -66,9 +66,10 @@ export interface ParkingStatus {
   /** True when money is owed at this instant. */
   paid: boolean;
   /**
-   * False when the answer depends on data we do not have — currently only
-   * structures on a possible holiday. The UI must caveat these, never present
-   * them as certain, and must not render an uncertain answer as "FREE".
+   * False when the answer depends on data we do not have: a structure on a
+   * possible holiday, or a lot whose published hours we could not read. The UI
+   * must caveat these, never present them as certain, and must not render an
+   * uncertain answer as "FREE".
    */
   certain: boolean;
   /** Short, plain-language explanation. "Free on Sunday", not "outside enforcement window". */
@@ -110,6 +111,18 @@ export function statusAt(
       paid: true,
       certain: false,
       reason: 'Paid — but holiday closures for structures are not published',
+    };
+  }
+
+  // No schedule at all. `isEnforced` returns true here by design — the safe
+  // direction — but that is an assumption, not a reading of published hours,
+  // and reporting it as certain would let the UI say "Paid right now" about a
+  // lot nobody ever told us the hours for. Same answer, honest confidence.
+  if (schedule === null) {
+    return {
+      paid: true,
+      certain: false,
+      reason: 'Assume a permit is required — enforcement hours are not published',
     };
   }
 

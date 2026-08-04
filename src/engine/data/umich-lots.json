@@ -256,6 +256,286 @@
           "enforcementHours": "6am – 5pm, Mon – Fri",
           "tier": "Yellow",
           "footnoted": true
+        },
+        {
+          "lot": "C1",
+          "name": "Mason Hall Dock",
+          "address": "800 North University Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "C3",
+          "name": "Randall Lab",
+          "address": "500 East University Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "C7",
+          "name": "Museum of Art Dock",
+          "address": "800 South University Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "C10",
+          "name": "West Hall Dock",
+          "address": "900 South University Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "E2",
+          "name": "Hadley Family Recreation Building",
+          "address": "1308 N. University Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "E6",
+          "name": "CC Little Building Dock",
+          "address": "400 Block Church",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "E9",
+          "name": "Wilmont Court",
+          "address": "500 South Forest",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "E10",
+          "name": "East Hall Dock",
+          "address": "530 Church Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "N1",
+          "name": "Lane Hall",
+          "address": "204 South State",
+          "enforcementHours": "6am – 6pm, Mon – Fri",
+          "tier": null
+        },
+        {
+          "lot": "N2",
+          "name": "Alumni Center Dock",
+          "address": "900 E. Washington Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "N5",
+          "name": "Hill Auditorium Dock",
+          "address": "300 Thayer Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "N7",
+          "name": "Power Center Dock",
+          "address": "Palmer Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "N9",
+          "name": "Michigan League Dock",
+          "address": "100 Fletcher Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "N15",
+          "name": "Health Service-North",
+          "address": "203 Fletcher Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "N16",
+          "name": "Dental School Service Area",
+          "address": "1102 Palmer Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "N20",
+          "name": "MLB/HIll Aud",
+          "address": "300 Thayer Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "N22",
+          "name": "Central Power Plant",
+          "address": "Palmer Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "N27",
+          "name": "Life Sciences Institute",
+          "address": "Washtenaw Avenue Lot",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "S1",
+          "name": "Hutchins Hall Service Area",
+          "address": "800 Monroe Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "S2",
+          "name": "Business Admin Serv/Wyly Hall",
+          "address": "1000 Hill Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "S3",
+          "name": "Ross School of Business Dock",
+          "address": "Hill Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "S6",
+          "name": "School of Education Dock",
+          "address": "East University Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "S9",
+          "name": "Law Quad Dock",
+          "address": "623 South State",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "S10",
+          "name": "Lorch Hall Dock",
+          "address": "611 Tappan Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "S11",
+          "name": "East Quadrangle Dock",
+          "address": "700 Church Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W1",
+          "name": "South Quadrangle",
+          "address": "600 Monroe Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W4",
+          "name": "LS&A Dock",
+          "address": "420 Maynard St",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W6",
+          "name": "Kelsey Museum Loading Dock",
+          "address": "400 Maynard Street",
+          "enforcementHours": "6am – 6pm, Mon – Sat",
+          "tier": null
+        },
+        {
+          "lot": "W12",
+          "name": "Students Activities Building Dock",
+          "address": "400 Thompson Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W14",
+          "name": "West Quad/Michigan Union Dock",
+          "address": "500 Richard C. Kennedy Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W15",
+          "name": "Parallel Parking/Richard Kennedy Drive",
+          "address": "Parallel Parking/Richard Kennedy Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W22",
+          "name": "South Quad Service Area",
+          "address": "600 Monroe Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W23",
+          "name": "Betsy Barbour Dock",
+          "address": "400 Maynard Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W25",
+          "name": "Helen Newberry Dock",
+          "address": "Helen Newberry Dock",
+          "enforcementHours": "NA",
+          "tier": null
+        },
+        {
+          "lot": "W27",
+          "name": "Argus Building II Dock",
+          "address": "400 South Fourth",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W28",
+          "name": "Perry School Loading Dock",
+          "address": "Madison Street",
+          "enforcementHours": "NA",
+          "tier": null
+        },
+        {
+          "lot": "W29",
+          "name": "Division Street",
+          "address": "Division Street",
+          "enforcementHours": "NA",
+          "tier": null
+        },
+        {
+          "lot": "W30",
+          "name": "Inst for Social Research (ISR)",
+          "address": "426 Thompson Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W31",
+          "name": "Munger Graduate Residence Dock",
+          "address": "Division Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "W36",
+          "name": "Buhr Building Dock",
+          "address": "200 Hill St",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
         }
       ]
     },
@@ -543,6 +823,181 @@
           "address": "207 Zina Pitcher Place",
           "enforcementHours": "24 hrs, 7 days",
           "tier": "Gold"
+        },
+        {
+          "lot": "M11",
+          "name": "Simpson Drive South",
+          "address": "Simpson Circle",
+          "enforcementHours": "6am – 5pm, Mon – Fri",
+          "tier": null
+        },
+        {
+          "lot": "M16",
+          "name": "MCHC Underground",
+          "address": "1500 E. Hospital Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M25",
+          "name": "School of Public Health I",
+          "address": "1500 Washington Heights",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M36",
+          "name": "Victor Vaughn Dock",
+          "address": "1100 West Medical Center Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M38",
+          "name": "Taubman Library",
+          "address": "1300 East Catherine Place",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M44",
+          "name": "Alice Lloyd Dock",
+          "address": "100 Observatory",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M45",
+          "name": "Mosher Jordan Dock",
+          "address": "202 Observatory",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M47",
+          "name": "Couzens Hall Dock",
+          "address": "1200 East Ann Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M48",
+          "name": "School of Public Health II Dock",
+          "address": "1400 Washington Heights",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M49",
+          "name": "Stockwell Dock-West",
+          "address": "1300 North University Court",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M51",
+          "name": "Mary Markley Dock",
+          "address": "1503 East Medical Center",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M53",
+          "name": "UMH Dock V",
+          "address": "1506 East Medical Center",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M54",
+          "name": "MSRB III Dock",
+          "address": "West Medical Center Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M55",
+          "name": "MSRB Dock VI",
+          "address": "1202 West Medical Center",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M62",
+          "name": "North Ingalls Building-East",
+          "address": "1000 Catherine Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M63",
+          "name": "North Ingalls Building-South",
+          "address": "1000 Catherine Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M70",
+          "name": "Mott Hospital Dock",
+          "address": "Mott Hospital Dock",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M72",
+          "name": "MHRI Dock",
+          "address": "MHRI Dock",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M83",
+          "name": "E. Medical Center Drive",
+          "address": "E. Medical Center Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M89",
+          "name": "Biomedical Science Research",
+          "address": "Ann Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M90",
+          "name": "Glen @ Ann Street",
+          "address": "Glen Avenue",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M98",
+          "name": "West Medical Center Dr Sidewalk",
+          "address": "West Medical Center Dr",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M100",
+          "name": "Med Sci I Driveway",
+          "address": "Catherine and Zina Pitcher",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M102",
+          "name": "Pharmacy Service Center",
+          "address": "",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "M103",
+          "name": "Pavillion Loading Dock",
+          "address": "",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
         }
       ]
     },
@@ -984,6 +1439,174 @@
           "enforcementHours": "6am – 5pm, Mon – Fri",
           "tier": "Orange",
           "footnoted": true
+        },
+        {
+          "lot": "NC6",
+          "name": "Computing Center",
+          "address": "2200 Glazier Way",
+          "enforcementHours": "6am – 5pm, Mon – Fri",
+          "tier": null
+        },
+        {
+          "lot": "NC12",
+          "name": "Ewre Dock East",
+          "address": "1300 Beal Avenue",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC13",
+          "name": "Pierpont Commons Dock",
+          "address": "2100 Bonisteel",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC14",
+          "name": "Cooley Lab Dock",
+          "address": "1200 Beal Avenue",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC15",
+          "name": "GG Brown Dock",
+          "address": "1300 Beal Avenue",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC19",
+          "name": "North Campus Sub Station",
+          "address": "2603 Draper Dr.",
+          "enforcementHours": "6am – 5pm, Mon – Fri",
+          "tier": null
+        },
+        {
+          "lot": "NC23",
+          "name": "Wilson Center",
+          "address": "2603 Draper Road",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC24",
+          "name": "EECS Bldg Service Area",
+          "address": "1300 Beal Avenue",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC29",
+          "name": "Space Research Lab Dock",
+          "address": "2500 Hayward Street",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC41",
+          "name": "Art & Architecture Service Area",
+          "address": "Fuller Road",
+          "enforcementHours": "6am – 5pm, Mon – Fri",
+          "tier": null
+        },
+        {
+          "lot": "NC55",
+          "name": "Media Union/PML Dock",
+          "address": "2301 Bonisteel Avenue",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC56",
+          "name": "NAME Dock-West",
+          "address": "1200 Draper",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC57",
+          "name": "School of Music Dock",
+          "address": "900 Baits",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC64",
+          "name": "North Campus Grounds",
+          "address": "2550 Draper",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC68",
+          "name": "Service Center Dean Rd",
+          "address": "Dean Road",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC71",
+          "name": "Chiller North",
+          "address": "Chiller North",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC80",
+          "name": "Green Road",
+          "address": "1919 Green Road",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC87",
+          "name": "NCRC Dock III, Building 800",
+          "address": "1600 Huron Parkway",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC88",
+          "name": "NCRC Dock II, Building 550 North",
+          "address": "1600 Huron Parkway",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC89",
+          "name": "NCRC Dock I, Building 550 North",
+          "address": "1600 Huron Parkway",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC94",
+          "name": "NCRC Parking Lot O",
+          "address": "2800 Plymouth Road",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC101",
+          "name": "NCRC Parking Lot U",
+          "address": "2800 Plymouth Road",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "NC102",
+          "name": "NCRC Parking – West Campus",
+          "address": "2800 Plymouth Road",
+          "enforcementHours": "6am – 5pm, Mon – Fri",
+          "tier": null
+        },
+        {
+          "lot": "NC106",
+          "name": "Ford Robotics Dock",
+          "address": "Hayward",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
         }
       ]
     },
@@ -1125,6 +1748,34 @@
           "address": "3600 Varsity Drive",
           "enforcementHours": "6am – 5pm, Mon – Fri",
           "tier": "Yellow"
+        },
+        {
+          "lot": "SC3",
+          "name": "Admin Services Dock",
+          "address": "1000 Kipke",
+          "enforcementHours": "6am – 5pm, Mon – Fri",
+          "tier": null
+        },
+        {
+          "lot": "SC8",
+          "name": "Plant Service Area",
+          "address": "1200 Kipke Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "SC15",
+          "name": "Admin Services Dock",
+          "address": "300 block E. Hoover",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
+        },
+        {
+          "lot": "SC19",
+          "name": "Student Arts Complex",
+          "address": "Kipke Drive",
+          "enforcementHours": "24 hrs, 7 days",
+          "tier": null
         }
       ]
     }

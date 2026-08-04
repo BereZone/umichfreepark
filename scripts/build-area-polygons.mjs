@@ -71,7 +71,8 @@ function main() {
   const umich = read('src/engine/data/umich-areas.json');
 
   const wanted = new Map(Object.entries(CITY_OSM_IDS));
-  for (const a of umich.areas) wanted.set(a.id, a.osmId);
+  // Only lots that actually have a polygon. The rest ship as list-only areas.
+  for (const a of umich.areas) if (a.osmId) wanted.set(a.id, a.osmId);
 
   const byOsmId = new Map(geo.features.map((f) => [f.properties.osm_id, f]));
 

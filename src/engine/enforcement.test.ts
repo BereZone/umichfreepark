@@ -47,12 +47,23 @@ describe('parsing the real published strings', () => {
     expect(publishedStrings.length).toBeGreaterThan(10);
   });
 
-  it('understands every published string except the one compound cell', () => {
+  it('understands every published string that states a schedule at all', () => {
     const unparsed = publishedStrings.filter((s) => parseEnforcementHours(s) === null);
-    // The single row that packs two schedules into one cell:
+
+    // Exactly two shapes are allowed to fail, and neither is a parser gap.
+    //
+    // "NA" is LTP declining to state hours for a service dock. There is nothing
+    // to parse, and inventing a window would be the dangerous direction.
+    const notStated = unparsed.filter((s) => /^n\s*\/?\s*a$/i.test(s.trim()));
+    // The one row that packs two different schedules into a single cell:
     // "Permit areas 6am – 10 pm, Mon – Sat Visitor area 6am Mon – 10pm Sat, continuously"
-    expect(unparsed).toHaveLength(1);
-    expect(unparsed[0]).toMatch(/permit areas/i);
+    // Applying half of it would be worse than applying none.
+    const compound = unparsed.filter((s) => /permit areas/i.test(s));
+
+    expect(notStated).toHaveLength(1);
+    expect(compound).toHaveLength(1);
+    // Anything else appearing here is a real parser gap, not a source gap.
+    expect(unparsed).toHaveLength(notStated.length + compound.length);
   });
 
   it('normalizes the en-dash and the ASCII hyphen to the same result', () => {

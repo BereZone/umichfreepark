@@ -107,9 +107,20 @@ function main() {
   const env = campusEnvelopes(buildings);
   const PAD = 0.015; // ~1.6 km, enough to cover lots at a campus edge.
 
-  const areas = [];
+  /**
+   * Index OSM features by lot code first, so the join runs FROM the LTP table.
+   *
+   * The direction matters. An earlier version iterated OSM features and emitted
+   * a lot only when a polygon carried its code, which meant OSM decided whether
+   * a lot existed at all — 85 lots with published, verified enforcement hours
+   * were silently absent from the app because nobody had named them in OSM.
+   *
+   * Rules exist independently of geometry. A lot with no polygon cannot be
+   * drawn on the map, but it can absolutely be listed with its hours, and being
+   * listed is what stops a student standing in front of it wondering.
+   */
+  const polygonByCode = new Map();
   const rejected = [];
-  const seen = new Set();
 
   for (const feature of geo.features) {
     const name = feature.properties.name;
@@ -118,7 +129,7 @@ function main() {
     if (!match) continue;
     const code = match[1].replace(/[\s-]/g, '');
     const lot = table.get(code);
-    if (!lot || seen.has(code)) continue;
+    if (!lot || polygonByCode.has(code)) continue;
 
     const [lat, lon] = centroid(feature);
     const e = env[CAMPUS_ALIAS[lot.campus]];
@@ -130,18 +141,25 @@ function main() {
       lon < e.maxLon + PAD;
 
     if (!inside && !ENVELOPE_EXCEPTIONS[code]) {
-      rejected.push(`${code}: polygon at ${lat.toFixed(4)},${lon.toFixed(4)} is outside ${lot.campus} — "${name}"`);
+      rejected.push(
+        `${code}: polygon at ${lat.toFixed(4)},${lon.toFixed(4)} is outside ${lot.campus} — "${name}"`
+      );
       continue;
     }
+    polygonByCode.set(code, { osmId: feature.properties.osm_id, osmName: name });
+  }
 
-    seen.add(code);
+  // Every lot in the table ships. Geometry is an attribute, not a gate.
+  const areas = [];
+  for (const [code, lot] of table) {
+    const polygon = polygonByCode.get(code) ?? null;
     areas.push({
       id: `umich-${code.toLowerCase()}`,
-      name: lot.name || name,
+      name: lot.name || polygon?.osmName || code,
       lot: code,
       campus: lot.campus,
-      osmId: feature.properties.osm_id,
-      permitTier: lot.tier,
+      osmId: polygon?.osmId ?? null,
+      permitTier: lot.tier ?? null,
       enforcementHours: lot.enforcementHours,
       address: lot.address || null,
       ...(ENVELOPE_EXCEPTIONS[code] ? { envelopeException: ENVELOPE_EXCEPTIONS[code] } : {}),
@@ -151,9 +169,14 @@ function main() {
   areas.sort((a, b) => a.id.localeCompare(b.id));
 
   const tiers = {};
-  for (const a of areas) tiers[a.permitTier] = (tiers[a.permitTier] ?? 0) + 1;
+  for (const a of areas) {
+    const key = a.permitTier ?? '(no tier published)';
+    tiers[key] = (tiers[key] ?? 0) + 1;
+  }
+  const withPolygon = areas.filter((a) => a.osmId !== null).length;
 
-  console.log(`Matched ${areas.length} of ${table.size} LTP lots to an OSM polygon.`);
+  console.log(`${areas.length} lots shipped; ${withPolygon} have a polygon and can be drawn.`);
+  console.log(`${areas.length - withPolygon} are list-only until someone maps them in OSM.`);
   console.log('By permit tier:', JSON.stringify(tiers));
   console.log(`Rejected ${rejected.length} bad join(s):`);
   for (const r of rejected) console.log(`  ${r}`);

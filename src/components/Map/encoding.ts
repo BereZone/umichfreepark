@@ -59,6 +59,14 @@ const PAID_BORDER_WIDTH = 1.5;
 const PAID_DASH: number[] = [4, 3];
 
 /**
+ * Longest string that stays legible in a centroid pill at map scale. Measured
+ * against the widest real label the data produces ("YELLOW PERMIT", 13); the
+ * ceiling is set slightly above so a modestly longer tier still fits, and
+ * anything past it falls back rather than overflowing.
+ */
+const MAX_PILL_LENGTH = 16;
+
+/**
  * Hue by authority and permit tier.
  *
  * U-M tiers use the university's own colour names so the legend matches the
@@ -100,13 +108,20 @@ export function priceLabel(area: ResolvedArea, status: ParkingStatus): string {
     }
     case 'flat':
       return `$${(area.rate.cents / 100).toFixed(2)}`;
-    case 'permit-only':
+    case 'permit-only': {
       if (!area.permitTier) return 'PERMIT';
-      // "Restricted" and "Visitor" already describe themselves; appending
-      // PERMIT makes a pill too long to read at a glance and says nothing.
-      if (area.permitTier === 'Restricted') return 'RESTRICTED';
-      if (area.permitTier === 'Visitor') return 'VISITORS';
-      return `${area.permitTier.toUpperCase()} PERMIT`;
+      const tier = area.permitTier.toUpperCase();
+      // Some tier names already describe themselves; appending PERMIT makes the
+      // pill longer without saying anything more.
+      if (tier === 'RESTRICTED') return 'RESTRICTED';
+      if (tier === 'VISITOR') return 'VISITORS';
+      const full = `${tier} PERMIT`;
+      // A pill has to be readable at a glance from a moving car. Rather than
+      // enumerating every tier that happens to be long, fall back to the tier
+      // alone whenever the full form would not fit — so a tier added upstream
+      // later cannot quietly produce an unreadable pill.
+      return full.length <= MAX_PILL_LENGTH ? full : tier;
+    }
     case 'unknown':
       // Never render a guess as a number. "?" invites a tap for the caveat.
       return 'SEE SIGN';

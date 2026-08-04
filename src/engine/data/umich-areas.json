@@ -6,6 +6,176 @@
   "note": "Lots are joined to OSM polygons by the lot code in the OSM name, then validated against the campus LTP assigns them to.",
   "areas": [
     {
+      "id": "umich-c1",
+      "name": "Mason Hall Dock",
+      "lot": "C1",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "800 North University Street"
+    },
+    {
+      "id": "umich-c10",
+      "name": "West Hall Dock",
+      "lot": "C10",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "900 South University Street"
+    },
+    {
+      "id": "umich-c2",
+      "name": "Kraus Natural Science Building",
+      "lot": "C2",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "800 North University Street"
+    },
+    {
+      "id": "umich-c3",
+      "name": "Randall Lab",
+      "lot": "C3",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "500 East University Street"
+    },
+    {
+      "id": "umich-c5",
+      "name": "Libraries Service Areas",
+      "lot": "C5",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "900 South University Street"
+    },
+    {
+      "id": "umich-c7",
+      "name": "Museum of Art Dock",
+      "lot": "C7",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "800 South University Street"
+    },
+    {
+      "id": "umich-c9",
+      "name": "Chemistry Dock",
+      "lot": "C9",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "902 North University Street"
+    },
+    {
+      "id": "umich-e1",
+      "name": "North University Court",
+      "lot": "E1",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1300 N. University Street"
+    },
+    {
+      "id": "umich-e10",
+      "name": "East Hall Dock",
+      "lot": "E10",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "530 Church Street"
+    },
+    {
+      "id": "umich-e15",
+      "name": "Weiser Hall",
+      "lot": "E15",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "500 Church Street"
+    },
+    {
+      "id": "umich-e16",
+      "name": "1443 Washtenaw Avenue Bldg",
+      "lot": "E16",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 6pm, Mon – Fri",
+      "address": "1443 Washtenaw Ave"
+    },
+    {
+      "id": "umich-e17",
+      "name": "Wilmot Triangle",
+      "lot": "E17",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 6pm, Mon – Sat",
+      "address": "1333 Wilmot St"
+    },
+    {
+      "id": "umich-e2",
+      "name": "Hadley Family Recreation Building",
+      "lot": "E2",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1308 N. University Street"
+    },
+    {
+      "id": "umich-e3",
+      "name": "Ruthven Museum",
+      "lot": "E3",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1200 Geddes"
+    },
+    {
+      "id": "umich-e6",
+      "name": "CC Little Building Dock",
+      "lot": "E6",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "400 Block Church"
+    },
+    {
+      "id": "umich-e8",
+      "name": "Church Street Parking Structure",
+      "lot": "E8",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "24 hrs, Mon – Sat",
+      "address": "525 Church Street"
+    },
+    {
+      "id": "umich-e9",
+      "name": "Wilmont Court",
+      "lot": "E9",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "500 South Forest"
+    },
+    {
       "id": "umich-ec1",
       "name": "EMC Gravel Lot",
       "lot": "EC1",
@@ -17,6 +187,26 @@
       "envelopeException": "EMC Gravel Lot, 4442 Plymouth Rd — East Medical Campus, remote from the hospital core."
     },
     {
+      "id": "umich-m10",
+      "name": "UMH Emergency Room",
+      "lot": "M10",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1502 E. Medical Center"
+    },
+    {
+      "id": "umich-m100",
+      "name": "Med Sci I Driveway",
+      "lot": "M100",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Catherine and Zina Pitcher"
+    },
+    {
       "id": "umich-m101",
       "name": "Zina Parking Structure",
       "lot": "M101",
@@ -25,6 +215,66 @@
       "permitTier": "Gold",
       "enforcementHours": "24 hrs, 7 days",
       "address": "207 Zina Pitcher Place"
+    },
+    {
+      "id": "umich-m102",
+      "name": "Pharmacy Service Center",
+      "lot": "M102",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": null
+    },
+    {
+      "id": "umich-m103",
+      "name": "Pavillion Loading Dock",
+      "lot": "M103",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": null
+    },
+    {
+      "id": "umich-m11",
+      "name": "Simpson Drive South",
+      "lot": "M11",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "Simpson Circle"
+    },
+    {
+      "id": "umich-m13",
+      "name": "Med Inn",
+      "lot": "M13",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "E. Hospital Drive"
+    },
+    {
+      "id": "umich-m15",
+      "name": "North Entrance Structure (M15 or P1)",
+      "lot": "M15",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1300 East Medical Center Drive"
+    },
+    {
+      "id": "umich-m16",
+      "name": "MCHC Underground",
+      "lot": "M16",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1500 E. Hospital Drive"
     },
     {
       "id": "umich-m18",
@@ -47,6 +297,166 @@
       "address": "1535 East Hospital Drive"
     },
     {
+      "id": "umich-m25",
+      "name": "School of Public Health I",
+      "lot": "M25",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1500 Washington Heights"
+    },
+    {
+      "id": "umich-m28",
+      "name": "School of Public Health II-East",
+      "lot": "M28",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1500 Washington Heights"
+    },
+    {
+      "id": "umich-m29",
+      "name": "The Pit",
+      "lot": "M29",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1 Nichols Drive"
+    },
+    {
+      "id": "umich-m30",
+      "name": "East Medical Center Drive – East",
+      "lot": "M30",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Visitor",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1601 East Medical Center Drive"
+    },
+    {
+      "id": "umich-m31",
+      "name": "East Medical Center Drive – North",
+      "lot": "M31",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "East Medical Center Drive"
+    },
+    {
+      "id": "umich-m34",
+      "name": "School of Public Health II-South",
+      "lot": "M34",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "201 Observatory Drive"
+    },
+    {
+      "id": "umich-m36",
+      "name": "Victor Vaughn Dock",
+      "lot": "M36",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1100 West Medical Center Drive"
+    },
+    {
+      "id": "umich-m38",
+      "name": "Taubman Library",
+      "lot": "M38",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1300 East Catherine Place"
+    },
+    {
+      "id": "umich-m39",
+      "name": "Kellogg Eye Center/Turner Dock",
+      "lot": "M39",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Gold",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Canal Street (behind building)"
+    },
+    {
+      "id": "umich-m40",
+      "name": "Kellogg Eye Center",
+      "lot": "M40",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1002 Wall Street"
+    },
+    {
+      "id": "umich-m44",
+      "name": "Alice Lloyd Dock",
+      "lot": "M44",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "100 Observatory"
+    },
+    {
+      "id": "umich-m45",
+      "name": "Mosher Jordan Dock",
+      "lot": "M45",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "202 Observatory"
+    },
+    {
+      "id": "umich-m46",
+      "name": "Stockwell",
+      "lot": "M46",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Visitor",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "324 Observatory"
+    },
+    {
+      "id": "umich-m47",
+      "name": "Couzens Hall Dock",
+      "lot": "M47",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1200 East Ann Street"
+    },
+    {
+      "id": "umich-m48",
+      "name": "School of Public Health II Dock",
+      "lot": "M48",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1400 Washington Heights"
+    },
+    {
+      "id": "umich-m49",
+      "name": "Stockwell Dock-West",
+      "lot": "M49",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1300 North University Court"
+    },
+    {
       "id": "umich-m5",
       "name": "Catherine Street Parking Structure",
       "lot": "M5",
@@ -57,6 +467,56 @@
       "address": "1120 Catherine Street"
     },
     {
+      "id": "umich-m50",
+      "name": "Riverview Building",
+      "lot": "M50",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1000 Wall Street"
+    },
+    {
+      "id": "umich-m51",
+      "name": "Mary Markley Dock",
+      "lot": "M51",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1503 East Medical Center"
+    },
+    {
+      "id": "umich-m53",
+      "name": "UMH Dock V",
+      "lot": "M53",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1506 East Medical Center"
+    },
+    {
+      "id": "umich-m54",
+      "name": "MSRB III Dock",
+      "lot": "M54",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "West Medical Center Drive"
+    },
+    {
+      "id": "umich-m55",
+      "name": "MSRB Dock VI",
+      "lot": "M55",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1202 West Medical Center"
+    },
+    {
       "id": "umich-m61",
       "name": "Glen Street Parking Structure",
       "lot": "M61",
@@ -65,6 +525,26 @@
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Fri",
       "address": "333 Glen Street"
+    },
+    {
+      "id": "umich-m62",
+      "name": "North Ingalls Building-East",
+      "lot": "M62",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1000 Catherine Street"
+    },
+    {
+      "id": "umich-m63",
+      "name": "North Ingalls Building-South",
+      "lot": "M63",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1000 Catherine Street"
     },
     {
       "id": "umich-m64",
@@ -97,6 +577,66 @@
       "address": "402 North Ingalls"
     },
     {
+      "id": "umich-m67",
+      "name": "1018 Fuller Building",
+      "lot": "M67",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1018 Fuller Road"
+    },
+    {
+      "id": "umich-m69",
+      "name": "School of Nursing",
+      "lot": "M69",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Visitor",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1150 West Medical Center"
+    },
+    {
+      "id": "umich-m7",
+      "name": "Radiation Oncology",
+      "lot": "M7",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1504 E. Medical Center Drive"
+    },
+    {
+      "id": "umich-m70",
+      "name": "Mott Hospital Dock",
+      "lot": "M70",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Mott Hospital Dock"
+    },
+    {
+      "id": "umich-m71",
+      "name": "City AA/University Lot",
+      "lot": "M71",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1407 Fuller Road @ E. Medical Center Drive"
+    },
+    {
+      "id": "umich-m72",
+      "name": "MHRI Dock",
+      "lot": "M72",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "MHRI Dock"
+    },
+    {
       "id": "umich-m75",
       "name": "Fuller-Mitchell",
       "lot": "M75",
@@ -105,6 +645,56 @@
       "permitTier": "Orange",
       "enforcementHours": "6am – 4pm, Mon – Fri",
       "address": "1910 Fuller Road"
+    },
+    {
+      "id": "umich-m78",
+      "name": "Fuller Pool",
+      "lot": "M78",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "5am – 5pm, Mon-Fri",
+      "address": "1519 Fuller Road"
+    },
+    {
+      "id": "umich-m79",
+      "name": "Ronald McDonald House",
+      "lot": "M79",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1600 Washington Heights"
+    },
+    {
+      "id": "umich-m83",
+      "name": "E. Medical Center Drive",
+      "lot": "M83",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "E. Medical Center Drive"
+    },
+    {
+      "id": "umich-m84",
+      "name": "Glen Court",
+      "lot": "M84",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "Glen Court"
+    },
+    {
+      "id": "umich-m85",
+      "name": "Cardiovascular Center Parking Structure (P5)",
+      "lot": "M85",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Visitor",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1421 E. Ann Street"
     },
     {
       "id": "umich-m86",
@@ -117,6 +707,46 @@
       "address": "1115 Ann Street"
     },
     {
+      "id": "umich-m87",
+      "name": "900 Wall Street",
+      "lot": "M87",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "900 Wall Street"
+    },
+    {
+      "id": "umich-m88",
+      "name": "MM-AEC Construction Trailer",
+      "lot": "M88",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "E. Medical Center Dr."
+    },
+    {
+      "id": "umich-m89",
+      "name": "Biomedical Science Research",
+      "lot": "M89",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Ann Street"
+    },
+    {
+      "id": "umich-m90",
+      "name": "Glen @ Ann Street",
+      "lot": "M90",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Glen Avenue"
+    },
+    {
       "id": "umich-m93",
       "name": "Wall Street East Structure",
       "lot": "M93",
@@ -125,6 +755,36 @@
       "permitTier": "Blue",
       "enforcementHours": "6 am Mon – 1 am Sat",
       "address": "1041 Wall Street"
+    },
+    {
+      "id": "umich-m95",
+      "name": "Arbor Heights",
+      "lot": "M95",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1447 Washington Heights"
+    },
+    {
+      "id": "umich-m97",
+      "name": "Glen Court North",
+      "lot": "M97",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "511 Glen Court"
+    },
+    {
+      "id": "umich-m98",
+      "name": "West Medical Center Dr Sidewalk",
+      "lot": "M98",
+      "campus": "medical",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "West Medical Center Dr"
     },
     {
       "id": "umich-m99",
@@ -137,6 +797,16 @@
       "address": "959 Wall Street"
     },
     {
+      "id": "umich-n1",
+      "name": "Lane Hall",
+      "lot": "N1",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "6am – 6pm, Mon – Fri",
+      "address": "204 South State"
+    },
+    {
       "id": "umich-n13",
       "name": "Fletcher Street Parking Structure",
       "lot": "N13",
@@ -145,6 +815,146 @@
       "permitTier": "Blue",
       "enforcementHours": "6am – 10 pm, Mon – Sat",
       "address": "201 Fletcher Street"
+    },
+    {
+      "id": "umich-n15",
+      "name": "Health Service-North",
+      "lot": "N15",
+      "campus": "central",
+      "osmId": "way/1338695744",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "203 Fletcher Street"
+    },
+    {
+      "id": "umich-n16",
+      "name": "Dental School Service Area",
+      "lot": "N16",
+      "campus": "central",
+      "osmId": "way/1338975178",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1102 Palmer Drive"
+    },
+    {
+      "id": "umich-n19",
+      "name": "Palmer Drive-North Side",
+      "lot": "N19",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Palmer Drive-North Side"
+    },
+    {
+      "id": "umich-n2",
+      "name": "Alumni Center Dock",
+      "lot": "N2",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "900 E. Washington Street"
+    },
+    {
+      "id": "umich-n20",
+      "name": "MLB/HIll Aud",
+      "lot": "N20",
+      "campus": "central",
+      "osmId": "way/1024310717",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "300 Thayer Street"
+    },
+    {
+      "id": "umich-n22",
+      "name": "Central Power Plant",
+      "lot": "N22",
+      "campus": "central",
+      "osmId": "way/1340667626",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Palmer Drive"
+    },
+    {
+      "id": "umich-n26",
+      "name": "Palmer Drive Structure",
+      "lot": "N26",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "Permit areas 6am – 10 pm, Mon – Sat Visitor area 6am Mon – 10pm Sat, continuously",
+      "address": "200 Washtenaw Avenue"
+    },
+    {
+      "id": "umich-n27",
+      "name": "Life Sciences Institute",
+      "lot": "N27",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Washtenaw Avenue Lot"
+    },
+    {
+      "id": "umich-n31",
+      "name": "Harris Hall",
+      "lot": "N31",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "617 E Huron St"
+    },
+    {
+      "id": "umich-n4",
+      "name": "Thayer Street Parking Structure",
+      "lot": "N4",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 10 pm, Mon – Sat",
+      "address": "216 S Thayer Street"
+    },
+    {
+      "id": "umich-n5",
+      "name": "Hill Auditorium Dock",
+      "lot": "N5",
+      "campus": "central",
+      "osmId": "relation/18238151",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "300 Thayer Street"
+    },
+    {
+      "id": "umich-n7",
+      "name": "Power Center Dock",
+      "lot": "N7",
+      "campus": "central",
+      "osmId": "way/1337794537",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Palmer Drive"
+    },
+    {
+      "id": "umich-n8",
+      "name": "Rackham Building",
+      "lot": "N8",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Gold",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "900 East Huron Street"
+    },
+    {
+      "id": "umich-n9",
+      "name": "Michigan League Dock",
+      "lot": "N9",
+      "campus": "central",
+      "osmId": "way/1343525761",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "100 Fletcher Street"
     },
     {
       "id": "umich-nc10",
@@ -167,6 +977,166 @@
       "address": "2800 Plymouth Road"
     },
     {
+      "id": "umich-nc101",
+      "name": "NCRC Parking Lot U",
+      "lot": "NC101",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "2800 Plymouth Road"
+    },
+    {
+      "id": "umich-nc102",
+      "name": "NCRC Parking – West Campus",
+      "lot": "NC102",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2800 Plymouth Road"
+    },
+    {
+      "id": "umich-nc103",
+      "name": "Housing Services Building",
+      "lot": "NC103",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": null
+    },
+    {
+      "id": "umich-nc105",
+      "name": "NCRC Parking-West Campus",
+      "lot": "NC105",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2800 Plymouth Rd"
+    },
+    {
+      "id": "umich-nc106",
+      "name": "Ford Robotics Dock",
+      "lot": "NC106",
+      "campus": "north",
+      "osmId": "way/1071788727",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Hayward"
+    },
+    {
+      "id": "umich-nc107",
+      "name": "Transit Dean Road-Bus Spaces",
+      "lot": "NC107",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Other",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Dean Road"
+    },
+    {
+      "id": "umich-nc108",
+      "name": "Green Court",
+      "lot": "NC108",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Visitor",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": null
+    },
+    {
+      "id": "umich-nc109",
+      "name": "Green Court",
+      "lot": "NC109",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": null
+    },
+    {
+      "id": "umich-nc110",
+      "name": "Green Road Parking",
+      "lot": "NC110",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Contractor",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "Green Road"
+    },
+    {
+      "id": "umich-nc12",
+      "name": "Ewre Dock East",
+      "lot": "NC12",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1300 Beal Avenue"
+    },
+    {
+      "id": "umich-nc13",
+      "name": "Pierpont Commons Dock",
+      "lot": "NC13",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "2100 Bonisteel"
+    },
+    {
+      "id": "umich-nc14",
+      "name": "Cooley Lab Dock",
+      "lot": "NC14",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1200 Beal Avenue"
+    },
+    {
+      "id": "umich-nc15",
+      "name": "GG Brown Dock",
+      "lot": "NC15",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1300 Beal Avenue"
+    },
+    {
+      "id": "umich-nc16",
+      "name": "Gerstacker Bldg & BIRB",
+      "lot": "NC16",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1101 Beal"
+    },
+    {
+      "id": "umich-nc19",
+      "name": "North Campus Sub Station",
+      "lot": "NC19",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2603 Draper Dr."
+    },
+    {
+      "id": "umich-nc20",
+      "name": "GG Brown Building",
+      "lot": "NC20",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2300 Hayward Avenue"
+    },
+    {
       "id": "umich-nc21",
       "name": "Bob & Betty Beyster Building",
       "lot": "NC21",
@@ -187,6 +1157,26 @@
       "address": "2600 Draper"
     },
     {
+      "id": "umich-nc23",
+      "name": "Wilson Center",
+      "lot": "NC23",
+      "campus": "north",
+      "osmId": "way/1074056798",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "2603 Draper Road"
+    },
+    {
+      "id": "umich-nc24",
+      "name": "EECS Bldg Service Area",
+      "lot": "NC24",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1300 Beal Avenue"
+    },
+    {
       "id": "umich-nc26",
       "name": "Naval Architecture & Marine Engineering",
       "lot": "NC26",
@@ -195,6 +1185,16 @@
       "permitTier": "Visitor",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2500 Hayward Street"
+    },
+    {
+      "id": "umich-nc27",
+      "name": "Walgreen Drama Center",
+      "lot": "NC27",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 8pm, Mon – Sat",
+      "address": "1300 Murfin Avenue"
     },
     {
       "id": "umich-nc28",
@@ -207,6 +1207,26 @@
       "address": "2500 Hayward Street"
     },
     {
+      "id": "umich-nc29",
+      "name": "Space Research Lab Dock",
+      "lot": "NC29",
+      "campus": "north",
+      "osmId": "way/1075934292",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "2500 Hayward Street"
+    },
+    {
+      "id": "umich-nc32",
+      "name": "Baits I",
+      "lot": "NC32",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Orange",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1320 Hubbard"
+    },
+    {
       "id": "umich-nc34",
       "name": "Transportation Research Inst (UMTRI)",
       "lot": "NC34",
@@ -217,6 +1237,66 @@
       "address": "3000 Baxter Road"
     },
     {
+      "id": "umich-nc37",
+      "name": "Printing Services",
+      "lot": "NC37",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Park & Ride",
+      "enforcementHours": "7am – 7pm, Mon – Fri",
+      "address": "1919 Green Road"
+    },
+    {
+      "id": "umich-nc38",
+      "name": "Property Disposition",
+      "lot": "NC38",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1200 Dean Road"
+    },
+    {
+      "id": "umich-nc39",
+      "name": "Property Disposition/Housing",
+      "lot": "NC39",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "3241 Baxter"
+    },
+    {
+      "id": "umich-nc40",
+      "name": "Stearns Building",
+      "lot": "NC40",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2005 Baits"
+    },
+    {
+      "id": "umich-nc41",
+      "name": "Art & Architecture Service Area",
+      "lot": "NC41",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "Fuller Road"
+    },
+    {
+      "id": "umich-nc42",
+      "name": "Bentley Library",
+      "lot": "NC42",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1100 Beal Avenue"
+    },
+    {
       "id": "umich-nc43",
       "name": "Art & Architecture Building",
       "lot": "NC43",
@@ -225,6 +1305,26 @@
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2109 Fuller Road"
+    },
+    {
+      "id": "umich-nc44",
+      "name": "North Campus Recreation Bldg (NCRB)",
+      "lot": "NC44",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Visitor",
+      "enforcementHours": "6am – 5pm, 7 Days",
+      "address": "2375 Hubbard"
+    },
+    {
+      "id": "umich-nc45",
+      "name": "North Campus Recreation Bldg (NCRB)",
+      "lot": "NC45",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1501 Murfin"
     },
     {
       "id": "umich-nc46",
@@ -297,6 +1397,106 @@
       "address": "2500 Hayward Street"
     },
     {
+      "id": "umich-nc54",
+      "name": "Fire Station",
+      "lot": "NC54",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Orange",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "Beal Avenue"
+    },
+    {
+      "id": "umich-nc55",
+      "name": "Media Union/PML Dock",
+      "lot": "NC55",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "2301 Bonisteel Avenue"
+    },
+    {
+      "id": "umich-nc56",
+      "name": "NAME Dock-West",
+      "lot": "NC56",
+      "campus": "north",
+      "osmId": "way/1072140421",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1200 Draper"
+    },
+    {
+      "id": "umich-nc57",
+      "name": "School of Music Dock",
+      "lot": "NC57",
+      "campus": "north",
+      "osmId": "way/1186536867",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "900 Baits"
+    },
+    {
+      "id": "umich-nc6",
+      "name": "Computing Center",
+      "lot": "NC6",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2200 Glazier Way"
+    },
+    {
+      "id": "umich-nc60",
+      "name": "Lurie Engineering",
+      "lot": "NC60",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1221 Beal Avenue"
+    },
+    {
+      "id": "umich-nc61",
+      "name": "North Campus Facilities Services Bldg",
+      "lot": "NC61",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "3231 Baxter Rd"
+    },
+    {
+      "id": "umich-nc62",
+      "name": "North Campus Facilities Services Bldg",
+      "lot": "NC62",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "3231 Baxter Rd"
+    },
+    {
+      "id": "umich-nc63",
+      "name": "North Campus Administrative Complex",
+      "lot": "NC63",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2901 Hubbard Road"
+    },
+    {
+      "id": "umich-nc64",
+      "name": "North Campus Grounds",
+      "lot": "NC64",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "2550 Draper"
+    },
+    {
       "id": "umich-nc65",
       "name": "North Campus Administrative Complex",
       "lot": "NC65",
@@ -305,6 +1505,56 @@
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "2901 Hubbard Road"
+    },
+    {
+      "id": "umich-nc66",
+      "name": "Dean Road Grounds Service Bldg",
+      "lot": "NC66",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1665 Dean"
+    },
+    {
+      "id": "umich-nc67",
+      "name": "Transit Dean Rd",
+      "lot": "NC67",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1665 Dean Road"
+    },
+    {
+      "id": "umich-nc68",
+      "name": "Service Center Dean Rd",
+      "lot": "NC68",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Dean Road"
+    },
+    {
+      "id": "umich-nc70",
+      "name": "Parallel Parking Bonisteel",
+      "lot": "NC70",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "Bonisteel Avenue"
+    },
+    {
+      "id": "umich-nc71",
+      "name": "Chiller North",
+      "lot": "NC71",
+      "campus": "north",
+      "osmId": "way/1165291571",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Chiller North"
     },
     {
       "id": "umich-nc78",
@@ -327,11 +1577,41 @@
       "address": "2300 Glazier Way"
     },
     {
+      "id": "umich-nc80",
+      "name": "Green Road",
+      "lot": "NC80",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1919 Green Road"
+    },
+    {
+      "id": "umich-nc81",
+      "name": "North Campus Data Center",
+      "lot": "NC81",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "Draper Road"
+    },
+    {
       "id": "umich-nc82",
       "name": "NCRC Parking – East Campus",
       "lot": "NC82",
       "campus": "north",
       "osmId": "way/242389278",
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1600 Huron Parkway"
+    },
+    {
+      "id": "umich-nc83",
+      "name": "NCRC Parking – East Campus",
+      "lot": "NC83",
+      "campus": "north",
+      "osmId": null,
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1600 Huron Parkway"
@@ -367,6 +1647,36 @@
       "address": "1600 Huron Parkway"
     },
     {
+      "id": "umich-nc87",
+      "name": "NCRC Dock III, Building 800",
+      "lot": "NC87",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1600 Huron Parkway"
+    },
+    {
+      "id": "umich-nc88",
+      "name": "NCRC Dock II, Building 550 North",
+      "lot": "NC88",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1600 Huron Parkway"
+    },
+    {
+      "id": "umich-nc89",
+      "name": "NCRC Dock I, Building 550 North",
+      "lot": "NC89",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1600 Huron Parkway"
+    },
+    {
       "id": "umich-nc9",
       "name": "UM Transportation Institute",
       "lot": "NC9",
@@ -397,6 +1707,76 @@
       "address": "2800 Plymouth Road"
     },
     {
+      "id": "umich-nc92",
+      "name": "NCRC Parking – West Campus",
+      "lot": "NC92",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2800 Plymouth Road"
+    },
+    {
+      "id": "umich-nc93",
+      "name": "NCRC Parking – West Campus",
+      "lot": "NC93",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2800 Plymouth Road"
+    },
+    {
+      "id": "umich-nc94",
+      "name": "NCRC Parking Lot O",
+      "lot": "NC94",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "2800 Plymouth Road"
+    },
+    {
+      "id": "umich-nc95",
+      "name": "NCRC Parking – West Campus",
+      "lot": "NC95",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm Sun-Sat",
+      "address": "2800 Plymouth Road"
+    },
+    {
+      "id": "umich-nc96",
+      "name": "NCRC Parking – West Campus",
+      "lot": "NC96",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2800 Plymouth Road"
+    },
+    {
+      "id": "umich-nc97",
+      "name": "NCRC Day Care Center Parking",
+      "lot": "NC97",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "6:30am – 6:30pm, Mon – Fri",
+      "address": "2800 Plymouth Road"
+    },
+    {
+      "id": "umich-nc98",
+      "name": "NCRC Circle Drive – West Campus",
+      "lot": "NC98",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "2800 Plymouth Road"
+    },
+    {
       "id": "umich-nc99",
       "name": "NCRC Parking – West Campus",
       "lot": "NC99",
@@ -407,6 +1787,86 @@
       "address": "2800 Plymouth Road"
     },
     {
+      "id": "umich-nw1",
+      "name": "Plymouth/Murfin",
+      "lot": "NW1",
+      "campus": "north",
+      "osmId": null,
+      "permitTier": "Orange",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "Plymouth/Murfin"
+    },
+    {
+      "id": "umich-s1",
+      "name": "Hutchins Hall Service Area",
+      "lot": "S1",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "800 Monroe Street"
+    },
+    {
+      "id": "umich-s10",
+      "name": "Lorch Hall Dock",
+      "lot": "S10",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "611 Tappan Street"
+    },
+    {
+      "id": "umich-s11",
+      "name": "East Quadrangle Dock",
+      "lot": "S11",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "700 Church Street"
+    },
+    {
+      "id": "umich-s2",
+      "name": "Business Admin Serv/Wyly Hall",
+      "lot": "S2",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1000 Hill Street"
+    },
+    {
+      "id": "umich-s28",
+      "name": "City of Ann Arbor Forest Structure",
+      "lot": "S28",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Forest Street"
+    },
+    {
+      "id": "umich-s3",
+      "name": "Ross School of Business Dock",
+      "lot": "S3",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Hill Street"
+    },
+    {
+      "id": "umich-s30",
+      "name": "Martha Cook Residence Dock",
+      "lot": "S30",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Tappan St."
+    },
+    {
       "id": "umich-s5",
       "name": "Oakland Avenue",
       "lot": "S5",
@@ -415,6 +1875,46 @@
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Sat",
       "address": "Monroe Oakland Street Lot"
+    },
+    {
+      "id": "umich-s6",
+      "name": "School of Education Dock",
+      "lot": "S6",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "East University Street"
+    },
+    {
+      "id": "umich-s8",
+      "name": "Hill Street Parking Structure",
+      "lot": "S8",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "6am – 5pm, Mon – Sat",
+      "address": "1001 Hill Street"
+    },
+    {
+      "id": "umich-s9",
+      "name": "Law Quad Dock",
+      "lot": "S9",
+      "campus": "central",
+      "osmId": "way/589346688",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "623 South State"
+    },
+    {
+      "id": "umich-sc1",
+      "name": "Athletic Department Permit Parking",
+      "lot": "SC1",
+      "campus": "ross-athletic",
+      "osmId": null,
+      "permitTier": "Restricted",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "333 E. Stadium Blvd"
     },
     {
       "id": "umich-sc10",
@@ -437,6 +1937,16 @@
       "address": "326 E. Hoover"
     },
     {
+      "id": "umich-sc15",
+      "name": "Admin Services Dock",
+      "lot": "SC15",
+      "campus": "ross-athletic",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "300 block E. Hoover"
+    },
+    {
       "id": "umich-sc16",
       "name": "Campus Safety Services",
       "lot": "SC16",
@@ -447,6 +1957,26 @@
       "address": "1239 Kipke"
     },
     {
+      "id": "umich-sc17",
+      "name": "Wolverine Tower",
+      "lot": "SC17",
+      "campus": "ross-athletic",
+      "osmId": null,
+      "permitTier": "Contractor",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "3003 State Street"
+    },
+    {
+      "id": "umich-sc19",
+      "name": "Student Arts Complex",
+      "lot": "SC19",
+      "campus": "ross-athletic",
+      "osmId": "way/1452141016",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Kipke Drive"
+    },
+    {
       "id": "umich-sc2",
       "name": "Between Hoover & Greene",
       "lot": "SC2",
@@ -455,6 +1985,26 @@
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "1032 Greene Buidling"
+    },
+    {
+      "id": "umich-sc22",
+      "name": "Park & Ride Lot",
+      "lot": "SC22",
+      "campus": "ross-athletic",
+      "osmId": null,
+      "permitTier": "Park & Ride",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "2250 State Street, Ann Arbor MI 48109"
+    },
+    {
+      "id": "umich-sc3",
+      "name": "Admin Services Dock",
+      "lot": "SC3",
+      "campus": "ross-athletic",
+      "osmId": "way/501446761",
+      "permitTier": null,
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "1000 Kipke"
     },
     {
       "id": "umich-sc32",
@@ -528,6 +2078,16 @@
       "address": "East Hoover Street"
     },
     {
+      "id": "umich-sc43",
+      "name": "Varsity Drive",
+      "lot": "SC43",
+      "campus": "ross-athletic",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "3600 Varsity Drive"
+    },
+    {
       "id": "umich-sc5",
       "name": "Crisler Arena Area",
       "lot": "SC5",
@@ -558,6 +2118,26 @@
       "address": "Kipke Drive – East"
     },
     {
+      "id": "umich-sc8",
+      "name": "Plant Service Area",
+      "lot": "SC8",
+      "campus": "ross-athletic",
+      "osmId": "way/1452141018",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "1200 Kipke Drive"
+    },
+    {
+      "id": "umich-w1",
+      "name": "South Quadrangle",
+      "lot": "W1",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "600 Monroe Street"
+    },
+    {
       "id": "umich-w10",
       "name": "Perry Building West",
       "lot": "W10",
@@ -566,6 +2146,56 @@
       "permitTier": "Blue",
       "enforcementHours": "6am – 5pm, Mon – Sat",
       "address": "330 Packard"
+    },
+    {
+      "id": "umich-w11",
+      "name": "Krause Street",
+      "lot": "W11",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Orange",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "500 West Liberty"
+    },
+    {
+      "id": "umich-w12",
+      "name": "Students Activities Building Dock",
+      "lot": "W12",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "400 Thompson Street"
+    },
+    {
+      "id": "umich-w13",
+      "name": "Student Activities Building",
+      "lot": "W13",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Visitor",
+      "enforcementHours": "6am – 6pm, Mon – Sat",
+      "address": "400 Thompson Street"
+    },
+    {
+      "id": "umich-w14",
+      "name": "West Quad/Michigan Union Dock",
+      "lot": "W14",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "500 Richard C. Kennedy Drive"
+    },
+    {
+      "id": "umich-w15",
+      "name": "Parallel Parking/Richard Kennedy Drive",
+      "lot": "W15",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Parallel Parking/Richard Kennedy Drive"
     },
     {
       "id": "umich-w16",
@@ -578,6 +2208,16 @@
       "address": "600 Thompson Street"
     },
     {
+      "id": "umich-w19",
+      "name": "Inst for Social Research-Thompson Street",
+      "lot": "W19",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Blue",
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Inst for Social Research-Thompson Street"
+    },
+    {
       "id": "umich-w21",
       "name": "Madison Building",
       "lot": "W21",
@@ -588,6 +2228,76 @@
       "address": "109 East Madison"
     },
     {
+      "id": "umich-w22",
+      "name": "South Quad Service Area",
+      "lot": "W22",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "600 Monroe Street"
+    },
+    {
+      "id": "umich-w23",
+      "name": "Betsy Barbour Dock",
+      "lot": "W23",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "400 Maynard Street"
+    },
+    {
+      "id": "umich-w24",
+      "name": "Argus Building",
+      "lot": "W24",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Orange",
+      "enforcementHours": "6am – 6pm, Mon – Sat",
+      "address": "500 W. William"
+    },
+    {
+      "id": "umich-w25",
+      "name": "Helen Newberry Dock",
+      "lot": "W25",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "NA",
+      "address": "Helen Newberry Dock"
+    },
+    {
+      "id": "umich-w27",
+      "name": "Argus Building II Dock",
+      "lot": "W27",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "400 South Fourth"
+    },
+    {
+      "id": "umich-w28",
+      "name": "Perry School Loading Dock",
+      "lot": "W28",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "NA",
+      "address": "Madison Street"
+    },
+    {
+      "id": "umich-w29",
+      "name": "Division Street",
+      "lot": "W29",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "NA",
+      "address": "Division Street"
+    },
+    {
       "id": "umich-w3",
       "name": "Thompson Street Parking Structure",
       "lot": "W3",
@@ -596,6 +2306,36 @@
       "permitTier": "Blue",
       "enforcementHours": "6am – 6pm, Mon – Sat",
       "address": "508 Thompson Street"
+    },
+    {
+      "id": "umich-w30",
+      "name": "Inst for Social Research (ISR)",
+      "lot": "W30",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "426 Thompson Street"
+    },
+    {
+      "id": "umich-w31",
+      "name": "Munger Graduate Residence Dock",
+      "lot": "W31",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "Division Street"
+    },
+    {
+      "id": "umich-w32",
+      "name": "The Coliseum",
+      "lot": "W32",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "300 block Hill"
     },
     {
       "id": "umich-w33",
@@ -628,6 +2368,16 @@
       "address": "201 East Hoover"
     },
     {
+      "id": "umich-w36",
+      "name": "Buhr Building Dock",
+      "lot": "W36",
+      "campus": "central",
+      "osmId": "way/1452144506",
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "200 Hill St"
+    },
+    {
       "id": "umich-w39",
       "name": "East Side of S 5th Ave",
       "lot": "W39",
@@ -636,6 +2386,36 @@
       "permitTier": "Yellow",
       "enforcementHours": "6am – 5pm, Mon – Fri",
       "address": "East of S Fifth St"
+    },
+    {
+      "id": "umich-w4",
+      "name": "LS&A Dock",
+      "lot": "W4",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "24 hrs, 7 days",
+      "address": "420 Maynard St"
+    },
+    {
+      "id": "umich-w40",
+      "name": "East Side of 5th Ave",
+      "lot": "W40",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": "Yellow",
+      "enforcementHours": "6am – 5pm, Mon – Fri",
+      "address": "721 S 5th Ave"
+    },
+    {
+      "id": "umich-w6",
+      "name": "Kelsey Museum Loading Dock",
+      "lot": "W6",
+      "campus": "central",
+      "osmId": null,
+      "permitTier": null,
+      "enforcementHours": "6am – 6pm, Mon – Sat",
+      "address": "400 Maynard Street"
     },
     {
       "id": "umich-w9",

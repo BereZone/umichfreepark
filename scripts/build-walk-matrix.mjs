@@ -156,7 +156,10 @@ async function main() {
   ];
   const areas = [
     ...cityOsmIds.map(([id, osmId]) => ({ id, osmId })),
-    ...cityAreaIds.areas.map((a) => ({ id: a.id, osmId: a.osmId })),
+    // Lots with no polygon have no centroid to route to. They ship without a
+    // walk time rather than with an invented one; walkSeconds returns null and
+    // ranking sorts them last on distance instead of pretending they are close.
+    ...cityAreaIds.areas.filter((a) => a.osmId).map((a) => ({ id: a.id, osmId: a.osmId })),
   ]
     .filter(({ id, osmId }) => {
       if (byOsmId.has(osmId)) return true;

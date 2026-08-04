@@ -46,9 +46,29 @@ describe('the area dataset', () => {
     }
   });
 
-  it('only the two meter zones lack a polygon', () => {
+  it('ships an area without a polygon rather than dropping it', () => {
+    // Most U-M lots are not named in OpenStreetMap, so most of the dataset has
+    // no geometry. That is a mapping gap, not a reason to withhold the rules —
+    // an earlier version let OSM decide whether a lot existed at all and
+    // silently hid 160 lots whose hours we had verified.
     const unmapped = AREAS.filter((a) => a.osmId === null);
-    expect(unmapped.every((a) => a.kind === 'meter-zone')).toBe(true);
+    expect(unmapped.length).toBeGreaterThan(100);
+
+    for (const area of unmapped) {
+      // Only two things may legitimately lack a polygon: a meter zone, which is
+      // a grouping rather than a place, and a U-M lot nobody has drawn yet.
+      expect(area.kind === 'meter-zone' || area.authority === 'umich', area.id).toBe(true);
+      // Whatever the reason, it still carries everything the list needs.
+      expect(area.rate, area.id).toBeDefined();
+      expect(area.provenance.source, area.id).toMatch(/^https:\/\//);
+      expect(area.name, area.id).toBeTruthy();
+    }
+  });
+
+  it('keeps the map to the areas it can actually draw', () => {
+    expect(MAPPABLE_AREAS.length).toBeGreaterThan(50);
+    expect(MAPPABLE_AREAS.every((a) => a.osmId !== null)).toBe(true);
+    expect(MAPPABLE_AREAS.length).toBeLessThan(AREAS.length);
   });
 });
 
@@ -94,12 +114,31 @@ describe('rates', () => {
 });
 
 describe('schedules resolve to real behaviour', () => {
-  it('parsed a schedule for every U-M lot in the set', () => {
+  it('parsed a schedule for every U-M lot whose hours are published', () => {
     const umich = AREAS.filter((a) => a.authority === 'umich');
-    expect(umich.length).toBeGreaterThan(50);
-    // The one unparseable published string belongs to a lot that did not make
-    // the polygon join, so every area we actually ship has a schedule.
-    expect(umich.filter((a) => a.schedule === null)).toHaveLength(0);
+    expect(umich.length).toBeGreaterThan(200);
+
+    const noSchedule = umich.filter((a) => a.schedule === null);
+    // Four lots out of 240-odd: three docks LTP prints "NA" for, and the one
+    // cell that packs two schedules together. Both refusals are deliberate and
+    // live in enforcement.test.ts; this is the ceiling that catches a parser
+    // regression turning into a quietly larger number.
+    expect(noSchedule.length).toBeLessThanOrEqual(4);
+  });
+
+  it('treats an unparseable lot as enforced, never as free', () => {
+    // The asymmetry that governs this whole app: wrongly saying "pay" costs a
+    // walk to another lot, wrongly saying "free" costs a $70 ticket. A lot we
+    // could not read must fall to the expensive-looking side.
+    const noSchedule = AREAS.filter((a) => a.authority === 'umich' && a.schedule === null);
+    expect(noSchedule.length).toBeGreaterThan(0);
+    for (const area of noSchedule) {
+      // Sunday afternoon — when almost everything else in the app is free.
+      const status = statusAt(area.authority, area.schedule, utc('2026-08-09T18:00:00Z'));
+      expect(status.paid, area.id).toBe(true);
+      // And it must not pretend to be sure about it.
+      expect(status.certain, area.id).toBe(false);
+    }
   });
 
   it('makes downtown structures free on a Sunday afternoon', () => {
@@ -136,7 +175,11 @@ describe('schedules resolve to real behaviour', () => {
   it('shows the posted string so a user can check it against the sign', () => {
     const umich = AREAS.filter((a) => a.authority === 'umich');
     for (const area of umich) {
-      expect(area.note, area.id).toMatch(/^Posted enforcement: /);
+      // Either we quote LTP's cell verbatim, or — for the handful of docks LTP
+      // prints "NA" for — we say plainly that no hours are published. What must
+      // never happen is echoing "NA" back at the user as if it were a schedule.
+      expect(area.note, area.id).toMatch(/^(Posted enforcement: |U-M does not publish)/);
+      expect(area.note, area.id).not.toMatch(/^Posted enforcement: NA/i);
     }
   });
 });
