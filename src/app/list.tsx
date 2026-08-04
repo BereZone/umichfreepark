@@ -43,8 +43,16 @@ export default function ListScreen() {
   // A minute is enough here: the list shows costs and walk times, and a
   // per-second tick would re-sort 75 rows under the user's thumb for nothing.
   const now = useNow(60_000);
-  const { destination, setDestination, durationHours, setDurationHours, mode, setMode } =
-    useTrip();
+  const {
+    destination,
+    setDestination,
+    durationHours,
+    setDurationHours,
+    mode,
+    setMode,
+    selectedAreaId,
+    setSelectedAreaId,
+  } = useTrip();
 
   const ranked = useMemo(() => {
     if (!destination) return [];
@@ -136,7 +144,13 @@ export default function ListScreen() {
           </Text>
         }
         renderItem={({ item }) => (
-          <Row option={item} best={best} colors={colors} />
+          <Row
+            option={item}
+            best={best}
+            colors={colors}
+            selected={item.area.id === selectedAreaId}
+            onSelect={setSelectedAreaId}
+          />
         )}
       />
     </View>
@@ -147,10 +161,14 @@ function Row({
   option,
   best,
   colors,
+  selected,
+  onSelect,
 }: {
   option: RankedOption;
   best: RankedOption | null;
   colors: ReturnType<typeof colorsFor>;
+  selected: boolean;
+  onSelect: (id: string | null) => void;
 }) {
   const { area, status, eligibility, costCents, walkSeconds } = option;
   const free = !status.paid;
@@ -169,14 +187,21 @@ function Row({
 
   return (
     <Pressable
+      // Tapping a row selects the same area a polygon tap would. Before this
+      // the row was a Pressable with no handler, so a screen reader announced
+      // "button" on something that did nothing when activated.
+      onPress={() => onSelect(selected ? null : area.id)}
       style={[
         styles.row,
         {
           borderColor: colors.border,
+          backgroundColor: selected ? colors.surface : 'transparent',
           opacity: eligibility.eligible ? 1 : 0.72,
         },
       ]}
       accessibilityRole="button"
+      accessibilityState={{ selected }}
+      accessibilityHint={selected ? 'Deselects this area' : 'Selects this area on the map'}
       accessibilityLabel={[
         area.name,
         free ? 'free right now' : price,

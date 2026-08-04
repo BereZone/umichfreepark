@@ -23,6 +23,7 @@ import * as Haptics from 'expo-haptics';
 
 import { useReduceMotion } from '../hooks/use-accessibility';
 import { formatCountdown, useNow } from '../hooks/use-now';
+import { useTrip } from '../state/trip';
 import { MIN_TOUCH_TARGET, radius, space, tabularNumbers, type } from '../theme';
 import { colorsFor } from '../theme/colors';
 
@@ -33,7 +34,9 @@ export default function MapScreen() {
   const now = useNow();
   const reduceMotion = useReduceMotion();
 
-  const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
+  // Selection is shared with the list so a row tap and a polygon tap do the
+  // same thing. See src/state/trip.tsx.
+  const { selectedAreaId, setSelectedAreaId } = useTrip();
   const [tileError, setTileError] = useState<Error | null>(null);
 
   const selected = selectedAreaId ? areaById.get(selectedAreaId) : null;
@@ -65,17 +68,21 @@ export default function MapScreen() {
     };
   }, [selected, now]);
 
-  const handleSelect = useCallback((id: string | null) => {
-    setSelectedAreaId(id);
-    // A light tap confirms the tap landed on a polygon, which matters on a
-    // full-bleed map where the panel animating in is the only other feedback.
-    // Selection only — firing on deselect would make dismissing feel like an error.
-    if (id !== null) {
-      Haptics.selectionAsync().catch(() => {
-        // Haptics are unavailable on web and on some devices. Never a failure.
-      });
-    }
-  }, []);
+  const handleSelect = useCallback(
+    (id: string | null) => {
+      setSelectedAreaId(id);
+      // A light tap confirms the tap landed on a polygon, which matters on a
+      // full-bleed map where the panel animating in is the only other feedback.
+      // Selection only — firing on deselect would make dismissing feel like an
+      // error.
+      if (id !== null) {
+        Haptics.selectionAsync().catch(() => {
+          // Haptics are unavailable on web and on some devices. Never a failure.
+        });
+      }
+    },
+    [setSelectedAreaId]
+  );
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>

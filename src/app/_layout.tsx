@@ -65,5 +65,12 @@ export default function RootLayout() {
 }
 
 function TabGlyph({ color, glyph }: { color: ColorValue; glyph: string }) {
-  return <Text style={[type.heading, { color }]}>{glyph}</Text>;
+  return (
+    // Hidden from assistive tech: the glyph repeats the tab's own title, and
+    // VoiceOver reading "black diamond, Map" is worse than "Map". Decorative
+    // imagery next to its own label should be silent.
+    <Text style={[type.heading, { color }]} accessibilityElementsHidden importantForAccessibility="no">
+      {glyph}
+    </Text>
+  );
 }

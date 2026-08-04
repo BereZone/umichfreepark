@@ -58,7 +58,9 @@ export default function LearnScreen() {
         </Text>
         <Bullet colors={colors}>
           <Bold colors={colors}>City meters</Bold> — $2.60/hr, enforced Mon–Sat 8am–6pm.
-          Free evenings, all day Sunday, and on 13 city holidays.
+          Free evenings, all day Sunday, and on {cityHolidays.length} city
+          holidays. The metered surface lots follow the same clock, so they are
+          free in the evening too — unlike the gated structures.
         </Bullet>
         <Bullet colors={colors}>
           <Bold colors={colors}>City structures</Bold> — $1.80/hr, free from{' '}
@@ -126,7 +128,13 @@ export default function LearnScreen() {
           PCI’s list, and PCI does not publish one. We assume they are paid.
         </Bullet>
         <Bullet colors={colors}>
-          The hourly rate at the First & William lot. It may be permit-only.
+          Exactly which downtown blocks have meters. Nobody publishes that — not
+          the city, not the DDA, not the meter operator. We show the district
+          they are in and leave the block to the sign.
+        </Bullet>
+        <Bullet colors={colors}>
+          Enforcement hours for a few U-M service lots, which U-M lists as “NA”.
+          We assume a permit is needed.
         </Bullet>
         <Text style={[type.caption, { color: colors.textMuted }]}>
           Where we are unsure, the app says so rather than guessing. The sign at

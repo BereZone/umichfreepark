@@ -45,6 +45,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Learn screen covering the fine schedule, the three sets of rules, permit eligibility, free buses, and what we don't know.
 - Location permission requested as When In Use only, with a purpose string that says what it is for.
 - Reduce-motion support and selection haptics on the map.
+- Tapping a list row selects that area, the same as tapping its polygon, and the selection follows you between the map and the list.
+- `docs/accessibility.md` — the accessibility audit, saying which properties are enforced by tests and which still need a real device.
 
 ### Changed
 
@@ -58,6 +60,9 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - 160 more U-M lots were absent because the map data decided whether a lot existed: a lot nobody had drawn in OpenStreetMap never appeared, even with published hours. Lots now ship with their rules whether or not anyone has mapped them.
 - First & William showed no rate at all. The city publishes it as permit-only, so it now says so.
 - Metered surface lots were treated as gated, showing them as paid on a Tuesday evening when they are free after 6pm.
+- List rows announced themselves as buttons to a screen reader but did nothing when activated.
+- Tab bar glyphs were read aloud next to their own labels, so VoiceOver said "black diamond, Map".
+- The Learn screen still listed the First & William rate as unknown after it was resolved, and hardcoded a holiday count next to a computed one.
 - Polygon winding was reported backwards, and centroids double-counted the repeated closing vertex of a ring.
 - Library Lane's $5 cap was applied at every hour, under-quoting a midday stay; it now applies only to arrivals after 3pm on weekdays and any time Saturday.
 - Michigan Stadium's coordinate sat inside the bowl, where no walking route can reach it; moved to the north pedestrian approach.

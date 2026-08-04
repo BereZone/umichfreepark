@@ -26,6 +26,17 @@ interface TripState {
   setMode: (mode: RankingMode) => void;
   profile: Profile;
   setProfile: (profile: Profile) => void;
+  /**
+   * The area whose details are open, shared so the two views agree.
+   *
+   * This lives here rather than in the map screen because the list is the
+   * accessible equivalent of the map, not a lesser copy of it. Tapping a row
+   * has to do the same thing tapping a polygon does; with selection owned by
+   * the map, a row could only ever be a label that announced itself as a
+   * button. Sharing it also means switching tabs keeps your place.
+   */
+  selectedAreaId: string | null;
+  setSelectedAreaId: (id: string | null) => void;
 }
 
 const TripContext = createContext<TripState | null>(null);
@@ -43,6 +54,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
   const [durationHours, setDurationHours] = useState(2);
   const [mode, setMode] = useState<RankingMode>('balanced');
   const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE);
+  const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
 
   const value = useMemo(
     () => ({
@@ -54,8 +66,10 @@ export function TripProvider({ children }: { children: ReactNode }) {
       setMode,
       profile,
       setProfile,
+      selectedAreaId,
+      setSelectedAreaId,
     }),
-    [destination, durationHours, mode, profile]
+    [destination, durationHours, mode, profile, selectedAreaId]
   );
 
   return <TripContext.Provider value={value}>{children}</TripContext.Provider>;

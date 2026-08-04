@@ -18,6 +18,11 @@ export default defineConfig({
       // rather than under the component runner.
       'src/components/Map/encoding.test.ts',
       'src/components/Map/geometry.test.ts',
+      // Colour and scalar tokens are plain data, so the accessibility audit
+      // over them needs no renderer either. It imports theme/colors and
+      // theme/metrics directly, never the barrel — the barrel pulls in
+      // typography.ts and with it react-native.
+      'src/theme/accessibility.test.ts',
     ],
     environment: 'node',
 

@@ -26,6 +26,7 @@ Full setup, troubleshooting, and data-regeneration steps: [`docs/development.md`
 
 - [Development](docs/development.md) — prerequisites, running, testing, regenerating datasets
 - [Data sources](docs/data-sources.md) — where every parking rule comes from, and what's unverified
+- [Accessibility](docs/accessibility.md) — what's enforced by tests, what was checked by hand, what still needs a device
 - [Releasing](docs/releasing.md) — version bumps, tagging, the release pipeline
 - [Contributing](CONTRIBUTING.md) — commits, changelog, versioning
 - [Spec](docs/spec.md) — the original project brief
