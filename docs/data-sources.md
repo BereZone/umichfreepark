@@ -156,6 +156,15 @@ Until someone confirms it with PCI at (734) 761-7235, structures are modeled as 
 
 The meter holiday list, by contrast, is published in full on a2gov.org and is `verified`.
 
+### Two DDA facilities have no confidently identified polygon
+
+Seven of the eight DDA structures are tagged in OSM with `operator=PCI Municipal Services` and match their street addresses to within a few metres. Two do not ship:
+
+- **First & Washington (215 W. Washington)** — the only OSM candidates within 100 m are unnamed, untagged surface polygons. Any of them *might* be it.
+- **415 W. Washington** ($5 flat) — same problem.
+
+Neither ships a polygon. Guessing which unnamed rectangle is a $5 flat-rate lot is exactly the kind of plausible-looking error this project treats as its worst bug class. They can be added the moment someone identifies them on the ground, or when OSM names them.
+
 ### Address conflict at First & William
 
 PCI's facility page says 300 First St.; the DDA FAQ says 216 W. William St. Both are primary sources. Unresolved — no address ships for that lot until it is.

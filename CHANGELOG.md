@@ -27,6 +27,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Raw OpenStreetMap parking geometry for Ann Arbor — 1,646 polygons, committed unedited so hand-tagging shows up as a reviewable diff.
 - Enforcement-hours parser turning U-M's 17 published spellings into evaluable schedules, with unparseable strings treated as enforced.
 - Free/paid status and next-transition countdown for city meters, city structures, and U-M lots, correct across daylight saving time.
+- 75 parking areas with verified rates and polygons: 7 DDA structures, 2 city lots, 2 meter zones, and 64 U-M lots joined to OpenStreetMap by lot code.
 
 ### Changed
 

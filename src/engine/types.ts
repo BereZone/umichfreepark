@@ -39,3 +39,54 @@ export interface Provenance {
   source: string;
   confidence: Confidence;
 }
+
+/**
+ * What it costs.
+ *
+ * Money is in whole cents, never floating-point dollars. $1.80/hr as 1.8
+ * survives one multiplication and then starts producing 5.401 for three hours.
+ * Integers make the arithmetic exact and the display code responsible for
+ * formatting.
+ */
+export type Rate =
+  | {
+      kind: 'hourly';
+      centsPerHour: number;
+      /**
+       * Some facilities cap the hourly rate inside a window — Library Lane is
+       * $5.00 from 3pm, provided you exit by 6am. The cap is not a flat fee:
+       * below the cap you still pay by the hour.
+       */
+      cap?: { cents: number; note: string };
+    }
+  /** A flat charge per entry, regardless of duration. */
+  | { kind: 'flat'; cents: number }
+  /** No hourly option — permit holders only. Not the same as "free". */
+  | { kind: 'permit-only' }
+  | { kind: 'free' }
+  /** We could not source a rate. Must render as a caveat, never as a number. */
+  | { kind: 'unknown' };
+
+export type AreaKind = 'structure' | 'lot' | 'meter-zone';
+
+/**
+ * One parkable area: a structure, a lot, or a block of on-street meters.
+ *
+ * `schedule` is deliberately allowed to be null — that means the authority's
+ * published hours could not be confidently parsed, and the engine treats it as
+ * enforced. See enforcement.ts for why that direction and not the other.
+ */
+export interface ParkingArea {
+  id: string;
+  name: string;
+  authority: Authority;
+  kind: AreaKind;
+  /** `way/30839161` — joins this record to a polygon in data/raw/osm-parking.geojson. */
+  osmId: string | null;
+  rate: Rate;
+  /** U-M permit colour ("Blue", "Orange", …). Absent for city areas. */
+  permitTier?: string;
+  provenance: Provenance;
+  /** Shown to the user verbatim when present. Keep it plain-language. */
+  note?: string;
+}
