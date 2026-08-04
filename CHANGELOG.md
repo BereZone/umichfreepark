@@ -25,6 +25,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Verified U-M rules in `docs/data-sources.md`: parking is open to the public outside posted enforcement hours, first-years and sophomores cannot hold a commuter permit, and U-M observes a third holiday list that matches neither the city's nor PCI's.
 - Rules engine calendar: Ann Arbor time-zone handling, computed floating holidays, and per-authority holiday lists for city meters, city structures, and U-M.
 - Raw OpenStreetMap parking geometry for Ann Arbor — 1,646 polygons, committed unedited so hand-tagging shows up as a reviewable diff.
+- Enforcement-hours parser turning U-M's 17 published spellings into evaluable schedules, with unparseable strings treated as enforced.
 
 ### Changed
 
