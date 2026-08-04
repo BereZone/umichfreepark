@@ -72,6 +72,14 @@ export {
 } from './ranking';
 
 export {
+  BUILDINGS,
+  buildingById,
+  searchBuildings,
+  type Building,
+  type BuildingMatch,
+} from './search';
+
+export {
   HOME_GAMES_2026,
   gameDayAt,
   gameDayWarning,

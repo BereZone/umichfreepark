@@ -37,6 +37,9 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Shared renderer contract and drawable geometry for the 73 mapped areas, extracted to 32 KB rather than bundling the 2 MB raw dataset.
 - Both map renderers: react-native-maps over Apple Maps on iOS, maplibre-gl over OpenFreeMap on web.
 - Map screen with a live free-count, a per-area detail panel, and a countdown to the next free/paid change.
+- List view with cheapest/closest/balanced sorting, duration selection, and trade-offs stated in words.
+- Building search that matches colloquial names — "the dude", "ugli", "the big house" — not just official ones.
+- Map and list share one destination and duration, so switching between them preserves the trip.
 
 ### Changed
 
