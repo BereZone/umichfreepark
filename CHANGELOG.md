@@ -54,7 +54,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 ### Changed
 
 - The map draws 161 parking areas, up from 101. Sixty more U-M lots now have a boundary and a label.
-- Which lots get a price label is now decided in one shared place instead of separately per platform, and the limit counts labels on your screen rather than in the whole dataset — so zooming in labels everything you can see, instead of spending the budget on lots a mile away.
+- Which lots get a price label is now decided in one shared place instead of separately per platform, and the limit counts labels on your screen rather than in the whole dataset — so zooming in labels everything you can see, instead of spending the budget on lots a mile away. Labels also step aside for one another rather than stacking, and where two lots are too close to label both, the free one keeps its label.
 
 ### Deprecated
 

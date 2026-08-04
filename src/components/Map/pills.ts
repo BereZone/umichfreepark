@@ -45,6 +45,43 @@ export interface Pillable {
 }
 
 /**
+ * The space a pill occupies on screen, in points, centred on its anchor.
+ *
+ * MapLibre resolves label collisions itself and would need none of this. Apple
+ * Maps does not: it draws every marker it is given, wherever it lands. Raising
+ * the cap without a spacing rule turned dense blocks of campus into a stack of
+ * unreadable "BLUE PERMIT" pills on iOS while the same data looked fine on the
+ * web — the old cap had been hiding that, not solving it.
+ *
+ * Two numbers rather than one radius, because a pill is nothing like a circle:
+ * it is about four times wider than it is tall. A single radius has to be
+ * chosen for the wide axis and then throws away vertical space that was never
+ * contested — set at 76pt it dropped four lots out of five on a street stacked
+ * north to south, which is most of campus. Testing the axes separately keeps
+ * the pills that sit above one another and drops only the ones that would
+ * actually collide.
+ *
+ * Sized from the real thing: `label` at 12pt bold inside `space.snug` padding,
+ * with the widest string the data produces ("YELLOW PERMIT").
+ */
+const PILL_WIDTH_PX = 104;
+const PILL_HEIGHT_PX = 26;
+
+/** Metres per pixel in Web Mercator. The standard tile-size-256 constant. */
+function metresPerPixel(zoom: number, latitude: number): number {
+  return (156_543.03392 * Math.cos((latitude * Math.PI) / 180)) / 2 ** zoom;
+}
+
+/** Would two pills anchored at these points overlap at this scale? */
+function pillsCollide(a: LatLng, b: LatLng, metresPerPx: number): boolean {
+  const eastWest = Math.abs(a.lon - b.lon) * Math.cos((a.lat * Math.PI) / 180) * 111_320;
+  const northSouth = Math.abs(a.lat - b.lat) * 110_540;
+  return (
+    eastWest < PILL_WIDTH_PX * metresPerPx && northSouth < PILL_HEIGHT_PX * metresPerPx
+  );
+}
+
+/**
  * Grow the cull rectangle slightly past the screen edge.
  *
  * A pill is anchored at its label point but drawn around it, so a lot whose
@@ -88,5 +125,20 @@ export function selectPills<T extends Pillable>(areas: readonly T[], viewport: V
     .sort((a, b) => Number(b.area.free) - Number(a.area.free) || a.index - b.index)
     .map(({ area }) => area);
 
-  return ranked.slice(0, MAX_VISIBLE_PILLS);
+  // Greedy in priority order, so where two lots are too close to label both,
+  // the free one keeps its pill and its neighbour goes quiet.
+  const centreLat = viewport.bounds
+    ? (viewport.bounds.north + viewport.bounds.south) / 2
+    : (ranked[0]?.labelPoint.lat ?? 42.28);
+  const metresPerPx = metresPerPixel(viewport.zoom, centreLat);
+
+  const chosen: T[] = [];
+  for (const area of ranked) {
+    if (chosen.length >= MAX_VISIBLE_PILLS) break;
+    const crowded = chosen.some((other) =>
+      pillsCollide(area.labelPoint, other.labelPoint, metresPerPx)
+    );
+    if (!crowded) chosen.push(area);
+  }
+  return chosen;
 }
