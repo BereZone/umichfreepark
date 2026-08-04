@@ -14,11 +14,19 @@ export default defineConfig({
     include: ['src/engine/**/*.test.ts', 'src/geo/**/*.test.ts'],
     environment: 'node',
 
-    // TEMPORARY, remove in phase 1 when the first engine tests land.
-    // Phase 0 commits data and automation only, and vitest exits 1 on an empty
-    // run, which would keep CI red for the whole phase. Leaving this on past
-    // phase 1 would be a real footgun: a typo'd `include` glob would then pass
-    // silently forever instead of failing loudly.
-    passWithNoTests: true,
+    /**
+     * The suite runs on a clock that is NOT Ann Arbor's, deliberately.
+     *
+     * Every engine function is supposed to compute in `America/Detroit`
+     * regardless of the device zone — a student home in California over break
+     * must still get Ann Arbor's answer. Running the tests in Detroit's own
+     * zone would make that property invisible: a function that accidentally
+     * read the device zone would pass every test and then hand a wrong "FREE"
+     * to anyone outside Michigan.
+     *
+     * Los Angeles is three hours behind, which puts a zone bug on the wrong
+     * side of midnight rather than merely an hour off, so it fails loudly.
+     */
+    env: { TZ: 'America/Los_Angeles' },
   },
 });

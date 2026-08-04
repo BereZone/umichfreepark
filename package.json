@@ -17,6 +17,8 @@
     "version:check": "node scripts/version.mjs check"
   },
   "dependencies": {
+    "@date-fns/tz": "^1.5.0",
+    "date-fns": "^4.4.0",
     "expo": "~57.0.9",
     "expo-constants": "~57.0.8",
     "expo-font": "~57.0.1",
