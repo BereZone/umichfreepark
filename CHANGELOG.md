@@ -28,6 +28,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Enforcement-hours parser turning U-M's 17 published spellings into evaluable schedules, with unparseable strings treated as enforced.
 - Free/paid status and next-transition countdown for city meters, city structures, and U-M lots, correct across daylight saving time.
 - 75 parking areas with verified rates and polygons: 7 DDA structures, 2 city lots, 2 meter zones, and 64 U-M lots joined to OpenStreetMap by lot code.
+- Precomputed walking times from all 80 buildings to all 73 mapped areas, so ranking works with no signal.
 
 ### Changed
 
@@ -36,6 +37,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 ### Removed
 
 ### Fixed
+
+- Michigan Stadium's coordinate sat inside the bowl, where no walking route can reach it; moved to the north pedestrian approach.
 
 ### Security
 

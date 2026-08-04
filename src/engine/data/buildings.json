@@ -967,11 +967,12 @@
         "the Stadium",
         "the Big H"
       ],
-      "lat": 42.26588,
-      "lon": -83.74871,
+      "lat": 42.2673,
+      "lon": -83.7488,
       "campus": "south",
       "coordSource": "osm",
-      "coordConfidence": "approximate"
+      "coordConfidence": "approximate",
+      "coordNote": "Moved to the north pedestrian approach on Main St. The geometric centre of the bowl (42.26588,-83.74871) is not on any walkable way, so every route to it failed and fell back to a straight-line estimate."
     },
     {
       "id": "oosterbaan-field-house",
