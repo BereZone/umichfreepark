@@ -47,6 +47,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Reduce-motion support and selection haptics on the map.
 - Tapping a list row selects that area, the same as tapping its polygon, and the selection follows you between the map and the list.
 - `docs/accessibility.md` — the accessibility audit, saying which properties are enforced by tests and which still need a real device.
+- CI builds the iOS app on pushes to `main` and fails if the app declares a permission it does not request. Everything else runs on Linux and never touches the native half.
 
 ### Changed
 
@@ -60,6 +61,9 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - 160 more U-M lots were absent because the map data decided whether a lot existed: a lot nobody had drawn in OpenStreetMap never appeared, even with published hours. Lots now ship with their rules whether or not anyone has mapped them.
 - First & William showed no rate at all. The city publishes it as permit-only, so it now says so.
 - Metered surface lots were treated as gated, showing them as paid on a Tuesday evening when they are free after 6pm.
+- The iOS build failed in three places because the project path contains a space, each one a path interpolated into a shell command without quotes. Two are patched in dependencies, one in a config plugin; renaming the directory would remove the need for all three.
+- The iOS app did not compile at all under Xcode 26: `expo-modules-jsi` uses Swift that the current compiler rejects. Patched locally until upstream fixes it, with a note saying when to drop the patch.
+- The iOS build declared background-location and motion permissions the app never requests, two of them carrying Expo's placeholder "Allow CURB to access your location" text. Only the When In Use string ships now, and the build fails if the others come back.
 - List rows announced themselves as buttons to a screen reader but did nothing when activated.
 - Tab bar glyphs were read aloud next to their own labels, so VoiceOver said "black diamond, Map".
 - The Learn screen still listed the First & William rate as unknown after it was resolved, and hardcoded a holiday count next to a computed one.

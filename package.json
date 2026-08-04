@@ -4,10 +4,11 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
+    "postinstall": "patch-package",
     "start": "expo start",
-    "ios": "expo start --ios",
+    "ios": "expo run:ios",
     "web": "expo start --web",
-    "android": "expo start --android",
+    "android": "expo run:android",
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
     "test": "vitest run",
@@ -23,7 +24,7 @@
   "dependencies": {
     "@date-fns/tz": "^1.5.0",
     "date-fns": "^4.4.0",
-    "expo": "~57.0.9",
+    "expo": "^57.0.10",
     "expo-constants": "~57.0.8",
     "expo-font": "~57.0.1",
     "expo-haptics": "~57.0.1",
@@ -50,6 +51,7 @@
     "@types/react": "~19.2.2",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~57.0.1",
+    "patch-package": "^8.0.1",
     "typescript": "~6.0.3",
     "vitest": "^3.2.4"
   }

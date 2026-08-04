@@ -52,3 +52,72 @@ jobs:
       # first ones land; see vitest.config.ts for why the runners are separate.
       # - name: Test (components)
       #   run: npm run test:components
+
+  # Everything above runs on Linux and therefore never touches the iOS half of
+  # this project. That gap is not theoretical: expo-modules-jsi shipped Swift
+  # the Xcode 26 compiler rejects, and the app did not compile at all for a
+  # while with the whole Linux suite green. Web builds either way, which is
+  # exactly what makes it easy to miss.
+  #
+  # Push-to-main only. macOS runners are slow, and the failure this catches
+  # comes from dependency updates rather than from day-to-day edits.
+  ios-build:
+    name: iOS builds
+    if: github.event_name == 'push'
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # postinstall runs patch-package. If a patch stops applying because the
+      # dependency moved, this fails here rather than at the compile step, and
+      # the message names the patch.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate the native project
+        run: npx expo prebuild -p ios --no-install
+
+      # The permission rule is a product decision, not a build detail: CURB asks
+      # for location When In Use and nothing else. Checking the generated plist
+      # is the only way to know, since a dependency can add keys back silently.
+      - name: Check iOS asks for no permissions it does not use
+        run: |
+          PLIST=ios/CURB/Info.plist
+          for key in NSLocationAlwaysUsageDescription \
+                     NSLocationAlwaysAndWhenInUseUsageDescription \
+                     NSMotionUsageDescription; do
+            if /usr/libexec/PlistBuddy -c "Print :$key" "$PLIST" >/dev/null 2>&1; then
+              echo "::error::$PLIST declares $key, which CURB never requests."
+              exit 1
+            fi
+          done
+          /usr/libexec/PlistBuddy -c "Print :NSLocationWhenInUseUsageDescription" "$PLIST" \
+            | grep -q 'PRODUCT_NAME' \
+            && { echo "::error::When In Use string is still the Expo placeholder."; exit 1; }
+          echo "Only NSLocationWhenInUseUsageDescription is declared, with a real purpose string."
+
+      - name: Install pods
+        run: npx pod-install
+
+      # xcodebuild directly rather than `expo run:ios`, and a generic
+      # destination rather than a named simulator: the point is that the code
+      # compiles, and pinning "iPhone 17 Pro" would fail whenever the runner
+      # image ships a different set of devices.
+      - name: Build for the simulator
+        run: |
+          xcodebuild \
+            -workspace ios/CURB.xcworkspace \
+            -scheme CURB \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -quiet \
+            build

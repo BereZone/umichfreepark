@@ -69,6 +69,39 @@ state also writes the word *Free* or *Paid*.
   and notes it works offline. No search match suggests nicknames. No destination
   explains what to do.
 
+## Permission strings
+
+CURB requests **location When In Use and nothing else**. It never asks for
+background location and never reads motion.
+
+That takes active effort, because `expo-location` adds three usage descriptions
+to `Info.plist` by default and two of them arrive with Expo's placeholder text,
+`"Allow $(PRODUCT_NAME) to access your location"` — the vague purpose string
+App Review rejects by name, attached to a permission the app does not use.
+
+The two location keys are suppressed through the plugin's own options in
+`app.json`. `NSMotionUsageDescription` has no such option and is deleted by
+`plugins/with-lean-ios-permissions.js`, which also **fails the build** if either
+Always key reappears or if the When In Use string is missing or still the
+placeholder. A dependency reintroducing them is silent otherwise: nothing
+breaks, the app simply starts declaring permissions nobody chose.
+
+Verified against the generated `ios/CURB/Info.plist`, not assumed from config.
+
+## Verified on the Simulator
+
+iOS 26.0, iPhone 17 Pro, 2026-08-04. The app builds natively, launches, and
+renders: Apple Maps underneath, the free-count reading 64 of 101, free areas
+drawn with a heavy solid green outline and a `FREE` pill, paid ones with a
+dashed outline, and the downtown meter district as a large dashed boundary.
+Safe areas are respected at the notch and the home indicator, and the tab bar
+shows Map / List / Learn.
+
+That is the encoding contract holding on the platform that does not run any of
+the unit tests — worth confirming by eye at least once, because `encoding.ts`
+being correct and `Map.native.tsx` translating it correctly are two different
+claims.
+
 ## Still open — needs a physical device
 
 These cannot be validated in the Simulator or by any test, and are the

@@ -30,6 +30,8 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "./plugins/with-lean-ios-permissions",
+      "./plugins/with-space-safe-bundle-phase",
       "expo-router",
       [
         "expo-splash-screen",
@@ -42,7 +44,9 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "CURB uses your location to show parking near you and how far each lot is to walk. Your location stays on your device and is never sent anywhere.",
+          "locationWhenInUsePermission": "CURB uses your location to show parking near you and how far each lot is to walk. Your location stays on your device and is never sent anywhere.",
+          "locationAlwaysAndWhenInUsePermission": false,
+          "locationAlwaysPermission": false,
           "isIosBackgroundLocationEnabled": false,
           "isAndroidBackgroundLocationEnabled": false
         }

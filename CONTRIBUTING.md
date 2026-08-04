@@ -93,3 +93,14 @@ npm test
 ```
 
 CI runs these on every push to `main`. Pushing directly to `main` is the expected workflow here; there is no pull-request requirement.
+
+If you touched anything native — `app.json`, a config plugin, a dependency with
+an iOS component — build it too:
+
+```bash
+rm -rf ios && npx expo run:ios
+```
+
+Those three commands above all run on Linux and pass happily while the iOS app
+fails to compile; that has already happened once. CI builds iOS on pushes to
+`main`, but finding out locally is faster than finding out from a red run.
