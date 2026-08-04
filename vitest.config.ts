@@ -17,6 +17,7 @@ export default defineConfig({
       // encoding.ts is pure and has no map dependency, so it belongs here
       // rather than under the component runner.
       'src/components/Map/encoding.test.ts',
+      'src/components/Map/geometry.test.ts',
     ],
     environment: 'node',
 
