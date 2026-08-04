@@ -92,11 +92,18 @@ function centroid(feature) {
   const ring = rings.reduce((best, r) => (ringArea(r) > ringArea(best) ? r : best), rings[0]);
   let lat = 0;
   let lon = 0;
-  for (const [x, y] of ring) {
+  // A closed ring repeats its first vertex last; averaging both copies
+  // double-weights that corner. See src/geo/polygons.ts.
+  const closed =
+    ring.length > 1 &&
+    ring[0][0] === ring[ring.length - 1][0] &&
+    ring[0][1] === ring[ring.length - 1][1];
+  const pts = closed ? ring.slice(0, -1) : ring;
+  for (const [x, y] of pts) {
     lon += x;
     lat += y;
   }
-  return { lat: lat / ring.length, lon: lon / ring.length };
+  return { lat: lat / pts.length, lon: lon / pts.length };
 }
 
 async function postWithRetry(body, attempts = 4) {

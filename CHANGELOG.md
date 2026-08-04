@@ -33,6 +33,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Home-game-day warnings for U-M lots, covering the seven confirmed 2026 dates.
 - Design tokens for colour, type, spacing, and motion, with light and dark schemes that both clear 4.5:1 contrast.
 - Map encoding as a single pure function, so both renderers derive appearance from one place.
+- Map-agnostic geometry helpers: winding normalization, bounding boxes, point-in-polygon, and a label point guaranteed to fall inside its lot.
 
 ### Changed
 
@@ -42,6 +43,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 ### Fixed
 
+- Polygon winding was reported backwards, and centroids double-counted the repeated closing vertex of a ring.
 - Library Lane's $5 cap was applied at every hour, under-quoting a midday stay; it now applies only to arrivals after 3pm on weekdays and any time Saturday.
 - Michigan Stadium's coordinate sat inside the bowl, where no walking route can reach it; moved to the north pedestrian approach.
 

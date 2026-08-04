@@ -53,13 +53,19 @@ function centroid(feature) {
     feature.geometry.type === 'Polygon'
       ? feature.geometry.coordinates[0]
       : feature.geometry.coordinates[0][0];
+  // Skip the repeated closing vertex; see src/geo/polygons.ts.
+  const closed =
+    ring.length > 1 &&
+    ring[0][0] === ring[ring.length - 1][0] &&
+    ring[0][1] === ring[ring.length - 1][1];
+  const pts = closed ? ring.slice(0, -1) : ring;
   let x = 0;
   let y = 0;
-  for (const [lon, lat] of ring) {
+  for (const [lon, lat] of pts) {
     x += lon;
     y += lat;
   }
-  return [y / ring.length, x / ring.length];
+  return [y / pts.length, x / pts.length];
 }
 
 /** Bounding box of each campus, derived from the building dataset. */
