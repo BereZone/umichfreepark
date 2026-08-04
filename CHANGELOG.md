@@ -21,6 +21,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - `make` targets for `bump`, `tag`, `untag`, and `check-version`, all delegating to that script.
 - CI on pushes to `main` and on pull requests; a tag-triggered release workflow that validates the tag, verifies version metadata, and builds a web export.
 - Issue templates, including a phone-friendly **parking data is wrong** report that asks only what the sign says and accepts a photo.
+- U-M lot-by-lot enforcement hours for all four enforced campuses — 150 lots with permit tier, address, and hours.
+- Verified U-M rules in `docs/data-sources.md`: parking is open to the public outside posted enforcement hours, first-years and sophomores cannot hold a commuter permit, and U-M observes a third holiday list that matches neither the city's nor PCI's.
 
 ### Changed
 

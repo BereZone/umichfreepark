@@ -53,15 +53,15 @@ Half-price meters are on the 300 block of S. First, the 300 and 400 blocks of N.
 
 **Fines:** $15 by end of next business day, $25 within 14 days, **$60 after 14 days**, $70 after 30. Plus a $3.50 service charge for online or phone payment.
 
-#### Two different free rules — do not conflate them
+#### Three different free rules — do not conflate them
 
-This is the single easiest way to ship a wrong "FREE", so it gets stated explicitly.
+This is the single easiest way to ship a wrong "FREE", so it gets stated explicitly. There is no shared rule here and no shared holiday list; each authority is its own case.
 
-| | Structures and gated lots | On-street meters |
-|---|---|---|
-| Paid | Mon–Sat | Mon–Sat 8am–6pm |
-| Free | **Sunday 4am → Monday 4am** | Evenings, **all day Sunday** |
-| Free holidays | "holidays observed by PCI Municipal Services" | 13 City-observed holidays |
+| | City structures and gated lots | City on-street meters | U-M permit lots |
+|---|---|---|---|
+| Paid | Mon–Sat | Mon–Sat 8am–6pm | Per-lot enforcement window |
+| Free | **Sunday 4am → Monday 4am** | Evenings, **all day Sunday** | Outside that lot's window — but 36 lots have none |
+| Free holidays | "holidays observed by PCI Municipal Services" | 13 City-observed holidays | 5 U-M holidays + a Christmas→New Year range |
 
 The structure window is Sunday 4am to Monday 4am, **not** midnight-to-midnight. A car parked at 2am Sunday is still in Saturday's paid period; a car still parked at 5am Monday is back in the paid period. A naive day-of-week check gets both ends wrong.
 
@@ -72,9 +72,59 @@ The structure window is Sunday 4am to Monday 4am, **not** midnight-to-midnight. 
 | [ltp.umich.edu](https://ltp.umich.edu/) | Permit categories, eligibility, rates, enforcement hours |
 | U-M campus parking map (linked from LTP) | Lot designations and locations |
 
-**Expect this to be the weakest link.** Lot-by-lot color designations and enforcement hours are less consistently published than the city's rates, and they change between academic years. Where enforcement hours aren't clearly published, the record is `community` with a caveat — not a guess dressed as a fact.
+The spec expected this to be the weakest link. **It isn't.** LTP publishes a lot-by-lot table — lot ID, name, address, enforcement hours, permit tier — for all four campuses it enforces. That is *more* granular than anything the city publishes. 150 lots, captured in `src/engine/data/umich-lots.json` by `scripts/fetch-umich-lots.mjs`.
 
-**Re-verify every August**, before the term starts.
+**Re-verify every August**, before the term starts. Re-running that script is the whole job.
+
+#### Why U-M data comes through the Internet Archive
+
+`ltp.umich.edu` sits behind Cloudflare bot protection and returns **403 to every automated request** — verified directly, including with a browser User-Agent. That is the university's call and we don't work around it.
+
+The Internet Archive crawls the site successfully. A Wayback capture is **not a secondary source**: it is a byte-for-byte copy of LTP's own page with a recorded capture date, which is strictly more provenance than a live fetch, because the date is recorded rather than assumed. What it costs is freshness, so every record carries the capture timestamp it came from.
+
+All four campus tables currently come from captures dated **2026-07-31** — three days before they were read. That is current for the 2026–27 year.
+
+#### The rule that makes the U-M half of the app work — verified 2026-08-03
+
+From the [Locations and Enforcement](https://ltp.umich.edu/parking/locations-and-enforcement/) page, verbatim:
+
+> Parking facilities are open to the public **outside enforcement hours**.
+
+Stated campus-wide, not as a per-lot carve-out. This is what lets CURB tell a student without a permit that a Blue lot is legal at 7pm.
+
+The corollary matters just as much: **36 of the 150 lots are enforced "24 hrs, 7 days"** and are therefore *never* open to the public. Almost all of the Medical campus falls in this bucket. Those must never render as free.
+
+#### Enforcement hours do not follow the permit color
+
+Some Yellow lots and some Blue lots share identical windows; some Blue structures are `6am–5pm, Mon–Sat` and others are `24 hrs, 7 days`. **Tier does not predict hours.** Any rule of the form "Blue lots are free after 6" is wrong, and the per-lot table is the only published authority. LTP's own pages tell users to check the sign at the entrance.
+
+The published strings are also not machine-uniform — 17 distinct formats across 150 lots, including `6am – 5pm, 7 Days` and `6am – 5pm Sun-Sat` meaning the same thing, and one lot with separate permit and visitor windows in a single cell. Parsing them is engine work, not fetch work.
+
+#### A third holiday list — do not merge it with the other two
+
+U-M suspends parking enforcement entirely on its own list, which matches **neither** the city's 13-day meter list nor PCI's unpublished structure list:
+
+> The regulations are in force throughout the calendar year except for: Memorial Day, Independence Day, Labor Day, Thanksgiving Day and the following day, Christmas through New Year's Day.
+
+Two things to encode carefully. It is much shorter than the city's list — **no MLK Day, no Presidents Day** — so a student off for MLK Day still pays at U-M. And "Christmas through New Year's Day" is a **multi-day range**, not a single date, which no other holiday rule in this app is.
+
+Three authorities, three holiday rules. The engine needs per-authority holiday sets; a single global list would be wrong for at least two of them.
+
+#### Class-year eligibility — verified 2026-08-03
+
+> Student parking permits are available to junior, senior and graduate students. […] Juniors and seniors are limited to the Student Orange permit; additional options are available to graduate students. All students, including freshmen and sophomores, are eligible to purchase Student Storage parking permits.
+
+First-years and sophomores **cannot** hold a commuter permit. Storage only, and Storage is a park-it-and-leave-it lot, not a way to get to class. This is why the default profile is *no permit, first-year* — the most restrictive case, so an unconfigured app never tells someone they can park where they can't.
+
+The eligibility page itself was last captured 2025-06-18, but the restriction is **independently restated on the Student Orange page in the current 2026-07-31 capture** ("Juniors, Seniors and Graduate Students are eligible…"), which is what makes it `verified` rather than `community`.
+
+#### U-M open questions
+
+- **FY27 pricing for Student Yellow/After Hours, Student Storage, and Blue** is unconfirmed — only FY26 captures exist for those three pages. Student Orange ($96.00 for a full year bought July 1–14) and Student After Hours ($78.00) *are* confirmed for FY27. Nothing unconfirmed ships as a price.
+- **No 2026–27 football parking notice** has been published or captured. The structural rules (out by 10pm Friday, two hours post-game, lots south of Hill Street) are stable across the 2024 and 2025 notices, but the 2026 home-game *dates* still need a source — this is the same gap as the unconfirmed Nov 21 date.
+- **The City of Ann Arbor's own game-day policy** was not found. U-M's policy governs U-M lots; what happens to city meters near the stadium on a home Saturday is still unsourced.
+- **No stable URL for a current campus-wide parking map PDF** could be confirmed.
+- **Lot `M18` appears twice** in LTP's Medical table, as both "P2 University of Hospital" and "P3 Taubman Center", same address. Upstream quirk, faithfully preserved. Both are 24/7 Visitor, so it cannot produce a wrong "free" — but any join on lot ID must expect it.
 
 ### Geometry
 
