@@ -53,11 +53,23 @@ export type Rate =
       kind: 'hourly';
       centsPerHour: number;
       /**
-       * Some facilities cap the hourly rate inside a window — Library Lane is
-       * $5.00 from 3pm, provided you exit by 6am. The cap is not a flat fee:
-       * below the cap you still pay by the hour.
+       * Some facilities cap the hourly rate, but only for cars that ENTER
+       * inside a particular window — Library Lane is $5.00 after 3pm on
+       * weekdays and all day Saturday, provided you exit by 6am.
+       *
+       * `windows` is not decoration. Applying the cap unconditionally
+       * under-quotes the price at every other hour, which is the wrong
+       * direction to be wrong: it tells a student parking is cheaper than it
+       * is. Empty `windows` means the cap always applies.
+       *
+       * The cap is also not a flat fee — below it you still pay by the hour.
        */
-      cap?: { cents: number; note: string };
+      cap?: {
+        cents: number;
+        note: string;
+        /** Entry-time windows in which the cap applies. Evaluated against arrival. */
+        windows: import('./enforcement').EnforcementSchedule[];
+      };
     }
   /** A flat charge per entry, regardless of duration. */
   | { kind: 'flat'; cents: number }

@@ -29,6 +29,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Free/paid status and next-transition countdown for city meters, city structures, and U-M lots, correct across daylight saving time.
 - 75 parking areas with verified rates and polygons: 7 DDA structures, 2 city lots, 2 meter zones, and 64 U-M lots joined to OpenStreetMap by lot code.
 - Precomputed walking times from all 80 buildings to all 73 mapped areas, so ranking works with no signal.
+- Eligibility, cost, and ranking by cheapest, closest, or balanced, defaulting to a first-year with no permit.
 
 ### Changed
 
@@ -38,6 +39,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 ### Fixed
 
+- Library Lane's $5 cap was applied at every hour, under-quoting a midday stay; it now applies only to arrivals after 3pm on weekdays and any time Saturday.
 - Michigan Stadium's coordinate sat inside the bowl, where no walking route can reach it; moved to the north pedestrian approach.
 
 ### Security

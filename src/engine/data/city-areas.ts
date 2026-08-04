@@ -69,9 +69,19 @@ export const CITY_AREAS: ParkingArea[] = [
       centsPerHour: 180,
       // Verbatim from PCI: "$1.80 per hour- Max $5.00. After 3PM M-F. All Day
       // Saturday. Must exit by 6AM the following day or normal rates apply."
-      // The exit condition is load-bearing: overstay it and the cap is void,
-      // so the app must state it rather than just showing "$5 cap".
-      cap: { cents: 500, note: '$5 max after 3pm weekdays and all Saturday — you must exit by 6am' },
+      //
+      // Both conditions are load-bearing. The cap depends on when you ARRIVE,
+      // so it must not be applied to a car that entered at noon; and the exit
+      // condition voids it entirely, so the note has to say so rather than
+      // just advertising "$5 cap".
+      cap: {
+        cents: 500,
+        note: '$5 max if you arrive after 3pm on a weekday or any time Saturday — you must exit by 6am',
+        windows: [
+          { kind: 'daily', days: [1, 2, 3, 4, 5], start: 15 * 60, end: 24 * 60 },
+          { kind: 'daily', days: [6], start: 0, end: 24 * 60 },
+        ],
+      },
     },
     provenance: VERIFIED,
     note: 'Cheapest downtown option after 3pm, as long as you are out by 6am.',
