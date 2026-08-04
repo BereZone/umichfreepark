@@ -15,7 +15,7 @@ import {
   MINUTES_PER_DAY,
   type EnforcementSchedule,
 } from './enforcement';
-import type { Authority } from './types';
+import type { Authority, Rate } from './types';
 
 /**
  * On-street meters: Monday through Saturday, 8am to 6pm.
@@ -135,6 +135,68 @@ export function statusAt(
     certain: true,
     reason: freeReason(authority, at),
   };
+}
+
+/**
+ * The minimum an area has to tell us before we can price its clock.
+ *
+ * Structural rather than `ResolvedArea` because that type is declared in
+ * data/areas.ts, which imports this file. Anything shaped like this works,
+ * which also keeps the tests free of the whole dataset.
+ */
+export interface SchedulableArea {
+  authority: Authority;
+  rate: Rate;
+  schedule: EnforcementSchedule | null;
+}
+
+/**
+ * Does this AREA cost money right now.
+ *
+ * `statusAt` answers a narrower question — is this schedule active — and that
+ * is the right question for a meter or a permit lot, where the schedule *is*
+ * the price. It is the wrong question for a lot that is free by rule.
+ *
+ * U-M's park-and-ride lots are the case. LTP's Free Parking page says outright
+ * that they need no permit and cost nothing, and areas.ts already gives them
+ * `rate: { kind: 'free' }` — but they still carry posted enforcement hours,
+ * because the hours govern who the lot is *for*, not what it costs. Asking
+ * `statusAt` alone therefore reported SC22 as paid 24 hours a day, seven days a
+ * week, about a lot the university publishes as free. Three lots were wrong all
+ * the time, and every one of them was wrong in the direction that hides a free
+ * space from someone looking for one.
+ *
+ * So: the rate decides first, and the schedule decides the rest. Callers that
+ * hold an area should use this; `statusAt` stays for the two city schedules and
+ * for tests that want the schedule question on its own.
+ */
+export function statusOf(area: SchedulableArea, at: Date): ParkingStatus {
+  if (area.rate.kind === 'free') {
+    return {
+      paid: false,
+      certain: true,
+      reason: 'Free — no permit required, any hour',
+    };
+  }
+  return statusAt(area.authority, area.schedule, at);
+}
+
+/**
+ * When this AREA next flips, or null if it never does.
+ *
+ * The area-level counterpart to `nextTransition`, and it exists for the same
+ * reason `statusOf` does: a permanently free lot has no next change, and
+ * scanning its enforcement window would produce a countdown to an event that
+ * does not happen. Null already means "no change ahead", so free lots simply
+ * take that answer directly.
+ */
+export function nextTransitionOf(
+  area: SchedulableArea,
+  at: Date,
+  options: { horizonDays?: number } = {}
+): { at: Date; paid: boolean } | null {
+  if (area.rate.kind === 'free') return null;
+  return nextTransition(area.authority, area.schedule, at, options);
 }
 
 function freeReason(authority: Authority, at: Date): string {

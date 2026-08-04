@@ -42,8 +42,11 @@ export {
   CITY_METER_SCHEDULE,
   CITY_STRUCTURE_SCHEDULE,
   nextTransition,
+  nextTransitionOf,
   statusAt,
+  statusOf,
   type ParkingStatus,
+  type SchedulableArea,
 } from './rules';
 
 export { AREAS, MAPPABLE_AREAS, areaById, type ResolvedArea } from './data/areas';

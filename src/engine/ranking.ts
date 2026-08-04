@@ -9,7 +9,7 @@
 
 import type { ResolvedArea } from './data/areas';
 import { isEnforced } from './enforcement';
-import { statusAt, type ParkingStatus } from './rules';
+import { statusOf, type ParkingStatus } from './rules';
 import type { Rate } from './types';
 import { walkSeconds } from './walk';
 
@@ -181,7 +181,7 @@ export function rank(
   }
 ): RankedOption[] {
   const options: RankedOption[] = areas.map((area) => {
-    const status = statusAt(area.authority, area.schedule, at);
+    const status = statusOf(area, at);
     const eligibility = eligibilityFor(area, profile, status);
     return {
       area,

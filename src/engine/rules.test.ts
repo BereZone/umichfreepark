@@ -6,8 +6,11 @@ import {
   CITY_METER_SCHEDULE,
   CITY_STRUCTURE_SCHEDULE,
   nextTransition,
+  nextTransitionOf,
   statusAt,
+  statusOf,
 } from './rules';
+import { AREAS } from './data/areas';
 
 const utc = (iso: string) => new Date(iso);
 
@@ -260,5 +263,81 @@ describe('nextTransition drives the countdown', () => {
     const next = nextTransition('city-meter', CITY_METER_SCHEDULE, at)!;
     expect(next.paid).toBe(true);
     expect(stamp(next.at)).toBe('2026-11-12 08:00');
+  });
+});
+
+describe('statusOf — the rate has the first word', () => {
+  const parkRide = {
+    authority: 'umich' as const,
+    rate: { kind: 'free' as const },
+    // The posted window a park-and-ride really does carry. It says who the lot
+    // is for, not what it costs, which is the whole point of this test.
+    schedule: parseEnforcementHours('7am – 7pm, Mon – Fri'),
+  };
+
+  const permitLot = {
+    authority: 'umich' as const,
+    rate: { kind: 'permit-only' as const },
+    schedule: parseEnforcementHours('7am – 7pm, Mon – Fri'),
+  };
+
+  /** Tuesday 2026-08-04, 12:00 EDT — squarely inside that window. */
+  const insideWindow = utc('2026-08-04T16:00:00Z');
+  /** Tuesday 2026-08-04, 22:00 EDT — outside it. */
+  const outsideWindow = utc('2026-08-05T02:00:00Z');
+
+  it('reports a free lot as free inside its posted hours', () => {
+    // The bug this replaced: statusAt saw an active schedule and said "paid"
+    // about a lot LTP publishes as free with no permit required.
+    expect(statusOf(parkRide, insideWindow).paid).toBe(false);
+  });
+
+  it('reports a free lot as free outside them too', () => {
+    expect(statusOf(parkRide, outsideWindow).paid).toBe(false);
+  });
+
+  it('says so with certainty, since nothing about it is inferred', () => {
+    const status = statusOf(parkRide, insideWindow);
+    expect(status.certain).toBe(true);
+    expect(status.reason).toMatch(/free/i);
+  });
+
+  it('never offers a countdown for a lot that does not change', () => {
+    // A free lot with a schedule would otherwise produce a countdown to 7pm,
+    // implying something happens then. Nothing does.
+    expect(nextTransitionOf(parkRide, insideWindow)).toBeNull();
+  });
+
+  it('still defers to the schedule for everything that is not free', () => {
+    expect(statusOf(permitLot, insideWindow).paid).toBe(true);
+    expect(statusOf(permitLot, outsideWindow).paid).toBe(false);
+    expect(nextTransitionOf(permitLot, insideWindow)).not.toBeNull();
+  });
+
+  it('agrees with statusAt wherever the rate is not free', () => {
+    for (const at of [insideWindow, outsideWindow]) {
+      expect(statusOf(permitLot, at)).toEqual(
+        statusAt(permitLot.authority, permitLot.schedule, at)
+      );
+    }
+  });
+});
+
+describe('every park-and-ride in the shipped data', () => {
+  const parkRides = AREAS.filter((a) => a.rate.kind === 'free');
+
+  it('exists — otherwise this suite is asserting nothing', () => {
+    expect(parkRides.length).toBeGreaterThan(0);
+  });
+
+  it('is free at every hour of the week', () => {
+    // Steps of 5 hours to cover every weekday and every part of the day
+    // without walking 168 instants.
+    for (const area of parkRides) {
+      for (let hour = 0; hour < 168; hour += 5) {
+        const at = new Date(utc('2026-08-03T04:00:00Z').getTime() + hour * 3_600_000);
+        expect(statusOf(area, at).paid, `${area.id} at ${stamp(at)}`).toBe(false);
+      }
+    }
   });
 });

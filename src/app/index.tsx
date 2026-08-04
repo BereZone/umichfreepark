@@ -12,12 +12,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { MAP_AREAS, Map, mapAreaById } from '../components/Map';
 import {
+  AREAS,
   DEFAULT_PROFILE,
   areaById,
   eligibilityFor,
   gameDayWarning,
-  nextTransition,
-  statusAt,
+  nextTransitionOf,
+  statusOf,
 } from '../engine';
 import * as Haptics from 'expo-haptics';
 
@@ -42,22 +43,35 @@ export default function MapScreen() {
   const selected = selectedAreaId ? areaById.get(selectedAreaId) : null;
 
   /**
-   * Recomputed each tick, which is cheap: statusAt is a handful of comparisons
-   * across 73 areas. The expensive thing on a tick is re-rendering markers,
-   * which the renderers handle themselves.
+   * The count is over EVERY area CURB knows, not the ones it can draw.
+   *
+   * It used to read `MAP_AREAS`, and so reported "0 / 101" while the app held
+   * rules for 262 areas. Nothing labelled that 101 as a subset, so the
+   * denominator read as the size of the inventory — and the numerator was a
+   * count of free parking that quietly excluded every lot without a polygon.
+   * Two different wrong numbers from one substitution.
+   *
+   * Which set is right follows from what the number is for: it answers "how
+   * much free parking is there right now", a question about Ann Arbor, not
+   * about our geometry coverage. The list view already answers it over all
+   * areas, and the two must not disagree.
+   *
+   * Recomputed each tick, which is cheap — statusOf is a handful of comparisons
+   * — and the expensive part of a tick is re-rendering markers, which the
+   * renderers handle themselves.
    */
   const summary = useMemo(() => {
     let free = 0;
-    for (const { area } of MAP_AREAS) {
-      if (!statusAt(area.authority, area.schedule, now).paid) free += 1;
+    for (const area of AREAS) {
+      if (!statusOf(area, now).paid) free += 1;
     }
-    return { free, total: MAP_AREAS.length };
+    return { free, total: AREAS.length };
   }, [now]);
 
   const detail = useMemo(() => {
     if (!selected) return null;
-    const status = statusAt(selected.authority, selected.schedule, now);
-    const next = nextTransition(selected.authority, selected.schedule, now);
+    const status = statusOf(selected, now);
+    const next = nextTransitionOf(selected, now);
     return {
       status,
       eligibility: eligibilityFor(selected, DEFAULT_PROFILE, status),
