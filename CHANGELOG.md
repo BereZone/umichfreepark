@@ -31,6 +31,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Precomputed walking times from all 80 buildings to all 73 mapped areas, so ranking works with no signal.
 - Eligibility, cost, and ranking by cheapest, closest, or balanced, defaulting to a first-year with no permit.
 - Home-game-day warnings for U-M lots, covering the seven confirmed 2026 dates.
+- Design tokens for colour, type, spacing, and motion, with light and dark schemes that both clear 4.5:1 contrast.
+- Map encoding as a single pure function, so both renderers derive appearance from one place.
 
 ### Changed
 

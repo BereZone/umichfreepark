@@ -11,7 +11,13 @@ import { defineConfig } from 'vitest/config';
  */
 export default defineConfig({
   test: {
-    include: ['src/engine/**/*.test.ts', 'src/geo/**/*.test.ts'],
+    include: [
+      'src/engine/**/*.test.ts',
+      'src/geo/**/*.test.ts',
+      // encoding.ts is pure and has no map dependency, so it belongs here
+      // rather than under the component runner.
+      'src/components/Map/encoding.test.ts',
+    ],
     environment: 'node',
 
     /**
