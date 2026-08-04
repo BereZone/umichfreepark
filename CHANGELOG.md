@@ -35,6 +35,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Map encoding as a single pure function, so both renderers derive appearance from one place.
 - Map-agnostic geometry helpers: winding normalization, bounding boxes, point-in-polygon, and a label point guaranteed to fall inside its lot.
 - Shared renderer contract and drawable geometry for the 73 mapped areas, extracted to 32 KB rather than bundling the 2 MB raw dataset.
+- Both map renderers: react-native-maps over Apple Maps on iOS, maplibre-gl over OpenFreeMap on web.
 
 ### Changed
 
