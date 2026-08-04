@@ -26,6 +26,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Rules engine calendar: Ann Arbor time-zone handling, computed floating holidays, and per-authority holiday lists for city meters, city structures, and U-M.
 - Raw OpenStreetMap parking geometry for Ann Arbor — 1,646 polygons, committed unedited so hand-tagging shows up as a reviewable diff.
 - Enforcement-hours parser turning U-M's 17 published spellings into evaluable schedules, with unparseable strings treated as enforced.
+- Free/paid status and next-transition countdown for city meters, city structures, and U-M lots, correct across daylight saving time.
 
 ### Changed
 
