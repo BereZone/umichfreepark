@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "data:polygons": "node scripts/fetch-osm-parking.mjs",
+    "data:umich-lots": "node scripts/fetch-umich-lots.mjs",
     "data:walk-matrix": "node scripts/build-walk-matrix.mjs",
     "version:check": "node scripts/version.mjs check"
   },

@@ -24,6 +24,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - U-M lot-by-lot enforcement hours for all four enforced campuses — 150 lots with permit tier, address, and hours.
 - Verified U-M rules in `docs/data-sources.md`: parking is open to the public outside posted enforcement hours, first-years and sophomores cannot hold a commuter permit, and U-M observes a third holiday list that matches neither the city's nor PCI's.
 - Rules engine calendar: Ann Arbor time-zone handling, computed floating holidays, and per-authority holiday lists for city meters, city structures, and U-M.
+- Raw OpenStreetMap parking geometry for Ann Arbor — 1,646 polygons, committed unedited so hand-tagging shows up as a reviewable diff.
 
 ### Changed
 

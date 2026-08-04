@@ -128,7 +128,13 @@ The eligibility page itself was last captured 2025-06-18, but the restriction is
 
 ### Geometry
 
-Polygons come from [OpenStreetMap](https://www.openstreetmap.org/) via the [Overpass API](https://overpass-api.de/), queried by `scripts/fetch-osm-parking.mjs`. Most Ann Arbor lots and structures are already tagged `amenity=parking`. Raw output is committed un-edited so that hand-tagging appears as a reviewable diff.
+Polygons come from [OpenStreetMap](https://www.openstreetmap.org/) via the [Overpass API](https://overpass-api.de/), queried by `scripts/fetch-osm-parking.mjs` (`npm run data:polygons`). Raw output is committed **un-edited** to `data/raw/osm-parking.geojson` so that hand-tagging appears as a reviewable diff.
+
+As of 2026-08-03: **1,646 features** — 1,634 polygons and 12 multipolygons — of which only 129 carry a `name`. That count is not the target dataset. It includes every private residential and business lot in the bbox; the ~25–30 areas CURB actually models get selected by hand out of it.
+
+`amenity=parking_space` is deliberately excluded — that is per-space granularity, thousands of features for a handful of structures, and not what CURB draws.
+
+**This file is geometry only.** It is not a source of truth for rates, access, or enforcement. OSM `fee` and `access` tags are present and are frequently stale, incomplete, or free-text (one Ann Arbor lot tags `fee` as `yes @ (visitor AND Mo-Fr 06:00-17:00)`). Rules come from the authorities, hand-verified; OSM only answers "where is the polygon."
 
 OSM data is ODbL-licensed, which is what permits us to ship it and to precompute walking times from it.
 
