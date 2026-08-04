@@ -49,6 +49,13 @@ export default function RootLayout() {
                 tabBarIcon: ({ color }) => <TabGlyph color={color} glyph="≡" />,
               }}
             />
+            <Tabs.Screen
+              name="learn"
+              options={{
+                title: 'Learn',
+                tabBarIcon: ({ color }) => <TabGlyph color={color} glyph="?" />,
+              }}
+            />
           </Tabs>
           <StatusBar style="auto" />
         </TripProvider>

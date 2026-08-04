@@ -21,6 +21,7 @@ import {
   type RankedOption,
   type RankingMode,
 } from '../engine';
+import { BuildingSearch } from '../components/BuildingSearch';
 import { useNow } from '../hooks/use-now';
 import { DURATION_OPTIONS, useTrip } from '../state/trip';
 import { MIN_TOUCH_TARGET, radius, space, tabularNumbers, type } from '../theme';
@@ -42,7 +43,8 @@ export default function ListScreen() {
   // A minute is enough here: the list shows costs and walk times, and a
   // per-second tick would re-sort 75 rows under the user's thumb for nothing.
   const now = useNow(60_000);
-  const { destination, durationHours, setDurationHours, mode, setMode } = useTrip();
+  const { destination, setDestination, durationHours, setDurationHours, mode, setMode } =
+    useTrip();
 
   const ranked = useMemo(() => {
     if (!destination) return [];
@@ -63,6 +65,7 @@ export default function ListScreen() {
         <Text style={[type.heading, { color: colors.textMuted }]}>
           {destination?.name ?? 'nowhere selected'}
         </Text>
+        <BuildingSearch value={destination} onSelect={setDestination} />
       </View>
 
       <View style={styles.controls} accessibilityRole="radiogroup" accessibilityLabel="Sort by">

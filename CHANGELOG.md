@@ -40,6 +40,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - List view with cheapest/closest/balanced sorting, duration selection, and trade-offs stated in words.
 - Building search that matches colloquial names — "the dude", "ugli", "the big house" — not just official ones.
 - Map and list share one destination and duration, so switching between them preserves the trip.
+- Learn screen covering the fine schedule, the three sets of rules, permit eligibility, free buses, and what we don't know.
 
 ### Changed
 
