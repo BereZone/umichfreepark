@@ -22,7 +22,9 @@
 import { parseEnforcementHours, type EnforcementSchedule } from '../enforcement';
 import { CITY_METER_SCHEDULE, CITY_STRUCTURE_SCHEDULE } from '../rules';
 import type { ParkingArea, Rate } from '../types';
+import areaPolygons from './area-polygons.json';
 import { CITY_AREAS } from './city-areas';
+import { METER_LOT_AREAS, ON_STREET_METER_AREA } from './meter-lots';
 import umichAreas from './umich-areas.json';
 
 /** An area with its schedule resolved, which is what the engine actually consumes. */
@@ -74,7 +76,11 @@ const CITY_SCHEDULES: Record<string, EnforcementSchedule> = {
   'city-structure': CITY_STRUCTURE_SCHEDULE,
 };
 
-const resolvedCity: ResolvedArea[] = CITY_AREAS.map((area) => ({
+const resolvedCity: ResolvedArea[] = [
+  ...CITY_AREAS,
+  ...METER_LOT_AREAS,
+  ON_STREET_METER_AREA,
+].map((area) => ({
   ...area,
   schedule: CITY_SCHEDULES[area.authority] ?? null,
 }));
@@ -103,5 +109,15 @@ export const AREAS: ResolvedArea[] = [...resolvedCity, ...resolvedUmich];
 
 export const areaById = new Map(AREAS.map((a) => [a.id, a]));
 
-/** Areas whose polygon we know, i.e. those the map can actually draw. */
-export const MAPPABLE_AREAS = AREAS.filter((a) => a.osmId !== null);
+/**
+ * Areas the map can actually draw.
+ *
+ * Keyed on having a polygon, NOT on having an `osmId`. Those used to be the
+ * same question and are not any more: the city's own GIS supplies the meter-lot
+ * and meter-district shapes, which have no OSM id at all, while plenty of U-M
+ * lots have neither. Geometry presence is the honest test, and it keeps this
+ * list in step with what src/components/Map/geometry.ts can build.
+ */
+const HAS_POLYGON = new Set(Object.keys(areaPolygons.polygons));
+
+export const MAPPABLE_AREAS = AREAS.filter((a) => HAS_POLYGON.has(a.id));

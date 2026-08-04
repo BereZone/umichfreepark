@@ -14,6 +14,9 @@
     "test:watch": "vitest",
     "data:polygons": "node scripts/fetch-osm-parking.mjs",
     "data:umich-lots": "node scripts/fetch-umich-lots.mjs",
+    "data:umich-areas": "node scripts/build-umich-areas.mjs",
+    "data:dda": "node scripts/fetch-dda-parking.mjs",
+    "data:area-polygons": "node scripts/build-area-polygons.mjs",
     "data:walk-matrix": "node scripts/build-walk-matrix.mjs",
     "version:check": "node scripts/version.mjs check"
   },

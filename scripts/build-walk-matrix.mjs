@@ -70,26 +70,29 @@ function haversineMetres(a, b) {
 const fallbackSeconds = (a, b) =>
   Math.round((haversineMetres(a, b) * DETOUR_FACTOR) / WALK_METRES_PER_SECOND);
 
-/** Area of a ring, used to pick the largest ring of a multipolygon. */
-function ringArea(ring) {
-  let sum = 0;
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    sum += (ring[j][0] - ring[i][0]) * (ring[j][1] + ring[i][1]);
-  }
-  return Math.abs(sum / 2);
-}
+/**
+ * Areas that have a shape but are not somewhere you walk to.
+ *
+ * `downtown-meters` is the DDA parking district — roughly a square kilometre of
+ * downtown and campus edge. Routing to its centroid would answer a question
+ * nobody asked: someone standing at the Michigan Union would be told the
+ * downtown meters are a twelve-minute walk when there are metered blocks
+ * directly outside. Since no authority publishes where the individual meters
+ * are, the truthful move is no walk time rather than a confidently wrong one.
+ * `walkSeconds` returns null and the UI presents the district as context.
+ */
+const NOT_A_DESTINATION = new Set(['downtown-meters']);
 
 /**
- * Centroid of a polygon feature.
+ * Centroid of a polygon.
  *
- * Uses the vertex mean of the largest outer ring rather than the true area
- * centroid. For a parking lot the two are within a few metres, and the vertex
- * mean cannot land outside a concave lot the way a bounding-box centre can.
+ * Uses the vertex mean of the exterior ring rather than the true area centroid.
+ * For a parking lot the two are within a few metres, and the vertex mean cannot
+ * land outside a concave lot the way a bounding-box centre can.
  */
-function centroid(feature) {
-  const g = feature.geometry;
-  const rings = g.type === 'Polygon' ? [g.coordinates[0]] : g.coordinates.map((p) => p[0]);
-  const ring = rings.reduce((best, r) => (ringArea(r) > ringArea(best) ? r : best), rings[0]);
+function centroidOfRings(allRings) {
+  // Ring 0 is the exterior; any others are holes and must not pull the centre.
+  const ring = allRings[0];
   let lat = 0;
   let lon = 0;
   // A closed ring repeats its first vertex last; averaging both copies
@@ -137,36 +140,25 @@ async function main() {
   const limit = limitArg === -1 ? Infinity : Number(process.argv[limitArg + 1]);
 
   const buildings = read('src/engine/data/buildings.json').buildings;
-  const geo = read('data/raw/osm-parking.geojson');
-  const cityAreaIds = read('src/engine/data/umich-areas.json');
-
-  // Rebuild the mappable-area list the same way src/engine/data/areas.ts does,
-  // without importing TypeScript into a plain-node script.
-  const byOsmId = new Map(geo.features.map((f) => [f.properties.osm_id, f]));
-  const cityOsmIds = [
-    ['ann-ashley', 'way/30838959'],
-    ['fourth-washington', 'way/30839085'],
-    ['fourth-william', 'way/30839105'],
-    ['library-lane', 'way/30839120'],
-    ['maynard', 'way/30839161'],
-    ['liberty-square', 'way/30839192'],
-    ['forest', 'way/30839268'],
-    ['south-ashley-lot', 'way/30839328'],
-    ['first-william-lot', 'way/495081613'],
-  ];
-  const areas = [
-    ...cityOsmIds.map(([id, osmId]) => ({ id, osmId })),
-    // Lots with no polygon have no centroid to route to. They ship without a
-    // walk time rather than with an invented one; walkSeconds returns null and
-    // ranking sorts them last on distance instead of pretending they are close.
-    ...cityAreaIds.areas.filter((a) => a.osmId).map((a) => ({ id: a.id, osmId: a.osmId })),
-  ]
-    .filter(({ id, osmId }) => {
-      if (byOsmId.has(osmId)) return true;
-      console.log(`  skipping ${id}: no polygon for ${osmId}`);
-      return false;
-    })
-    .map(({ id, osmId }) => ({ id, ...centroid(byOsmId.get(osmId)) }))
+  /*
+   * Route to exactly the areas the map can draw, by reading the same polygon
+   * file src/engine/data/areas.ts derives MAPPABLE_AREAS from.
+   *
+   * This used to rebuild the list from OSM plus a hardcoded copy of the city
+   * ids, which meant three places had to agree on what "mappable" meant. They
+   * stopped agreeing the moment the city's GIS started supplying shapes that
+   * have no OSM id. One file now decides, and walk.test.ts asserts the matrix
+   * and MAPPABLE_AREAS still line up.
+   *
+   * Areas with no polygon have no centroid to route to. They ship without a
+   * walk time rather than with an invented one: walkSeconds returns null and
+   * ranking sorts them last on distance instead of pretending they are close.
+   */
+  const { polygons } = read('src/engine/data/area-polygons.json');
+  const areas = Object.entries(polygons)
+    .filter(([id]) => !NOT_A_DESTINATION.has(id))
+    .map(([id, entry]) => ({ id, ...centroidOfRings(entry.rings) }))
+    .sort((a, b) => a.id.localeCompare(b.id))
     .slice(0, limit);
 
   const sources = buildings.slice(0, limit).map((b) => ({ id: b.id, lat: b.lat, lon: b.lon }));

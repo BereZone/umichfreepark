@@ -132,38 +132,28 @@ export const CITY_AREAS: ParkingArea[] = [
     authority: 'city-structure',
     kind: 'lot',
     osmId: 'way/495081613',
-    // PCI's page for this facility lists ONLY monthly parking, which suggests it
-    // may be permit-only rather than hourly. Two primary sources also disagree
-    // on its address (PCI says 300 First St; the DDA FAQ says 216 W. William).
-    // Until that is resolved it ships with no rate and a visible caveat rather
-    // than a plausible-looking $2.60.
-    rate: { kind: 'unknown' },
+    // Resolved 2026-08-04. PCI's page listed only monthly parking, which hinted
+    // at permit-only but did not say it, so this shipped with no rate. The
+    // city's own GIS settles it: the DDA lot layer tags this one
+    // `TypeOfParking: "Permit Only"` while every other lot in the layer is
+    // "Hourly". That is the operator's own record, so it is verified now.
+    //
+    // The address disagreement stands (PCI says 300 First St; the DDA FAQ says
+    // 216 W. William) but no longer affects what a user is told.
+    rate: { kind: 'permit-only' },
     provenance: {
-      lastVerified: '2026-08-03',
-      source: 'https://pcia2.com/parking-locations-availability/',
-      confidence: 'community',
+      lastVerified: '2026-08-04',
+      source:
+        'https://a2-mi.maps.arcgis.com/home/item.html?id=d62a590c5155496680dfa8d3f129f185',
+      confidence: 'verified',
     },
-    note: 'May be permit-only — we could not confirm an hourly rate. Check the sign before you park.',
+    note: 'Permit only — there is no hourly rate to buy here.',
   },
 
   // --- On-street meters ----------------------------------------------------
-  // Modelled as one zone rather than per-space. Meter-level geometry is not in
-  // OSM at usable quality, and a student choosing where to park is choosing a
-  // block, not a space.
-  {
-    id: 'downtown-meters',
-    name: 'Downtown meters',
-    authority: 'city-meter',
-    kind: 'meter-zone',
-    osmId: null,
-    rate: LOT_RATE,
-    provenance: {
-      lastVerified: '2026-08-03',
-      source: A2GOV_PARKING,
-      confidence: 'verified',
-    },
-    note: 'Free evenings, all day Sunday, and on city holidays.',
-  },
+  // The general downtown meter district lives in meter-lots.ts, because its
+  // geometry is generated from the city's GIS. What stays here is the one
+  // on-street set the city names block by block.
   {
     id: 'half-price-meters',
     name: 'Half-price meters',

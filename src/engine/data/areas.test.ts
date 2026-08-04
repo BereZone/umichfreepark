@@ -41,7 +41,10 @@ describe('the area dataset', () => {
         (f) => f.properties.osm_id
       )
     );
-    for (const area of MAPPABLE_AREAS) {
+    // Only areas that claim an OSM id. The city's meter lots and meter district
+    // come from Ann Arbor's own GIS and have none, which is not a dangling
+    // reference — it is a different source.
+    for (const area of AREAS.filter((a) => a.osmId !== null)) {
       expect(known.has(area.osmId!), `${area.id} -> ${area.osmId}`).toBe(true);
     }
   });
@@ -51,12 +54,13 @@ describe('the area dataset', () => {
     // no geometry. That is a mapping gap, not a reason to withhold the rules —
     // an earlier version let OSM decide whether a lot existed at all and
     // silently hid 160 lots whose hours we had verified.
-    const unmapped = AREAS.filter((a) => a.osmId === null);
+    const drawable = new Set(MAPPABLE_AREAS.map((a) => a.id));
+    const unmapped = AREAS.filter((a) => !drawable.has(a.id));
     expect(unmapped.length).toBeGreaterThan(100);
 
     for (const area of unmapped) {
-      // Only two things may legitimately lack a polygon: a meter zone, which is
-      // a grouping rather than a place, and a U-M lot nobody has drawn yet.
+      // Only two things may legitimately lack a polygon: a meter zone named in
+      // prose only, and a U-M lot nobody has drawn yet.
       expect(area.kind === 'meter-zone' || area.authority === 'umich', area.id).toBe(true);
       // Whatever the reason, it still carries everything the list needs.
       expect(area.rate, area.id).toBeDefined();
@@ -65,10 +69,15 @@ describe('the area dataset', () => {
     }
   });
 
-  it('keeps the map to the areas it can actually draw', () => {
+  it('draws areas from either source, and does not require an OSM id', () => {
     expect(MAPPABLE_AREAS.length).toBeGreaterThan(50);
-    expect(MAPPABLE_AREAS.every((a) => a.osmId !== null)).toBe(true);
     expect(MAPPABLE_AREAS.length).toBeLessThan(AREAS.length);
+    // Geometry presence is the test, not provenance. The city's meter lots are
+    // drawable and have no OSM id at all; asserting otherwise is what made this
+    // test wrong the moment a second geometry source arrived.
+    const fromCity = MAPPABLE_AREAS.filter((a) => a.osmId === null);
+    expect(fromCity.length).toBeGreaterThanOrEqual(10);
+    expect(fromCity.map((a) => a.id)).toContain('downtown-meters');
   });
 });
 
@@ -93,11 +102,38 @@ describe('rates', () => {
     expect(lane.rate.centsPerHour * 3).toBe(540);
   });
 
-  it('does not invent a rate for the lot we could not source', () => {
+  it('says permit-only for First & William, on the city\'s own record', () => {
+    // This shipped as `unknown` while PCI's page only hinted at it. The city's
+    // DDA lot layer tags it "Permit Only" outright, which is the operator
+    // stating it, so it is verified now — and permit-only, not free.
     const first = areaById.get('first-william-lot')!;
-    expect(first.rate.kind).toBe('unknown');
-    expect(first.provenance.confidence).toBe('community');
-    expect(first.note).toMatch(/check the sign/i);
+    expect(first.rate.kind).toBe('permit-only');
+    expect(first.provenance.confidence).toBe('verified');
+  });
+
+  it('separates metered lots from gated ones, because 7pm differs', () => {
+    // Both cost $2.60/hr, so a reader could reasonably think they are the same
+    // thing. They are not: the meter lot is free in the evening and the gated
+    // lot is not. Collapsing them would produce a wrong "FREE".
+    const meterLot = areaById.get('kerrytown-lot')!;
+    const gatedLot = areaById.get('south-ashley-lot')!;
+    expect(meterLot.rate).toEqual(gatedLot.rate);
+    expect(meterLot.authority).toBe('city-meter');
+    expect(gatedLot.authority).toBe('city-structure');
+
+    const tuesdayEvening = utc('2026-08-05T23:00:00Z'); // 7pm Detroit
+    expect(statusAt(meterLot.authority, meterLot.schedule, tuesdayEvening).paid).toBe(false);
+    expect(statusAt(gatedLot.authority, gatedLot.schedule, tuesdayEvening).paid).toBe(true);
+  });
+
+  it('ships the nine metered lots PCI operates', () => {
+    const meterLots = AREAS.filter((a) => a.authority === 'city-meter' && a.kind === 'lot');
+    expect(meterLots).toHaveLength(9);
+    for (const lot of meterLots) {
+      expect(lot.rate).toEqual({ kind: 'hourly', centsPerHour: 260 });
+      expect(lot.provenance.confidence).toBe('verified');
+      expect(lot.note, lot.id).toMatch(/free evenings/i);
+    }
   });
 
   it('treats U-M lots as permit-only rather than free', () => {

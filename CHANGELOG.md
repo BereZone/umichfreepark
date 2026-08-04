@@ -21,20 +21,22 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - `make` targets for `bump`, `tag`, `untag`, and `check-version`, all delegating to that script.
 - CI on pushes to `main` and on pull requests; a tag-triggered release workflow that validates the tag, verifies version metadata, and builds a web export.
 - Issue templates, including a phone-friendly **parking data is wrong** report that asks only what the sign says and accepts a photo.
-- U-M lot-by-lot enforcement hours for all four enforced campuses — 150 lots with permit tier, address, and hours.
+- U-M lot-by-lot enforcement hours for all four enforced campuses — 242 lots with permit tier, address, and hours.
 - Verified U-M rules in `docs/data-sources.md`: parking is open to the public outside posted enforcement hours, first-years and sophomores cannot hold a commuter permit, and U-M observes a third holiday list that matches neither the city's nor PCI's.
 - Rules engine calendar: Ann Arbor time-zone handling, computed floating holidays, and per-authority holiday lists for city meters, city structures, and U-M.
 - Raw OpenStreetMap parking geometry for Ann Arbor — 1,646 polygons, committed unedited so hand-tagging shows up as a reviewable diff.
 - Enforcement-hours parser turning U-M's 17 published spellings into evaluable schedules, with unparseable strings treated as enforced.
 - Free/paid status and next-transition countdown for city meters, city structures, and U-M lots, correct across daylight saving time.
-- 75 parking areas with verified rates and polygons: 7 DDA structures, 2 city lots, 2 meter zones, and 64 U-M lots joined to OpenStreetMap by lot code.
-- Precomputed walking times from all 80 buildings to all 73 mapped areas, so ranking works with no signal.
+- 262 parking areas with verified rates: 7 DDA structures, 2 city lots, 9 metered surface lots, the downtown meter district, the half-price meter blocks, and 242 U-M lots.
+- Nine metered surface lots — Palio, Main & Ann, City Hall, Community High, Farmer's Market, Kerrytown, Gandy Dancer, Broadway Bridge, and Depot — which cost the same as the gated lots but are free every evening and all Sunday.
+- The downtown on-street meter district, drawn from the city's own published boundary, so on-street parking around Maynard, State, and Liberty appears on the map instead of being invisible.
+- Precomputed walking times from all 80 buildings to all 100 areas that have a location, so ranking works with no signal.
 - Eligibility, cost, and ranking by cheapest, closest, or balanced, defaulting to a first-year with no permit.
 - Home-game-day warnings for U-M lots, covering the seven confirmed 2026 dates.
 - Design tokens for colour, type, spacing, and motion, with light and dark schemes that both clear 4.5:1 contrast.
 - Map encoding as a single pure function, so both renderers derive appearance from one place.
 - Map-agnostic geometry helpers: winding normalization, bounding boxes, point-in-polygon, and a label point guaranteed to fall inside its lot.
-- Shared renderer contract and drawable geometry for the 73 mapped areas, extracted to 32 KB rather than bundling the 2 MB raw dataset.
+- Shared renderer contract and drawable geometry for the 101 mapped areas, extracted to 51 KB rather than bundling the 2 MB raw dataset.
 - Both map renderers: react-native-maps over Apple Maps on iOS, maplibre-gl over OpenFreeMap on web.
 - Map screen with a live free-count, a per-area detail panel, and a countdown to the next free/paid change.
 - List view with cheapest/closest/balanced sorting, duration selection, and trade-offs stated in words.
@@ -52,6 +54,10 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 ### Fixed
 
+- About 93 U-M lots, including `M28` and `NC60`, were missing entirely. A third of U-M's published rows leave the permit-tier column blank, and the parser had been discarding every row that did.
+- 160 more U-M lots were absent because the map data decided whether a lot existed: a lot nobody had drawn in OpenStreetMap never appeared, even with published hours. Lots now ship with their rules whether or not anyone has mapped them.
+- First & William showed no rate at all. The city publishes it as permit-only, so it now says so.
+- Metered surface lots were treated as gated, showing them as paid on a Tuesday evening when they are free after 6pm.
 - Polygon winding was reported backwards, and centroids double-counted the repeated closing vertex of a ring.
 - Library Lane's $5 cap was applied at every hour, under-quoting a midday stay; it now applies only to arrivals after 3pm on weekdays and any time Saturday.
 - Michigan Stadium's coordinate sat inside the bowl, where no walking route can reach it; moved to the north pedestrian approach.

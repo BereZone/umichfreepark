@@ -49,6 +49,10 @@ describe('map geometry', () => {
 
   it('indexes by area id', () => {
     expect(mapAreaById.get('maynard')?.area.name).toBe('Maynard Structure');
-    expect(mapAreaById.get('downtown-meters')).toBeUndefined();
+    // The meter district is drawable now — the city publishes its boundary even
+    // though it publishes nothing about individual meters.
+    expect(mapAreaById.get('downtown-meters')).toBeDefined();
+    // The half-price blocks are named in prose only, so there is no shape.
+    expect(mapAreaById.get('half-price-meters')).toBeUndefined();
   });
 });

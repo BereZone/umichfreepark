@@ -22,7 +22,7 @@ import type { MapArea } from './types';
  */
 const polygons = areaPolygons.polygons as unknown as Record<
   string,
-  { osmId: string; rings: Ring[] }
+  { source: string; osmId?: string; rings: Ring[] }
 >;
 
 function toMapArea(area: ResolvedArea): MapArea | null {

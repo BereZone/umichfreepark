@@ -28,7 +28,8 @@ We model the **published rules from the authorities themselves**. We do not pull
 |---|---|
 | [a2gov.org/services/parking](https://www.a2gov.org/services/parking/) | On-street meter rates, enforcement hours, city-observed holidays |
 | [a2dda.org](https://www.a2dda.org/getting-around/drive/) | DDA structures and surface lots, rates, monthly permits |
-| [pcia2.com](https://www.pcia2.com/) | PCI Municipal Services — operator, payment, facility detail |
+| [pcia2.com](https://www.pcia2.com/) | PCI Municipal Services — operator, payment, facility detail, **which lots are metered** |
+| [City ArcGIS](https://a2-mi.maps.arcgis.com/home/item.html?id=d62a590c5155496680dfa8d3f129f185) | DDA lot polygons, lot type (hourly vs permit-only), accessible-space counts, DDA parking-district boundary |
 
 City rules are published as prose and hand-encoded into typed data. They are the **stronger** half of this dataset: rates are current, clearly stated, and centrally published.
 
@@ -72,7 +73,11 @@ The structure window is Sunday 4am to Monday 4am, **not** midnight-to-midnight. 
 | [ltp.umich.edu](https://ltp.umich.edu/) | Permit categories, eligibility, rates, enforcement hours |
 | U-M campus parking map (linked from LTP) | Lot designations and locations |
 
-The spec expected this to be the weakest link. **It isn't.** LTP publishes a lot-by-lot table — lot ID, name, address, enforcement hours, permit tier — for all four campuses it enforces. That is *more* granular than anything the city publishes. 150 lots, captured in `src/engine/data/umich-lots.json` by `scripts/fetch-umich-lots.mjs`.
+The spec expected this to be the weakest link. **It isn't.** LTP publishes a lot-by-lot table — lot ID, name, address, enforcement hours, permit tier — for all four campuses it enforces. That is *more* granular than anything the city publishes. **243 rows, 242 unique lots** (Central 74, Medical 62, North 84, Ross Athletic 22), captured in `src/engine/data/umich-lots.json` by `scripts/fetch-umich-lots.mjs`.
+
+**82 of the 242 have a polygon**; the rest are list-only until someone names them in OpenStreetMap. A lot without geometry still ships with its rules — the map cannot draw it, but the list can state its hours, which is what stops someone standing in front of it wondering.
+
+> **The tier column is optional, and that once cost us a third of the dataset.** Roughly a third of LTP's rows omit it — service docks, loading bays, restricted areas belonging to no permit colour. An earlier parser required five cells per row and silently dropped every one of them, losing about 93 lots including `M28` and `NC60`. Nothing failed; the dataset was simply short, which is the worst way for parking data to be wrong. Four cells is a valid lot with an unknown tier.
 
 **Re-verify every August**, before the term starts. Re-running that script is the whole job.
 
@@ -92,7 +97,7 @@ From the [Locations and Enforcement](https://ltp.umich.edu/parking/locations-and
 
 Stated campus-wide, not as a per-lot carve-out. This is what lets CURB tell a student without a permit that a Blue lot is legal at 7pm.
 
-The corollary matters just as much: **36 of the 150 lots are enforced "24 hrs, 7 days"** and are therefore *never* open to the public. Almost all of the Medical campus falls in this bucket. Those must never render as free.
+The corollary matters just as much: **117 of the 242 lots are enforced "24 hrs, 7 days"** and are therefore *never* open to the public. Almost all of the Medical campus falls in this bucket. Those must never render as free.
 
 #### Enforcement hours do not follow the permit color
 
@@ -124,7 +129,24 @@ The eligibility page itself was last captured 2025-06-18, but the restriction is
 - **No 2026–27 football parking notice** has been published or captured. The structural rules (out by 10pm Friday, two hours post-game, lots south of Hill Street) are stable across the 2024 and 2025 notices, but the 2026 home-game *dates* still need a source — this is the same gap as the unconfirmed Nov 21 date.
 - **The City of Ann Arbor's own game-day policy** was not found. U-M's policy governs U-M lots; what happens to city meters near the stadium on a home Saturday is still unsourced.
 - **No stable URL for a current campus-wide parking map PDF** could be confirmed.
+- **`SC20` and `SC39` do not appear on LTP's pages at all.** Both are real lots students name, and both are absent from the raw HTML of all four campus tables — zero mentions, not a parsing miss. They ship not at all rather than with invented hours.
+- **Four lots publish `NA` for hours** (`N26`'s neighbours `W25`, `W28`, `W29` — Helen Newberry Dock, Perry School Loading Dock, Division Street). That is LTP declining to state them, not a string we failed to read. They ship, treated as enforced, flagged uncertain, with a note saying no hours are published.
 - **Lot `M18` appears twice** in LTP's Medical table, as both "P2 University of Hospital" and "P3 Taubman Center", same address. Upstream quirk, faithfully preserved. Both are 24/7 Visitor, so it cannot produce a wrong "free" — but any join on lot ID must expect it.
+
+#### Meter lots vs gated lots — the distinction that decides a 7pm answer
+
+Both cost **$2.60/hr**, which makes them look like the same thing. They are not:
+
+| | Enforced | Free |
+|---|---|---|
+| **Gated DDA lot** (South Ashley) | continuously | Sunday 4am → Monday 4am only |
+| **Meter lot** (Kerrytown, Depot, Palio…) | Mon–Sat 8am–6pm | every evening, all Sunday, city holidays |
+
+At 7pm on a Tuesday one costs money and the other does not. Collapsing them produces a wrong "FREE", so the split is sourced rather than inferred: a2gov states that metered parking **"on-street and in lots"** runs Mon–Sat 8am–6pm, and PCI — who operate the meters — publish which lots those are on their [Meter Lot Locations](https://pcia2.com/meter-lot-locations/) map.
+
+Nine meter lots ship: Palio, Main & Ann, City Hall, Community High, Farmer's Market, Kerrytown, Gandy Dancer, Broadway Bridge, Depot.
+
+`scripts/fetch-dda-parking.mjs` (`npm run data:dda`) joins PCI's list to the city's polygons. **The join is a hand-written table in the script, not a proximity match.** Broadway Bridge and Depot Street are adjacent riverside lots and nearest-centroid matching puts PCI's "Depot Lot" on the wrong one; four of the nine pairs are ambiguous by distance. The script fails loudly if either side stops matching the table.
 
 ### Geometry
 
@@ -169,13 +191,28 @@ Neither ships a polygon. Guessing which unnamed rectangle is a $5 flat-rate lot 
 
 PCI's facility page says 300 First St.; the DDA FAQ says 216 W. William St. Both are primary sources. Unresolved — no address ships for that lot until it is.
 
-Its hourly rate is also unclear: the PCI page lists only monthly parking, which suggests it may be permit-only. Not modeled as hourly until confirmed.
+**Its rate is resolved** (2026-08-04). It shipped as `unknown` because PCI's page listed only monthly parking, which hinted at permit-only without saying it. The city's DDA lot layer tags this one `TypeOfParking: "Permit Only"` while every other lot in the layer reads `"Hourly"` — the operator stating it outright. It is now `permit-only`, `verified`.
 
 ## Known gaps
 
+### On-street meters are a district, not a block list
+
+**No authority publishes which blocks have meters.** Not the city's open data portal, not its GIS org, not the DDA, not PCI — all four were searched on 2026-08-04. OpenStreetMap does not have it either: of 317 Ann Arbor ways carrying street-parking tags, only four say anything about fees, and the downtown core is tagged almost entirely `parking:both=no`. Nothing on Maynard, State, or Liberty.
+
+So `downtown-meters` ships as the **DDA parking-district boundary**, which the city does publish, with a note saying exactly that. It covers the downtown and campus-edge core — Maynard, State, Liberty, and Forest are inside it; North Campus and outer Packard are not.
+
+Two consequences worth knowing:
+
+- It carries **no walk time**. It is roughly a square kilometre, so routing to its centroid would tell someone standing at the Michigan Union that the downtown meters are a twelve-minute walk. `walkSeconds` returns null for it; see `NOT_A_DESTINATION` in `scripts/build-walk-matrix.mjs`.
+- The **half-price meter blocks are separate**, because those the city *does* name: the 300 block of S. First, the 300 and 400 blocks of N. Ashley, the 300 block of W. William, the 400 block of S. Ashley, and the 700 block of Packard. They ship as their own area with no geometry, since a named block is not a drawable shape without digitizing it.
+
+The alternative was to invent a plausible list of metered blocks. It would have looked exactly like a sourced one, and would eventually have put someone in front of a "no parking" sign holding a phone that said otherwise.
+
 ### Residential permit districts — not modeled
 
-Not present in OpenStreetMap; they must be hand-digitized from City of Ann Arbor sources. This is simultaneously **the highest-value data the app could hold** — near-campus residential streets are where students actually circle looking for parking — and the largest single piece of work remaining. Deliberately out of scope for v1.
+**A source exists** (found 2026-08-04), which the earlier note here denied. The city publishes a `ResidentalPermit` layer through its ArcGIS org — per-parcel records carrying a district name (`BURNS PARK`, `NORTHSIDE`, …), a street address, and a `PERMIT_VALID` season (`September 1 - August 31`, `April 1 - October 31`). Over 1,000 records; the default query caps there, so paginate.
+
+It is **per-parcel, not district polygons**, so turning it into something drawable means dissolving parcels into boundaries — real work, and the reason this stays out of v1 rather than the absence of data. Still **the highest-value data the app could hold**: near-campus residential streets are where students actually circle looking for parking.
 
 ### Community-sourced areas
 

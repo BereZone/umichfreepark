@@ -132,9 +132,14 @@ describe('ineligible areas are dimmed, never hidden', () => {
 
 describe('labels', () => {
   it('never renders a guessed price as a number', () => {
-    const unknown = areaById.get('first-william-lot')!;
-    const status = statusAt(unknown.authority, unknown.schedule, WEEKDAY_NOON);
-    expect(priceLabel(unknown, status)).toBe('SEE SIGN');
+    // Built here rather than pulled from the dataset on purpose. This used to
+    // reach for First & William, the one lot whose rate was unsourced — then
+    // the city's GIS answered it and the test started asserting nothing. The
+    // rule belongs to the `unknown` rate itself, not to whichever record
+    // happens to be unresolved this month.
+    const unsourced = { ...areaById.get('maynard')!, rate: { kind: 'unknown' } as const };
+    const status = statusAt(unsourced.authority, unsourced.schedule, WEEKDAY_NOON);
+    expect(priceLabel(unsourced, status)).toBe('SEE SIGN');
   });
 
   it('names the permit rather than implying a price', () => {

@@ -11,9 +11,16 @@ import {
 } from './walk';
 
 describe('the walk matrix', () => {
-  it('covers every building and every mappable area', () => {
+  it('covers every building and every mappable area you can walk to', () => {
     expect(KNOWN_BUILDING_IDS).toHaveLength(buildingData.buildings.length);
-    expect(ROUTED_AREA_IDS).toHaveLength(MAPPABLE_AREAS.length);
+
+    // Every drawable area is routed except the meter district, which is a
+    // square kilometre of downtown rather than a place. Routing to its centre
+    // would tell someone at the Union that the downtown meters are twelve
+    // minutes away while they are standing next to one.
+    const routed = new Set(ROUTED_AREA_IDS);
+    const unrouted = MAPPABLE_AREAS.filter((a) => !routed.has(a.id)).map((a) => a.id);
+    expect(unrouted).toEqual(['downtown-meters']);
   });
 
   it('has a routed time for every pair', () => {
