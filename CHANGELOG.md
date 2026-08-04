@@ -30,6 +30,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - 75 parking areas with verified rates and polygons: 7 DDA structures, 2 city lots, 2 meter zones, and 64 U-M lots joined to OpenStreetMap by lot code.
 - Precomputed walking times from all 80 buildings to all 73 mapped areas, so ranking works with no signal.
 - Eligibility, cost, and ranking by cheapest, closest, or balanced, defaulting to a first-year with no permit.
+- Home-game-day warnings for U-M lots, covering the seven confirmed 2026 dates.
 
 ### Changed
 
