@@ -96,7 +96,7 @@ export interface ParkingArea {
   /** `way/30839161` — joins this record to a polygon in data/raw/osm-parking.geojson. */
   osmId: string | null;
   rate: Rate;
-  /** U-M permit colour ("Blue", "Orange", …). Absent for city areas. */
+  /** U-M permit color ("Blue", "Orange", …). Absent for city areas. */
   permitTier?: string;
   provenance: Provenance;
   /** Shown to the user verbatim when present. Keep it plain-language. */

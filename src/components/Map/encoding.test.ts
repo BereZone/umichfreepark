@@ -16,7 +16,7 @@ const encode = (id: string, at: Date, theme: ThemeName = 'light') => {
 
 describe('free vs paid never rides on hue alone', () => {
   /**
-   * This is the property that keeps the map readable with red-green colour
+   * This is the property that keeps the map readable with red-green color
    * deficiency. If someone "simplifies" the encoding to green-means-free, these
    * tests are what should stop them.
    */
@@ -33,7 +33,7 @@ describe('free vs paid never rides on hue alone', () => {
     expect(encode('maynard', WEEKDAY_NOON).label).toBe('$1.80/hr');
   });
 
-  it('makes free heavier, so it reads without colour at a glance', () => {
+  it('makes free heavier, so it reads without color at a glance', () => {
     expect(encode('maynard', SUNDAY_NOON).borderWidth).toBeGreaterThan(
       encode('maynard', WEEKDAY_NOON).borderWidth
     );
@@ -45,7 +45,7 @@ describe('free vs paid never rides on hue alone', () => {
   });
 
   it('still distinguishes free from paid with hue removed entirely', () => {
-    // Simulate total colour loss: compare only the non-colour channels.
+    // Simulate total color loss: compare only the non-color channels.
     const shape = (e: ReturnType<typeof encode>) => ({
       style: e.borderStyle,
       width: e.borderWidth,
@@ -64,7 +64,7 @@ describe('hue carries authority and permit tier', () => {
     expect(hueFor(maynard, 'light')).toBe(lightColors.cityNeutral);
   });
 
-  it('uses U-M’s own permit colours, which students already read on signs', () => {
+  it('uses U-M’s own permit colors, which students already read on signs', () => {
     const blue = AREAS.find((a) => a.permitTier === 'Blue')!;
     const orange = AREAS.find((a) => a.permitTier === 'Orange')!;
     expect(hueFor(blue, 'light')).toBe(lightColors.permitBlue);
@@ -167,7 +167,7 @@ describe('labels', () => {
 });
 
 describe('accessibility labels', () => {
-  it('describes state in words, not colour', () => {
+  it('describes state in words, not color', () => {
     const free = encode('maynard', SUNDAY_NOON);
     expect(free.accessibilityLabel).toContain('Maynard');
     expect(free.accessibilityLabel).toContain('free right now');
@@ -226,7 +226,7 @@ describe('contrast', () => {
     }
   });
 
-  it('meets 4.5:1 for status colours on background', () => {
+  it('meets 4.5:1 for status colors on background', () => {
     for (const scheme of [lightColors, darkColors]) {
       for (const key of ['free', 'paid', 'ineligible', 'caution'] as const) {
         expect(ratio(scheme[key], scheme.background), key).toBeGreaterThanOrEqual(4.5);
@@ -234,7 +234,7 @@ describe('contrast', () => {
     }
   });
 
-  it('keeps the free pill legible — its label sits on the free colour', () => {
+  it('keeps the free pill legible — its label sits on the free color', () => {
     for (const theme of ['light', 'dark'] as const) {
       const c = colorsFor(theme);
       const e = encode('maynard', SUNDAY_NOON, theme);
@@ -252,7 +252,7 @@ describe('a district is drawn as context, not as a lot', () => {
    * slab over all of downtown and central campus, so every structure inside it
    * was read through a wash.
    *
-   * What must NOT change is the colourblind contract: the district still
+   * What must NOT change is the colorblind contract: the district still
    * carries free/paid on border style and label text, exactly like everything
    * else. These assertions pin the weight change and the invariance together,
    * because relaxing the second to achieve the first is the tempting shortcut.

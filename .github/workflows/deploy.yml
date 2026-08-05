@@ -68,7 +68,7 @@ jobs:
       #
       # MapLibre resolves its worker at runtime and reports nothing when the file
       # is missing — the page loads, the network log is clean, and the map is a
-      # blank rectangle in the style's background colour. That shipped once
+      # blank rectangle in the style's background color. That shipped once
       # already. An export that has lost the worker is not a deployable build.
       - name: Verify the MapLibre worker survived the export
         run: |

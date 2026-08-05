@@ -30,7 +30,7 @@ export default defineConfig({
       // the installed version. It reads files, not a rendering, so it belongs
       // with the runner that has no browser.
       'src/components/Map/worker-asset.test.ts',
-      // Colour and scalar tokens are plain data, so the accessibility audit
+      // Color and scalar tokens are plain data, so the accessibility audit
       // over them needs no renderer either. It imports theme/colors and
       // theme/metrics directly, never the barrel — the barrel pulls in
       // typography.ts and with it react-native.

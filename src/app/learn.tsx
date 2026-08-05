@@ -82,7 +82,7 @@ export default function LearnScreen() {
         <Bullet colors={colors}>
           <Bold colors={colors}>U-M lots</Bold> — permit only during posted
           enforcement hours, and open to anyone outside them. The hours differ
-          lot by lot and are not predictable from the permit colour.
+          lot by lot and are not predictable from the permit color.
         </Bullet>
       </Section>
 

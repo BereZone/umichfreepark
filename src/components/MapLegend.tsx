@@ -2,16 +2,16 @@
  * The map's key.
  *
  * Two ideas, in the order they matter. The border style says whether you are
- * paying right now; the fill colour says whose rules apply. That split is the
+ * paying right now; the fill color says whose rules apply. That split is the
  * whole design — free versus paid is the urgent bit and it rides on line style
- * and text so it survives red-green colour blindness, while hue carries the
+ * and text so it survives red-green color blindness, while hue carries the
  * authority, which nobody has to see instantly.
  *
  * Every swatch is drawn from the same constants `encoding.ts` hands the
  * renderers, so a key that disagrees with the map is not expressible here.
  *
- * The free/paid pair is always visible; the colour roll is behind a toggle.
- * Six permanently-open colour rows on a phone would cover the lots they
+ * The free/paid pair is always visible; the color roll is behind a toggle.
+ * Six permanently-open color rows on a phone would cover the lots they
  * describe, and a user only needs them once.
  *
  * It stacks rather than sitting in a row. Laid out horizontally the two
@@ -67,20 +67,45 @@ export function MapLegend({
         block
       />
 
+      {/*
+       * Drawn as a control, not as a word.
+       *
+       * "COLORS" in muted small caps read as another legend heading, so nothing
+       * indicated that the key had more to show. A bordered pill with a caret
+       * says it opens before it is pressed, which is the entire job of a
+       * disclosure affordance.
+       */}
       <Pressable
         onPress={() => setExpanded((open) => !open)}
-        style={styles.toggle}
+        style={({ pressed }) => [
+          styles.toggle,
+          {
+            borderColor: expanded ? colors.borderStrong : colors.border,
+            opacity: pressed ? 0.7 : 1,
+          },
+        ]}
         hitSlop={space.snug}
         accessibilityRole="button"
         accessibilityState={{ expanded }}
         // Names what happens, not what it is.
-        accessibilityLabel={expanded ? 'Hide the permit colours' : 'Show what the colours mean'}
+        accessibilityLabel={expanded ? 'Hide the permit colors' : 'Show what the colors mean'}
       >
         <Text
-          style={[type.label, { color: colors.textMuted }]}
+          style={[type.label, { color: colors.text }]}
           maxFontSizeMultiplier={MAX_MAP_TEXT_SCALE}
         >
-          {expanded ? 'LESS' : 'COLOURS'}
+          COLORS
+        </Text>
+        <Text
+          // Larger than the word beside it so the caret is the thing you see.
+          style={[type.heading, { color: colors.text }]}
+          maxFontSizeMultiplier={MAX_MAP_TEXT_SCALE}
+          // The button's accessibilityState already reports expanded; the glyph
+          // would only add "black up-pointing triangle" to that.
+          accessibilityElementsHidden
+          importantForAccessibility="no"
+        >
+          {expanded ? '▴' : '▾'}
         </Text>
       </Pressable>
 
@@ -192,7 +217,13 @@ const styles = StyleSheet.create({
     // splits that space above and below rather than stacking all of it above,
     // where it read as a gap between two unrelated things.
     minHeight: MIN_TOUCH_TARGET,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
+    gap: space.snug,
+    paddingHorizontal: space.snug,
+    borderRadius: radius.pill,
+    borderWidth: 1,
   },
   expanded: {
     gap: space.snug,

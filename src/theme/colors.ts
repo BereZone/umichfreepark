@@ -1,5 +1,5 @@
 /**
- * Colour tokens.
+ * Color tokens.
  *
  * No raw hex outside this file. A component that hardcodes `#1B7F4B` is a
  * component that cannot be themed and will drift from its counterpart on the
@@ -12,11 +12,11 @@
  * near-black of a meter's LCD. Deliberately NOT the default generative-design
  * palette — no cream background, no terracotta accent, no high-contrast serif.
  *
- * THE COLOURBLIND CONSTRAINT
+ * THE COLORBLIND CONSTRAINT
  *
  * Free vs. paid is never encoded by hue alone. Hue carries WHICH AUTHORITY and,
  * for U-M, which permit; free/paid rides on border style and text. Roughly 8%
- * of men have some red-green colour deficiency, which is exactly the axis a
+ * of men have some red-green color deficiency, which is exactly the axis a
  * naive green/red parking app would put its most important bit on.
  * See encoding.ts, which is where that rule is actually enforced.
  */
@@ -42,7 +42,7 @@ export interface ColorScheme {
   caution: string;
 
   /**
-   * U-M permit tiers, matching the university's own colour names. Students
+   * U-M permit tiers, matching the university's own color names. Students
    * learn this vocabulary in their first week, so borrowing it means the
    * legend is half-learned before the app is opened.
    */
@@ -128,9 +128,9 @@ export const colorsFor = (theme: ThemeName): ColorScheme =>
  * A token at partial opacity, as an 8-digit hex string.
  *
  * Two callers need this and they must agree: Apple Maps wants alpha baked into
- * the fill colour rather than supplied as a separate prop, and callouts tint
- * their surface with the status colour they are about. Both are translations of
- * an existing token, not new colours — which is why this lives beside the
+ * the fill color rather than supplied as a separate prop, and callouts tint
+ * their surface with the status color they are about. Both are translations of
+ * an existing token, not new colors — which is why this lives beside the
  * tokens instead of in either caller.
  *
  * Kept free of React Native along with the rest of this file, so encoding.ts

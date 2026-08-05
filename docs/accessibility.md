@@ -3,7 +3,7 @@
 Accessibility is a build requirement here, not a pass at the end. The list view
 is the accessible equivalent of the map — every area selectable by tapping a
 polygon is reachable, selectable, and readable there — and the free/paid
-distinction never rides on colour.
+distinction never rides on color.
 
 This document is the audit: what is enforced automatically, what was checked by
 hand, and what is still open.
@@ -39,7 +39,7 @@ There is a test that pins this, so the next person to run a contrast checker
 finds the reasoning instead of "fixing" it.
 
 Similarly, no test requires `free` and `paid` to be far apart in luminance. In
-dark mode they sit 0.04 apart. That is fine, because the app never asks colour
+dark mode they sit 0.04 apart. That is fine, because the app never asks color
 to carry that bit: the map uses border style, and every surface showing the
 state also writes the word *Free* or *Paid*.
 
@@ -72,7 +72,7 @@ state also writes the word *Free* or *Paid*.
   to do, the other is a fact about Ann Arbor — and an app that says "No results"
   to both leaves the second user thinking they broke it.
 - **Callouts carry tone as a tinted surface, not an edge stripe.** A 3pt
-  coloured `border-left` puts the signal beside one line of a block that wraps
+  colored `border-left` puts the signal beside one line of a block that wraps
   to five at accessibility sizes. Every callout also leads with a sentence
   stating the same thing in words, so the tone is never the only carrier.
 - **Selection is visible, not merely recorded.** Selecting an area from the list

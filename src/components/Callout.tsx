@@ -2,10 +2,10 @@
  * A block that says something the surrounding text does not: you cannot park
  * here, we are not sure, this Saturday is different.
  *
- * The tone is a colour token, and the block carries it as a wash across the
+ * The tone is a color token, and the block carries it as a wash across the
  * whole surface rather than as a thick stripe down one edge. A stripe puts the
  * signal at the far left of a line the eye reads left to right, so at large
- * text sizes — where a callout wraps to five lines — the colour is doing its
+ * text sizes — where a callout wraps to five lines — the color is doing its
  * work next to one of them. A tinted surface stays attached to every word in
  * the block, which is what the tone is actually about.
  *

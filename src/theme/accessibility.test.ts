@@ -74,7 +74,7 @@ const TEXT_PAIRS: [keyof ColorScheme, keyof ColorScheme, string][] = [
   ['focus', 'surfaceRaised', 'the use-my-location action in the sheet'],
 ];
 
-describe('colour contrast', () => {
+describe('color contrast', () => {
   it('clears 4.5:1 for every text pair the screens render', () => {
     for (const [themeName, c] of themes) {
       for (const [fg, bg, what] of TEXT_PAIRS) {
@@ -125,9 +125,9 @@ describe('colour contrast', () => {
   /*
    * NOT ASSERTED HERE: that `free` and `paid` are far apart in luminance.
    *
-   * It is tempting — greyscale separation sounds like the colourblind test. It
+   * It is tempting — greyscale separation sounds like the colorblind test. It
    * is the wrong test for this design. In dark mode the two sit 0.04 apart and
-   * that is fine, because free vs paid never rides on colour at all: the map
+   * that is fine, because free vs paid never rides on color at all: the map
    * carries it in border style, and every surface that shows it also writes the
    * word "Free" or "Paid". Requiring luminance separation would constrain the
    * palette to protect a channel the app does not use.

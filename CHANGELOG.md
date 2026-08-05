@@ -33,7 +33,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Precomputed walking times from all 80 buildings to all 100 areas that have a location, so ranking works with no signal.
 - Eligibility, cost, and ranking by cheapest, closest, or balanced, defaulting to a first-year with no permit.
 - Home-game-day warnings for U-M lots, covering the seven confirmed 2026 dates.
-- Design tokens for colour, type, spacing, and motion, with light and dark schemes that both clear 4.5:1 contrast.
+- Design tokens for color, type, spacing, and motion, with light and dark schemes that both clear 4.5:1 contrast.
 - Map encoding as a single pure function, so both renderers derive appearance from one place.
 - Map-agnostic geometry helpers: winding normalization, bounding boxes, point-in-polygon, and a label point guaranteed to fall inside its lot.
 - Shared renderer contract and drawable geometry for the 101 mapped areas, extracted to 51 KB rather than bundling the 2 MB raw dataset.
@@ -51,7 +51,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 - U-M's own published lot coordinates, used to find polygons for lots OpenStreetMap has mapped but never labelled. Coordinates only — the same source's enforcement hours disagree with the parking office for 100 of the 104 lots they share, so they are not carried at all.
 - The map screen now has the controls it was missing: where you're going, how long you're staying, and how to sort. Previously the map was ranked against a destination you could only set on the other tab.
-- A key on the map, saying what the border styles and the fill colours mean. It draws its swatches from the same numbers the map draws with, so it cannot end up describing a map that no longer exists.
+- A key on the map, saying what the border styles and the fill colors mean. It draws its swatches from the same numbers the map draws with, so it cannot end up describing a map that no longer exists.
 - Tapping an area now shows what your stay costs and how far the walk is, not just whether it is free right now.
 - **Tell UMichFreePark who you are.** The Learn tab now takes your year and permit, and the whole app answers for that person. It always assumed a first-year with no permit, which meant a senior with a Blue permit was told they could not park in their own lot.
 - UMichFreePark remembers where you were going, how long for, how you sort, and your last five destinations. Opening the app no longer starts over at Mason Hall.
@@ -63,7 +63,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 ### Changed
 
 - **The app is now called UMichFreePark.** It was CURB, then briefly MFreePark.
-- On a phone the map sheet opens small — where you're going and the one best option — and expands to the full controls when you tap Change. It used to take over half the screen before you had done anything.
+- On a phone the trip is a closed dropdown: where you're going and for how long, on one row with a caret. The search field and the duration and sort buttons only appear once you open it, so the map keeps most of the screen. The map key's colour list is the same kind of control.
+- American spelling throughout — "colors", not "colours".
 - Picking a destination moves the map to it. The pin could previously land off screen.
 - The close button on a selected lot is a filled circle rather than a grey word.
 - The map draws 161 parking areas, up from 101. Sixty more U-M lots now have a boundary and a label.
@@ -71,7 +72,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - The downtown meter district is drawn as a light outline rather than as a lot. It is two kilometres across and contains most of the structures the map is about, so at full weight it laid a slab over all of downtown and central campus and everything inside it was read through a wash.
 - Park & Ride lots say a free bus runs from them. Ranked on price they can win outright and then present a 79-minute walk as your best option, which reads as a broken app rather than as "take the bus".
 - The list no longer repeats the destination as a heading directly above the field that already shows it, and rows no longer all begin with the same word the price beside them is already saying.
-- Callouts carry their meaning as a tinted block rather than a coloured stripe down one edge. At large text sizes a callout wraps to five lines and the stripe was only ever next to one of them.
+- Callouts carry their meaning as a tinted block rather than a colored stripe down one edge. At large text sizes a callout wraps to five lines and the stripe was only ever next to one of them.
 
 ### Deprecated
 

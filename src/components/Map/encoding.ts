@@ -5,18 +5,18 @@
  * call it and translate the result into their own primitives — Apple Maps
  * `lineDashPattern` on iOS, MapLibre `line-dasharray` on web.
  *
- * NEVER decide a colour, stroke width, or dash pattern inside a renderer file.
+ * NEVER decide a color, stroke width, or dash pattern inside a renderer file.
  * Two implementations that each own a design decision will silently diverge:
  * someone tweaks the dash on web, nobody touches iOS, and six months later the
  * two platforms disagree about what "free" looks like. Putting the decision
  * here means there is exactly one place to change and it is unit-testable
  * without a map on screen.
  *
- * THE COLOURBLIND CONSTRAINT, ENFORCED HERE
+ * THE COLORBLIND CONSTRAINT, ENFORCED HERE
  *
  * Hue encodes WHICH AUTHORITY — and for U-M, which permit tier. Free vs. paid
  * rides on BORDER STYLE and TEXT, never on hue. That separation is what keeps
- * the map readable with red-green colour deficiency, and it is the property the
+ * the map readable with red-green color deficiency, and it is the property the
  * tests in this directory protect. Do not "simplify" it by making free green
  * and paid red.
  */
@@ -24,7 +24,7 @@
 // Imported from theme/colors directly, NOT from the theme barrel. The barrel
 // re-exports typography.ts, which imports `Platform` from react-native — and
 // this file has to stay free of React Native so it can be unit-tested without
-// a renderer. Colour tokens are pure data; type tokens are not.
+// a renderer. Color tokens are pure data; type tokens are not.
 import { colorsFor, type ThemeName } from '../../theme/colors';
 import type { Eligibility, ParkingStatus, ResolvedArea } from '../../engine';
 
@@ -34,7 +34,7 @@ export interface AreaEncoding {
   /** Polygon fill. */
   fillColor: string;
   fillOpacity: number;
-  /** Outline. Carries the free/paid bit via `borderStyle`, not via colour. */
+  /** Outline. Carries the free/paid bit via `borderStyle`, not via color. */
   borderColor: string;
   borderStyle: BorderStyle;
   borderWidth: number;
@@ -85,7 +85,7 @@ const MAX_PILL_LENGTH = 16;
 /**
  * Hue by authority and permit tier.
  *
- * U-M tiers use the university's own colour names so the legend matches the
+ * U-M tiers use the university's own color names so the legend matches the
  * signs students already read. City parking takes a neutral slate, because it
  * belongs to no permit system and should not imply one.
  */
@@ -110,7 +110,7 @@ export const LEGEND_TIERS = [
 ] as const;
 
 /**
- * A permit tier's colour, split out of `hueFor` so the legend and the map read
+ * A permit tier's color, split out of `hueFor` so the legend and the map read
  * it from the same place.
  *
  * A legend with its own copy of this switch is the same failure mode as a
@@ -195,7 +195,7 @@ export function encodeArea(
    * useful area became its least legible.
    *
    * Scale is the reason, so scale is what changes: same hue, same free/paid
-   * border style, a third of the fill and a thinner line. The colourblind
+   * border style, a third of the fill and a thinner line. The colorblind
    * constraint is untouched — free is still solid, paid is still dashed.
    */
   const isDistrict = area.kind === 'meter-zone';

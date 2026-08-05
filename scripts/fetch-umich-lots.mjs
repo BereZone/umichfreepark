@@ -123,7 +123,7 @@ const stripTags = (html) =>
  * THE TIER COLUMN IS OPTIONAL AND THAT MATTERS.
  *
  * Roughly a third of LTP's rows omit it — service docks, loading bays and
- * restricted areas that belong to no permit colour. An earlier version of this
+ * restricted areas that belong to no permit color. An earlier version of this
  * parser required five cells and silently dropped every one of them, losing
  * about 93 lots including M28 and NC60. Nothing failed; the dataset was simply
  * short, which is the worst way for parking data to be wrong.
@@ -141,7 +141,7 @@ function parseLots(html) {
     if (cells.length < 4) continue;
     const [rawLot, name, address, hours] = cells;
     // Absent tier is recorded as null rather than guessed. A lot with no
-    // published permit colour is not a Blue lot.
+    // published permit color is not a Blue lot.
     const tier = cells.length >= 5 && cells[4] ? cells[4] : null;
     if (!rawLot || rawLot === 'Lot') continue;
     // A row with no enforcement hours is not usable and must not become a lot

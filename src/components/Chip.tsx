@@ -8,7 +8,7 @@
  *
  * Selection is carried by fill AND weight, not by fill alone: at the largest
  * Dynamic Type settings the chips wrap onto several lines, and a single
- * background colour is a weak signal once the row is no longer a row.
+ * background color is a weak signal once the row is no longer a row.
  */
 
 import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from 'react-native';

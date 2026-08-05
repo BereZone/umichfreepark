@@ -77,7 +77,7 @@ The spec expected this to be the weakest link. **It isn't.** LTP publishes a lot
 
 **82 of the 242 have a polygon**; the rest are list-only until someone names them in OpenStreetMap. A lot without geometry still ships with its rules — the map cannot draw it, but the list can state its hours, which is what stops someone standing in front of it wondering.
 
-> **The tier column is optional, and that once cost us a third of the dataset.** Roughly a third of LTP's rows omit it — service docks, loading bays, restricted areas belonging to no permit colour. An earlier parser required five cells per row and silently dropped every one of them, losing about 93 lots including `M28` and `NC60`. Nothing failed; the dataset was simply short, which is the worst way for parking data to be wrong. Four cells is a valid lot with an unknown tier.
+> **The tier column is optional, and that once cost us a third of the dataset.** Roughly a third of LTP's rows omit it — service docks, loading bays, restricted areas belonging to no permit color. An earlier parser required five cells per row and silently dropped every one of them, losing about 93 lots including `M28` and `NC60`. Nothing failed; the dataset was simply short, which is the worst way for parking data to be wrong. Four cells is a valid lot with an unknown tier.
 
 **Re-verify every August**, before the term starts. Re-running that script is the whole job.
 

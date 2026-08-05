@@ -322,31 +322,44 @@ export default function MapScreen() {
                 ) : (
                   <>
                     {/*
-                     * Collapsed, the sheet is a summary and one option. That is
-                     * the answer to "where do I park", and it leaves the map —
-                     * which is the screen — actually visible. Expanded it
-                     * becomes the full controls.
+                     * The trip is a dropdown, closed by default.
                      *
-                     * A button rather than a drag handle. A draggable sheet
-                     * over a pannable map is a gesture conflict, and a two-state
-                     * panel has nothing worth the ambiguity.
+                     * Collapsed it is one row: where you are going and for how
+                     * long, which is what the ranking below it was computed
+                     * from. The search field and the chips only exist once you
+                     * open it, so the sheet stays small and the map — the whole
+                     * point of this screen — stays visible.
+                     *
+                     * A button rather than a drag handle: a draggable sheet over
+                     * a pannable map is a gesture conflict, and two states are
+                     * not worth the ambiguity. It is drawn as a control with a
+                     * border and a caret rather than as a line of text with a
+                     * word beside it, because the previous version read as a
+                     * label and nothing suggested it opened.
                      */}
                     <Pressable
                       onPress={() => setSheetExpanded((open) => !open)}
-                      style={({ pressed }) => [styles.sheetToggle, { opacity: pressed ? 0.7 : 1 }]}
+                      style={({ pressed }) => [
+                        styles.sheetToggle,
+                        {
+                          backgroundColor: colors.surface,
+                          borderColor: sheetExpanded ? colors.borderStrong : colors.border,
+                          opacity: pressed ? 0.7 : 1,
+                        },
+                      ]}
                       accessibilityRole="button"
                       accessibilityState={{ expanded: sheetExpanded }}
                       accessibilityLabel={
                         sheetExpanded
                           ? 'Hide the trip options'
-                          : 'Change where you are going, how long, or how to sort'
+                          : `Going to ${destination?.name ?? 'nowhere selected'} for ${durationHours} hours. Open to change it or search a building.`
                       }
                     >
                       {/*
-                       * The summary is the collapsed state's entire content, so
-                       * it steps aside when expanded — TripControls puts the
-                       * same destination under its own GOING TO label, and
-                       * showing both printed the heading twice in four lines.
+                       * The summary is the closed state's whole content, and it
+                       * steps aside when open: TripControls puts the same
+                       * destination under its own GOING TO label, and showing
+                       * both printed that heading twice within four lines.
                        */}
                       {sheetExpanded ? (
                         <Text style={[type.label, styles.sheetSummary, { color: colors.textMuted }]}>
@@ -364,9 +377,7 @@ export default function MapScreen() {
                           </Text>
                         </View>
                       )}
-                      <Text style={[type.label, { color: colors.focus }]}>
-                        {sheetExpanded ? 'LESS' : 'CHANGE'}
-                      </Text>
+                      <Caret open={sheetExpanded} color={colors.text} />
                     </Pressable>
 
                     {sheetExpanded ? <TripControls onLocated={setShowsUserLocation} /> : null}
@@ -439,6 +450,29 @@ export default function MapScreen() {
         </View>
       ) : null}
     </View>
+  );
+}
+
+/**
+ * The open/closed caret on a disclosure control.
+ *
+ * A glyph rather than an icon font: nothing to download, nothing to fail, and
+ * it scales with Dynamic Type like the label beside it. Hidden from assistive
+ * tech because the control's own accessibilityState already says `expanded`,
+ * and "black down-pointing triangle" is not an improvement on that.
+ */
+function Caret({ open, color }: { open: boolean; color: string }) {
+  return (
+    <Text
+      // Deliberately larger than the label beside it. At body size the caret
+      // was technically present and practically invisible, which is the same
+      // as not having a disclosure affordance at all.
+      style={[type.title, { color }]}
+      accessibilityElementsHidden
+      importantForAccessibility="no"
+    >
+      {open ? '\u25B4' : '\u25BE'}
+    </Text>
   );
 }
 
@@ -602,6 +636,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: space.base,
     minHeight: MIN_TOUCH_TARGET,
+    paddingHorizontal: space.base,
+    paddingVertical: space.snug,
+    borderRadius: radius.md,
+    borderWidth: 1,
   },
   sheetSummary: { flex: 1, gap: space.hair },
   panelHeader: {

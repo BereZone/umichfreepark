@@ -22,7 +22,7 @@
  * The failure is invisible and total. The main thread still fetches the style,
  * the sprite and the TileJSON, so the network log looks healthy; but tiles,
  * glyphs and our own polygons are all parsed in the worker, so the map paints
- * the style's background colour and nothing else. A blank beige rectangle.
+ * the style's background color and nothing else. A blank beige rectangle.
  *
  * So we serve the worker ourselves and hand MapLibre the URL. Both files are
  * needed: the worker is an ES module that imports the shared chunk beside it.

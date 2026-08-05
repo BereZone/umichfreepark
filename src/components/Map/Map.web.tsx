@@ -48,7 +48,7 @@ const WORKER_PUBLIC_PATH = '/maplibre/maplibre-gl-worker.mjs';
  * The symptom is a map that looks alive and draws nothing: style, sprite and
  * TileJSON are fetched on the main thread, so the network log is clean, while
  * tiles, glyphs and every one of our polygons are parsed in the worker that
- * never started. A blank rectangle in the style's background colour.
+ * never started. A blank rectangle in the style's background color.
  *
  * Module scope, so it is set before any Map is constructed. The worker pool is
  * created lazily on the first map, but only once — setting this from an effect
@@ -122,7 +122,7 @@ export default function Map({
         data: { type: 'FeatureCollection', features: [] },
       });
 
-      // Fill and outline are separate layers over ONE source. Colours and
+      // Fill and outline are separate layers over ONE source. Colors and
       // widths arrive as feature properties, set by encoding.ts.
       instance.addLayer({
         id: FILL_LAYER,

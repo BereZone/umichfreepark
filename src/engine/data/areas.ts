@@ -50,7 +50,7 @@ function umichRate(tier: string | null): Rate {
   if (tier === 'Park & Ride') return { kind: 'free' };
   // No published tier still means permit-only during enforcement. About a
   // third of LTP's rows are service docks and loading bays with no permit
-  // colour; "no colour" is not "open to anyone".
+  // color; "no color" is not "open to anyone".
   return { kind: 'permit-only' };
 }
 
@@ -94,7 +94,7 @@ const resolvedUmich: ResolvedArea[] = umichAreas.areas.map((lot) => ({
   // the list can show its rules, only the map cannot draw it.
   osmId: lot.osmId,
   rate: umichRate(lot.permitTier),
-  // Absent tier stays absent rather than becoming a guessed colour.
+  // Absent tier stays absent rather than becoming a guessed color.
   permitTier: lot.permitTier ?? undefined,
   schedule: parseEnforcementHours(lot.enforcementHours),
   provenance: {

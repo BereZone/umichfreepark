@@ -2,7 +2,7 @@
  * iOS renderer: react-native-maps over Apple Maps.
  *
  * Its only job is to translate the result of `encodeArea` into Apple Maps
- * primitives. It decides no colours, no widths and no dash patterns — if you
+ * primitives. It decides no colors, no widths and no dash patterns — if you
  * find yourself reaching for a hex value in this file, the decision belongs in
  * encoding.ts.
  *
@@ -272,8 +272,8 @@ export default function Map({
 }
 
 /**
- * Apple Maps wants the alpha baked into the fill colour rather than a separate
- * opacity prop, so encoding.ts's (colour, opacity) pair is combined here. This
+ * Apple Maps wants the alpha baked into the fill color rather than a separate
+ * opacity prop, so encoding.ts's (color, opacity) pair is combined here. This
  * is translation, not a design decision.
  */
 function withOpacity(hex: string, opacity: number): string {

@@ -5,7 +5,7 @@
  * scripts/sync-maplibre-worker.mjs), so `Map.web.tsx` points `setWorkerUrl` at
  * a copy we serve from public/. If that copy is missing or belongs to a
  * different maplibre-gl version, the worker fails to load and the map paints
- * the basemap's background colour and nothing else — no tiles, no labels, no
+ * the basemap's background color and nothing else — no tiles, no labels, no
  * polygons, and no error. The whole failure mode is that it looks fine.
  *
  * These assertions are the alarm. They run on Linux in CI with no browser,

@@ -5,7 +5,7 @@
  * `Platform` from react-native. Anything that must stay free of React Native —
  * notably src/components/Map/encoding.ts, which is unit-tested without a
  * renderer — should import from './colors' or './metrics' directly instead.
- * Colour and scalar tokens are pure data; type tokens are not.
+ * Color and scalar tokens are pure data; type tokens are not.
  */
 
 export {
