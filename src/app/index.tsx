@@ -72,6 +72,15 @@ export default function MapScreen() {
   const { selectedAreaId, setSelectedAreaId, destination, durationHours, mode, profile } =
     useTrip();
   const [tileError, setTileError] = useState<Error | null>(null);
+  /*
+   * The blue dot appears only after the user has asked for it.
+   *
+   * `showsUserLocation` is a rendering flag, not a request — neither renderer
+   * ever prompts, so this has to be raised by the control that did. Keeping the
+   * two in one place is what makes "the app never asks on its own" checkable by
+   * reading one screen rather than trusting two renderers.
+   */
+  const [showsUserLocation, setShowsUserLocation] = useState(false);
 
   const selected = selectedAreaId ? (areaById.get(selectedAreaId) ?? null) : null;
 
@@ -175,6 +184,7 @@ export default function MapScreen() {
             onSelectArea={handleSelect}
             destination={destinationPoint}
             profile={profile}
+            showsUserLocation={showsUserLocation}
             reduceMotion={reduceMotion}
             onError={setTileError}
           />
@@ -279,7 +289,7 @@ export default function MapScreen() {
                   </>
                 ) : (
                   <>
-                    <TripControls />
+                    <TripControls onLocated={setShowsUserLocation} />
                     <BestOption
                       best={best}
                       ranked={ranked}
@@ -308,7 +318,7 @@ export default function MapScreen() {
           ]}
         >
           <View style={styles.sidebarControls}>
-            <TripControls />
+            <TripControls onLocated={setShowsUserLocation} />
           </View>
 
           {selected ? (

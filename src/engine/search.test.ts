@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { BUILDINGS, buildingById, searchBuildings } from './search';
+import { BUILDINGS, buildingById, nearestBuilding, searchBuildings } from './search';
 
 const topId = (query: string) => searchBuildings(query)[0]?.building.id;
 
@@ -94,5 +94,57 @@ describe('building search', () => {
       const found = searchBuildings(building.name, 20).some((m) => m.building.id === building.id);
       expect(found, building.name).toBe(true);
     }
+  });
+});
+
+describe('nearestBuilding', () => {
+  /*
+   * "Use my location" resolves a GPS fix to a building because every walking
+   * time CURB holds is precomputed from one. The risk is entirely in the
+   * out-of-range case: returning the closest building unconditionally would
+   * hand a student in Detroit a destination forty miles away and then rank
+   * every lot in Ann Arbor as a short walk from it.
+   */
+
+  const mason = buildingById.get('mason-hall')!;
+
+  it('finds the building you are standing on', () => {
+    const found = nearestBuilding(mason.lat, mason.lon);
+    expect(found?.building.id).toBe('mason-hall');
+    expect(found?.metres).toBeLessThan(5);
+  });
+
+  it('finds the nearest one from a point between buildings', () => {
+    // Twenty metres north of Mason. Still Mason, not whatever is across the Diag.
+    const found = nearestBuilding(mason.lat + 20 / 110_540, mason.lon);
+    expect(found?.building.id).toBe('mason-hall');
+    expect(found?.metres).toBeGreaterThan(10);
+    expect(found?.metres).toBeLessThan(40);
+  });
+
+  it('returns null rather than a distant guess when you are nowhere near', () => {
+    // Downtown Detroit, about 60km away.
+    expect(nearestBuilding(42.3314, -83.0458)).toBeNull();
+  });
+
+  it('respects an explicit range', () => {
+    /*
+     * Tested by widening the range around a point that is definitively out of
+     * it, rather than by shrinking it around a point on campus. Central campus
+     * is dense enough that a coordinate "300m from Mason" is 37m from the
+     * Modern Languages Building, so the tight-radius version of this test
+     * asserted a fact about building spacing rather than about the parameter.
+     */
+    expect(nearestBuilding(42.3314, -83.0458)).toBeNull();
+    expect(nearestBuilding(42.3314, -83.0458, 100_000)?.building).toBeDefined();
+  });
+
+  it('reports a distance consistent with the coordinate it was given', () => {
+    // 500m east. The east-west scale is the part an equirectangular
+    // approximation gets wrong if the latitude cosine is forgotten.
+    const metresPerLon = Math.cos((mason.lat * Math.PI) / 180) * 111_320;
+    const found = nearestBuilding(mason.lat, mason.lon + 500 / metresPerLon, 5_000);
+    expect(found).not.toBeNull();
+    expect(found!.metres).toBeLessThanOrEqual(500 + 1);
   });
 });

@@ -58,6 +58,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - The destination field offers your recent buildings before you type.
 - Selecting an area from the list now moves the map to it. It used to select something you could not see.
 - On a wide screen the map keeps the ranked list beside it instead of under it, and the list and Learn screens stop stretching their text across the whole window.
+- **Use my location.** CURB finds the building you are standing next to and ranks parking from there. It asks only when you press it, never on launch, and says what to do instead if you refuse — or if there is no signal, which is normal inside a structure.
 
 ### Changed
 

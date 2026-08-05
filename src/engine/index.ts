@@ -77,6 +77,7 @@ export {
 export {
   BUILDINGS,
   buildingById,
+  nearestBuilding,
   searchBuildings,
   type Building,
   type BuildingMatch,

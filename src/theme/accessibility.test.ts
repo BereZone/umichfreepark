@@ -66,6 +66,12 @@ const TEXT_PAIRS: [keyof ColorScheme, keyof ColorScheme, string][] = [
   ['caution', 'background', 'uncertainty warning'],
   ['caution', 'surface', 'uncertainty on a card'],
   ['caution', 'surfaceRaised', 'uncertainty in the detail panel'],
+  // `focus` was previously only asserted at 3:1, as a non-text ring. The "use
+  // my location" action renders it as actual words, which is a 4.5:1 pair — and
+  // it is the label on the app's only permission prompt, so it has to be
+  // readable before someone decides whether to grant it.
+  ['focus', 'surface', 'the use-my-location action'],
+  ['focus', 'surfaceRaised', 'the use-my-location action in the sheet'],
 ];
 
 describe('colour contrast', () => {

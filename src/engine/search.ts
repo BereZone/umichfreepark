@@ -61,6 +61,43 @@ function isSubsequence(query: string, target: string): boolean {
   return i === query.length;
 }
 
+/**
+ * The building nearest a coordinate, and how far away it is in metres.
+ *
+ * This is how "use my location" works without adding anything to the engine's
+ * shape. Every walking time CURB knows is precomputed from a building, so a raw
+ * GPS fix cannot be ranked against — but the building you are standing next to
+ * can be, and the answer is the same one you would have typed.
+ *
+ * Returns null past `maxMetres`, and that is a real answer rather than an
+ * error: a student at home in Detroit is genuinely not near any of these, and
+ * silently handing back the closest one — a building forty miles away — would
+ * rank every lot in Ann Arbor as a reasonable walk from where they are.
+ *
+ * Straight-line distance on purpose. This picks which building you are at, not
+ * how long anything takes to walk to; over the couple of hundred metres that
+ * decides between two neighbouring buildings, routing would change nothing.
+ */
+export function nearestBuilding(
+  lat: number,
+  lon: number,
+  maxMetres = 2_000
+): { building: Building; metres: number } | null {
+  let best: { building: Building; metres: number } | null = null;
+
+  for (const building of BUILDINGS) {
+    // Equirectangular approximation. Exact enough at this scale and far cheaper
+    // than haversine over every building on every location fix.
+    const eastWest = (building.lon - lon) * Math.cos((lat * Math.PI) / 180) * 111_320;
+    const northSouth = (building.lat - lat) * 110_540;
+    const metres = Math.hypot(eastWest, northSouth);
+    if (!best || metres < best.metres) best = { building, metres };
+  }
+
+  if (!best || best.metres > maxMetres) return null;
+  return best;
+}
+
 export interface BuildingMatch {
   building: Building;
   /** Lower is better. */

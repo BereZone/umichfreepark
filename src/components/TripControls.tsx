@@ -12,11 +12,12 @@
  * props would only create a second place for them to disagree.
  */
 
-import { StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
 
-import type { RankingMode } from '../engine';
+import { nearestBuilding, type RankingMode } from '../engine';
+import { useUserLocation } from '../hooks/use-user-location';
 import { DURATION_OPTIONS, useTrip } from '../state/trip';
-import { space, type } from '../theme';
+import { MIN_TOUCH_TARGET, radius, space, type } from '../theme';
 import { colorsFor } from '../theme/colors';
 import { BuildingSearch } from './BuildingSearch';
 import { Chip } from './Chip';
@@ -30,27 +31,77 @@ const MODES: { key: RankingMode; label: string }[] = [
 export function TripControls({
   /** Hide the search field where the destination is already shown above it. */
   showSearch = true,
+  /** Told when a location fix arrives, so the map can show the dot. */
+  onLocated,
 }: {
   showSearch?: boolean;
+  onLocated?: (located: boolean) => void;
 }) {
   const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = colorsFor(scheme);
   const { destination, setDestination, durationHours, setDurationHours, mode, setMode } = useTrip();
+  const location = useUserLocation();
+
+  /**
+   * A fix becomes a destination by way of the building you are standing next to.
+   *
+   * Every walking time CURB holds is precomputed from a building, so the answer
+   * to "what's near me" has to route through one. Choosing it here rather than
+   * ranking against raw coordinates also means the user can see and correct
+   * what we decided — the field fills in with a building name, not a dot.
+   */
+  const useMyLocation = async () => {
+    const point = await location.request();
+    onLocated?.(point !== null);
+    if (!point) return;
+    const found = nearestBuilding(point.lat, point.lon);
+    if (found) setDestination(found.building);
+  };
+
+  const locationMessage =
+    location.status === 'denied'
+      ? 'Location is off for CURB. Search a building instead, or turn it on in Settings.'
+      : location.status === 'unavailable'
+        ? 'No signal for a location fix — which is normal inside a structure. Search a building instead.'
+        : location.status === 'granted' && !destination
+          ? 'You’re not near any building CURB knows. Search one instead.'
+          : null;
 
   return (
     <View style={styles.root}>
       {showSearch ? (
         <View style={[styles.group, styles.searchGroup]}>
-          {/*
-           * Labelled, because the field shows the current destination as its
-           * placeholder. Without a label "Mason Hall" in grey reads as a
-           * suggestion of what you could type rather than as the answer every
-           * price and walk time on screen is already computed against.
-           */}
-          <Text style={[type.label, { color: colors.textMuted }]}>
-            {destination ? 'GOING TO' : 'GOING WHERE?'}
-          </Text>
+          <View style={styles.searchHeader}>
+            {/*
+             * Labelled, because the field shows the current destination as its
+             * placeholder. Without a label "Mason Hall" in grey reads as a
+             * suggestion of what you could type rather than as the answer every
+             * price and walk time on screen is already computed against.
+             */}
+            <Text style={[type.label, { color: colors.textMuted }]}>
+              {destination ? 'GOING TO' : 'GOING WHERE?'}
+            </Text>
+            <Pressable
+              onPress={useMyLocation}
+              disabled={location.status === 'locating'}
+              style={({ pressed }) => [styles.locate, { opacity: pressed ? 0.7 : 1 }]}
+              hitSlop={space.snug}
+              accessibilityRole="button"
+              // Names what happens. The prompt this raises is the app's only
+              // permission request, and it should never be a surprise.
+              accessibilityLabel="Use my location to pick the nearest building"
+            >
+              <Text style={[type.label, { color: colors.focus }]}>
+                {location.status === 'locating' ? 'LOCATING…' : 'USE MY LOCATION'}
+              </Text>
+            </Pressable>
+          </View>
           <BuildingSearch value={destination} onSelect={setDestination} />
+          {locationMessage ? (
+            <Text style={[type.caption, { color: colors.textMuted }]} accessibilityLiveRegion="polite">
+              {locationMessage}
+            </Text>
+          ) : null}
         </View>
       ) : null}
 
@@ -109,5 +160,17 @@ const styles = StyleSheet.create({
    * ordering is correct, its container's was not.
    */
   searchGroup: { zIndex: 10 },
+  searchHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: space.snug,
+  },
+  locate: {
+    minHeight: MIN_TOUCH_TARGET,
+    justifyContent: 'center',
+    paddingHorizontal: space.snug,
+    borderRadius: radius.sm,
+  },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: space.snug },
 });

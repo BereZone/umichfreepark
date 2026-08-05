@@ -101,6 +101,19 @@ breaks, the app simply starts declaring permissions nobody chose.
 
 Verified against the generated `ios/CURB/Info.plist`, not assumed from config.
 
+The other half of that guarantee is that the app now actually *requests* what it
+declares. Until the location control shipped, `NSLocationWhenInUseUsageDescription`
+sat in the plist against a permission no code ever asked for — a purpose string
+for a feature that did not exist. `src/hooks/use-user-location.ts` holds the
+only permission request in the codebase, and it fires from a press on a control
+labelled "use my location", never on mount. A map that prompts the moment it
+opens is the pattern people deny by reflex, and on iOS that denial is permanent
+until they go into Settings.
+
+All three refusal paths say what to do instead rather than failing silently:
+denied, no fix available (normal inside a structure — which is exactly where
+this app is used), and a fix that lands nowhere near a building CURB knows.
+
 ## Verified on the Simulator
 
 iOS 26.0, iPhone 17 Pro, 2026-08-05. The app builds natively, launches, and
