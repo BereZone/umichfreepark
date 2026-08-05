@@ -22,6 +22,10 @@ export default defineConfig({
       // is testable without either renderer — which is the point of it living
       // outside them.
       'src/components/Map/pills.test.ts',
+      // Same argument for whether the camera should move to a selection: a
+      // decision both renderers share, expressible without either of their
+      // very different camera APIs.
+      'src/components/Map/camera.test.ts',
       // Checks that MapLibre's worker has been copied into public/ and matches
       // the installed version. It reads files, not a rendering, so it belongs
       // with the runner that has no browser.

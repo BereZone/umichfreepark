@@ -15,7 +15,7 @@
  */
 
 import type { LatLng, Ring } from '../../geo/polygons';
-import type { ResolvedArea } from '../../engine';
+import type { Profile, ResolvedArea } from '../../engine';
 
 /** An area paired with the geometry needed to draw it. */
 export interface MapArea {
@@ -44,6 +44,18 @@ export interface MapProps {
 
   /** Destination pin, when the user has chosen a building. */
   destination?: LatLng | null;
+
+  /**
+   * Who is looking. Decides which areas render as closed to you.
+   *
+   * Both renderers used to hardcode `DEFAULT_PROFILE`, which was harmless only
+   * while nothing could change it. Once the profile is settable, a hardcoded
+   * one means a junior with a Blue permit sees a greyed-out lot on the map and
+   * an available one in the list, from the same engine call with different
+   * arguments — the map contradicting the list about the same lot at the same
+   * second.
+   */
+  profile?: Profile;
 
   initialCamera?: MapCamera;
 

@@ -22,7 +22,8 @@ import MapView, { Marker, Polygon, PROVIDER_DEFAULT, type Region } from 'react-n
 
 import { DEFAULT_PROFILE, eligibilityFor, statusOf } from '../../engine';
 import { colorsFor } from '../../theme/colors';
-import { radius, space, tabularNumbers, type } from '../../theme';
+import { MAX_MAP_TEXT_SCALE, radius, space, tabularNumbers, type } from '../../theme';
+import { focusFor } from './camera';
 import { encodeArea } from './encoding';
 import { selectPills, type Viewport } from './pills';
 import { DEFAULT_CAMERA, type MapProps } from './types';
@@ -41,6 +42,7 @@ export default function Map({
   selectedAreaId,
   onSelectArea,
   destination,
+  profile = DEFAULT_PROFILE,
   initialCamera = DEFAULT_CAMERA,
   showsUserLocation = false,
   reduceMotion = false,
@@ -64,11 +66,40 @@ export default function Map({
   // the first paint is what keeps the clock tick cheap.
   const [tracksChanges, setTracksChanges] = useState(true);
   const readyFired = useRef(false);
+  const mapRef = useRef<MapView | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setTracksChanges(false), 500);
     return () => clearTimeout(timer);
   }, []);
+
+  /**
+   * Move to a selection the user cannot see.
+   *
+   * The predicate lives in camera.ts so this and the web renderer agree on when
+   * to move; only the animation call below is Apple-specific. `viewport` is
+   * read but not depended on — including it would re-fire this every time the
+   * user's own pan settled, which is a map that will not stay where it is put.
+   */
+  useEffect(() => {
+    if (!selectedAreaId) return;
+    const target = areas.find((mapArea) => mapArea.area.id === selectedAreaId);
+    if (!target) return;
+    const focus = focusFor(target.labelPoint, viewport);
+    if (!focus) return;
+
+    const delta = zoomToDelta(focus.zoom);
+    mapRef.current?.animateToRegion(
+      {
+        latitude: focus.center.lat,
+        longitude: focus.center.lon,
+        latitudeDelta: delta,
+        longitudeDelta: delta,
+      },
+      reduceMotion ? 0 : 500
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedAreaId, reduceMotion]);
 
   const initialRegion: Region = useMemo(
     () => ({
@@ -89,10 +120,10 @@ export default function Map({
     () =>
       areas.map((mapArea) => {
         const status = statusOf(mapArea.area, at);
-        const eligibility = eligibilityFor(mapArea.area, DEFAULT_PROFILE, status);
+        const eligibility = eligibilityFor(mapArea.area, profile, status);
         return { mapArea, status, encoding: encodeArea(mapArea.area, status, eligibility, scheme) };
       }),
-    [areas, at, scheme]
+    [areas, at, scheme, profile]
   );
 
   // Which areas get a pill is decided in pills.ts, shared with the web
@@ -128,6 +159,7 @@ export default function Map({
 
   return (
     <MapView
+      ref={mapRef}
       style={StyleSheet.absoluteFill}
       provider={PROVIDER_DEFAULT}
       initialRegion={initialRegion}
@@ -185,7 +217,12 @@ export default function Map({
               },
             ]}
           >
-            <Text style={[styles.pillText, tabularNumbers, { color: encoding.labelColor }]}>
+            <Text
+              style={[styles.pillText, tabularNumbers, { color: encoding.labelColor }]}
+              // Bounded, not clamped. A pill is anchored to a point and cannot
+              // reflow, so unbounded growth buries the map under its own labels.
+              maxFontSizeMultiplier={MAX_MAP_TEXT_SCALE}
+            >
               {encoding.label}
             </Text>
           </View>

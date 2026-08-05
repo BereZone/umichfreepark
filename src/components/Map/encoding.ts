@@ -53,10 +53,26 @@ export interface AreaEncoding {
   accessibilityLabel: string;
 }
 
-/** Free is solid and heavier; paid is dashed and lighter. */
-const FREE_BORDER_WIDTH = 3;
-const PAID_BORDER_WIDTH = 1.5;
-const PAID_DASH: number[] = [4, 3];
+/**
+ * Free is solid and heavier; paid is dashed and lighter.
+ *
+ * Exported because the legend has to draw the same two lines. A key that
+ * demonstrates a 2pt dash while the map draws a 3pt one is a key that teaches
+ * the wrong thing, and it is the map's most load-bearing distinction.
+ */
+export const FREE_BORDER_WIDTH = 3;
+export const PAID_BORDER_WIDTH = 1.5;
+export const PAID_DASH: number[] = [4, 3];
+
+/**
+ * How much lighter a district is drawn than a lot.
+ *
+ * A third of the fill and half the line. Enough that you can still see where
+ * the meter district begins and ends, little enough that the sixty lots inside
+ * it are read directly rather than through it.
+ */
+const DISTRICT_FILL_SCALE = 0.35;
+const DISTRICT_LINE_SCALE = 0.5;
 
 /**
  * Longest string that stays legible in a centroid pill at map scale. Measured
@@ -74,9 +90,36 @@ const MAX_PILL_LENGTH = 16;
  * belongs to no permit system and should not imply one.
  */
 export function hueFor(area: ResolvedArea, theme: ThemeName): string {
+  if (area.authority !== 'umich') return colorsFor(theme).cityNeutral;
+  return tierHue(area.permitTier, theme);
+}
+
+/**
+ * The permit tiers the legend lists, in the order it lists them.
+ *
+ * Roughly the order a student meets them: the two they might actually hold,
+ * then the ones they will see on a sign and cannot use, then the free one.
+ */
+export const LEGEND_TIERS = [
+  'Blue',
+  'Yellow',
+  'Orange',
+  'Gold',
+  'Restricted',
+  'Park & Ride',
+] as const;
+
+/**
+ * A permit tier's colour, split out of `hueFor` so the legend and the map read
+ * it from the same place.
+ *
+ * A legend with its own copy of this switch is the same failure mode as a
+ * renderer with its own copy: it stays right until someone changes one of them,
+ * and then the map's key is quietly lying about the map.
+ */
+export function tierHue(tier: string | null | undefined, theme: ThemeName): string {
   const c = colorsFor(theme);
-  if (area.authority !== 'umich') return c.cityNeutral;
-  switch (area.permitTier) {
+  switch (tier) {
     case 'Blue':
       return c.permitBlue;
     case 'Yellow':
@@ -141,9 +184,26 @@ export function encodeArea(
 
   const label = priceLabel(area, status);
 
+  /*
+   * A district is drawn as context, not as a place you drive into.
+   *
+   * The downtown meter zone is the city's published boundary for on-street
+   * parking — roughly two kilometres across, containing hundreds of the very
+   * lots it overlaps. Given a lot's own treatment it laid a solid slab over all
+   * of downtown and central campus and traced the whole thing in a 3pt border,
+   * so every structure inside it was read through a wash and the map's most
+   * useful area became its least legible.
+   *
+   * Scale is the reason, so scale is what changes: same hue, same free/paid
+   * border style, a third of the fill and a thinner line. The colourblind
+   * constraint is untouched — free is still solid, paid is still dashed.
+   */
+  const isDistrict = area.kind === 'meter-zone';
+
   // Ineligible areas are desaturated and dimmed but never hidden. A lot you can
   // see out the window needs an explanation, not an absence.
-  const fillOpacity = muted ? 0.08 : free ? 0.28 : 0.16;
+  const lotOpacity = muted ? 0.08 : free ? 0.28 : 0.16;
+  const fillOpacity = isDistrict ? lotOpacity * DISTRICT_FILL_SCALE : lotOpacity;
 
   const borderColor = muted ? c.ineligible : free ? c.free : hue;
 
@@ -162,7 +222,8 @@ export function encodeArea(
     borderColor,
     // The load-bearing line: free/paid is border style, not hue.
     borderStyle: free ? 'solid' : 'dashed',
-    borderWidth: free ? FREE_BORDER_WIDTH : PAID_BORDER_WIDTH,
+    borderWidth:
+      (free ? FREE_BORDER_WIDTH : PAID_BORDER_WIDTH) * (isDistrict ? DISTRICT_LINE_SCALE : 1),
     dashPattern: free ? null : PAID_DASH,
     label,
     labelColor: free ? c.textInverse : c.text,

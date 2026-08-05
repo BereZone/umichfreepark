@@ -22,6 +22,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { DEFAULT_PROFILE, eligibilityFor, statusOf } from '../../engine';
 import { colorsFor } from '../../theme/colors';
+import { focusFor } from './camera';
 import { encodeArea } from './encoding';
 import { selectPills } from './pills';
 import { DEFAULT_CAMERA, PILL_MIN_ZOOM, type MapProps } from './types';
@@ -66,6 +67,7 @@ export default function Map({
   selectedAreaId,
   onSelectArea,
   destination,
+  profile = DEFAULT_PROFILE,
   initialCamera = DEFAULT_CAMERA,
   showsUserLocation = false,
   reduceMotion = false,
@@ -201,7 +203,7 @@ export default function Map({
 
     const encoded = areas.map((mapArea) => {
       const status = statusOf(mapArea.area, at);
-      const eligibility = eligibilityFor(mapArea.area, DEFAULT_PROFILE, status);
+      const eligibility = eligibilityFor(mapArea.area, profile, status);
       return {
         mapArea,
         labelPoint: mapArea.labelPoint,
@@ -275,7 +277,38 @@ export default function Map({
         ['literal', [4, 3]], // dashed
       ] as never);
     }
-  }, [areas, at, selectedAreaId, scheme, loaded, cameraSettled]);
+  }, [areas, at, selectedAreaId, scheme, loaded, cameraSettled, profile]);
+
+  // --- move to a selection made somewhere else -----------------------------
+  useEffect(() => {
+    const instance = map.current;
+    if (!instance || !loaded || !selectedAreaId) return;
+    const target = areas.find((mapArea) => mapArea.area.id === selectedAreaId);
+    if (!target) return;
+
+    const bounds = instance.getBounds();
+    // Whether to move, and where to, is decided in camera.ts and shared with
+    // the native renderer. This file only knows how to perform the move.
+    const focus = focusFor(target.labelPoint, {
+      zoom: instance.getZoom(),
+      bounds: {
+        south: bounds.getSouth(),
+        west: bounds.getWest(),
+        north: bounds.getNorth(),
+        east: bounds.getEast(),
+      },
+    });
+    if (!focus) return;
+
+    instance.easeTo({
+      center: [focus.center.lon, focus.center.lat],
+      zoom: focus.zoom,
+      duration: reduceMotion ? 0 : 500,
+    });
+    // `areas` is excluded on purpose: it is a new array on every tick, and
+    // including it would re-run this on the clock and fight the user's own pan.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedAreaId, loaded, reduceMotion]);
 
   // --- destination pin ------------------------------------------------------
   useEffect(() => {

@@ -243,3 +243,54 @@ describe('contrast', () => {
     }
   });
 });
+
+describe('a district is drawn as context, not as a lot', () => {
+  /*
+   * The downtown meter zone is the city's published on-street boundary, about
+   * two kilometres across, and it geographically contains most of the
+   * structures and lots the map is actually about. Encoded like a lot it laid a
+   * slab over all of downtown and central campus, so every structure inside it
+   * was read through a wash.
+   *
+   * What must NOT change is the colourblind contract: the district still
+   * carries free/paid on border style and label text, exactly like everything
+   * else. These assertions pin the weight change and the invariance together,
+   * because relaxing the second to achieve the first is the tempting shortcut.
+   */
+
+  it('fills lighter and draws thinner than a lot in the same state', () => {
+    const district = encode('downtown-meters', SUNDAY_NOON);
+    const lot = encode('maynard', SUNDAY_NOON);
+    expect(district.fillOpacity).toBeLessThan(lot.fillOpacity);
+    expect(district.borderWidth).toBeLessThan(lot.borderWidth);
+  });
+
+  it('still carries free versus paid on border style and text', () => {
+    const paid = encode('downtown-meters', WEEKDAY_NOON);
+    const free = encode('downtown-meters', SUNDAY_NOON);
+    expect(paid.borderStyle).toBe('dashed');
+    expect(free.borderStyle).toBe('solid');
+    expect(free.label).toBe('FREE');
+    expect(paid.label).not.toBe('FREE');
+  });
+
+  it('still makes its own free state heavier than its own paid state', () => {
+    expect(encode('downtown-meters', SUNDAY_NOON).borderWidth).toBeGreaterThan(
+      encode('downtown-meters', WEEKDAY_NOON).borderWidth
+    );
+  });
+
+  it('leaves every non-district area alone', () => {
+    for (const area of AREAS) {
+      if (area.kind === 'meter-zone') continue;
+      const status = statusAt(area.authority, area.schedule, SUNDAY_NOON);
+      const encoding = encodeArea(
+        area,
+        status,
+        eligibilityFor(area, DEFAULT_PROFILE, status),
+        'light'
+      );
+      expect([1.5, 3], area.id).toContain(encoding.borderWidth);
+    }
+  });
+});
