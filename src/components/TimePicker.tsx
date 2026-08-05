@@ -14,38 +14,40 @@
  * day, roughly what time" — so a platform date-and-time modal would be more
  * taps and more precision than the data supports. The exceptions are holidays
  * and home games, which are specific dates, and those are reachable because the
- * day row runs a week ahead.
+ * day menu runs a week ahead.
  *
  * Hours are whole hours because every published rule in this app changes on one:
  * 6pm, 8am, 4am. Offering minutes would imply a precision the sources do not
  * have.
  */
 
-import { ScrollView, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { StyleSheet, Text, View, useColorScheme } from 'react-native';
 
 import { atLocalTime, dayOfWeek, inZone } from '../engine';
 import { useTrip } from '../state/trip';
 import { space, type } from '../theme';
 import { colorsFor } from '../theme/colors';
 import { Chip } from './Chip';
+import { Select } from './Select';
 
 /** How far ahead you can look. A week reaches next Sunday from any day. */
 const DAYS_AHEAD = 7;
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-/** "12a", "6a", "12p", "6p" — short enough for a chip, unambiguous at a glance. */
-export function hourLabel(hour: number): string {
-  const suffix = hour < 12 ? 'a' : 'p';
-  const twelve = hour % 12 === 0 ? 12 : hour % 12;
-  return `${twelve}${suffix}`;
+/** "12am", "6am", "noon", "6pm" — a menu row has space for the readable form. */
+export function spokenHour(hour: number): string {
+  if (hour === 0) return 'Midnight';
+  if (hour === 12) return 'Noon';
+  const suffix = hour < 12 ? 'am' : 'pm';
+  return `${hour % 12}${suffix}`;
 }
 
 /** How the app names the previewed moment in prose. "Sunday 6pm", "today 9pm". */
 export function describeInstant(at: Date, reference: Date): string {
   const hour = inZone(at).getHours();
   const dayName = WEEKDAYS[dayOfWeek(at)];
-  const time = hourLabel(hour).replace('a', 'am').replace('p', 'pm');
+  const time = spokenHour(hour).toLowerCase();
 
   // Same calendar day in Ann Arbor reads as "today" rather than by weekday,
   // because "Wednesday 9pm" on a Wednesday afternoon is needlessly indirect.
@@ -81,10 +83,10 @@ export function TimePicker() {
       <View style={styles.header}>
         <Text style={[type.label, { color: colors.textMuted }]}>CHECK ANOTHER TIME</Text>
         {/*
-         * Returning to live is a chip in the same row as the days, so it reads
-         * as the same kind of choice rather than as a cancel button. It is
-         * selected whenever nothing is being previewed, which is what makes
-         * "Now" the visible resting state of this control.
+         * "Now" stays a chip rather than becoming a third menu row: it is not a
+         * value among values, it is the way back to live. Selected whenever
+         * nothing is being previewed, which makes live the visible resting
+         * state of this control rather than something you have to restore.
          */}
         <Chip
           label="Now"
@@ -95,43 +97,24 @@ export function TimePicker() {
         />
       </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.row}
-        accessibilityRole="radiogroup"
-        accessibilityLabel="Which day"
-      >
-        {days.map((day) => (
-          <Chip
-            key={day.offset}
-            label={day.label}
-            selected={previewAt !== null && selectedOffset === day.offset}
-            onPress={() => choose(day.offset, selectedHour)}
-            colors={colors}
-          />
-        ))}
-      </ScrollView>
+      <Select
+        label="DAY"
+        value={String(selectedOffset)}
+        colors={colors}
+        options={days.map((day) => ({ value: String(day.offset), label: day.label }))}
+        onChange={(offset) => choose(Number(offset), selectedHour)}
+      />
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.row}
-        accessibilityRole="radiogroup"
-        accessibilityLabel="What time"
-      >
-        {Array.from({ length: 24 }, (_, hour) => (
-          <Chip
-            key={hour}
-            label={hourLabel(hour)}
-            numeric
-            selected={previewAt !== null && selectedHour === hour}
-            onPress={() => choose(selectedOffset, hour)}
-            colors={colors}
-            accessibilityLabel={`${hourLabel(hour).replace('a', ' am').replace('p', ' pm')}`}
-          />
-        ))}
-      </ScrollView>
+      <Select
+        label="TIME"
+        value={String(selectedHour)}
+        colors={colors}
+        options={Array.from({ length: 24 }, (_, hour) => ({
+          value: String(hour),
+          label: spokenHour(hour),
+        }))}
+        onChange={(hour) => choose(selectedOffset, Number(hour))}
+      />
 
       {previewAt ? (
         <Text style={[type.caption, { color: colors.textMuted }]}>
@@ -148,7 +131,7 @@ export function TimePicker() {
  * milliseconds.
  *
  * 6pm today to 1am tomorrow is seven hours and one day. Dividing the difference
- * by 86,400,000 calls that zero days, which would light up the wrong chip.
+ * by 86,400,000 calls that zero days, which would select the wrong menu row.
  */
 function dayOffsetOf(at: Date, reference: Date): number {
   const a = inZone(at);
@@ -165,7 +148,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: space.snug,
   },
-  // Horizontal scrollers need their padding on the content, not the container,
-  // or the last chip sits flush against the screen edge.
-  row: { flexDirection: 'row', gap: space.snug, paddingRight: space.comfortable },
 });

@@ -20,12 +20,14 @@
  * reason `TripControls` is shared — the alternative is two pickers writing one
  * piece of state and disagreeing about what it means.
  *
- * The permit row is always visible, including for the first-years and
- * sophomores who cannot buy one. Hiding it was the first attempt and it was
- * worse: the app ships defaulted to a first-year, so the setting was simply
- * absent, with nothing to suggest that choosing a later year would reveal it.
- * The options are shown and disabled instead, which makes the setting findable
- * and states the rule where someone is looking for it.
+ * Both are menus rather than rows of buttons. Ten chips for two settings you
+ * change once a year crowded out the destination field that people actually
+ * open this for; see Select.tsx.
+ *
+ * The permit list always includes the options first-years and sophomores cannot
+ * buy, shown disabled. Hiding them was the first attempt and it was worse: the
+ * app ships defaulted to a first-year, so the setting was simply absent, with
+ * nothing to suggest that choosing a later year would reveal it.
  */
 
 import { StyleSheet, Text, View, useColorScheme } from 'react-native';
@@ -35,22 +37,22 @@ import { useTrip } from '../state/trip';
 import { space, type } from '../theme';
 import { colorsFor } from '../theme/colors';
 import { Callout, CalloutText } from './Callout';
-import { Chip } from './Chip';
+import { Select, type SelectOption } from './Select';
 
-const CLASS_YEARS: { key: ClassYear; label: string }[] = [
-  { key: 'first-year', label: 'First-year' },
-  { key: 'sophomore', label: 'Sophomore' },
-  { key: 'junior', label: 'Junior' },
-  { key: 'senior', label: 'Senior' },
-  { key: 'graduate', label: 'Grad' },
+const CLASS_YEARS: SelectOption<ClassYear>[] = [
+  { value: 'first-year', label: 'First-year' },
+  { value: 'sophomore', label: 'Sophomore' },
+  { value: 'junior', label: 'Junior' },
+  { value: 'senior', label: 'Senior' },
+  { value: 'graduate', label: 'Graduate' },
 ];
 
-const PERMITS: { key: HeldPermit; label: string }[] = [
-  { key: 'none', label: 'No permit' },
-  { key: 'orange', label: 'Orange' },
-  { key: 'yellow-after-hours', label: 'Yellow' },
-  { key: 'after-hours', label: 'After Hours' },
-  { key: 'blue', label: 'Blue' },
+const PERMITS: SelectOption<HeldPermit>[] = [
+  { value: 'none', label: 'No permit' },
+  { value: 'orange', label: 'Orange' },
+  { value: 'yellow-after-hours', label: 'Yellow' },
+  { value: 'after-hours', label: 'After Hours' },
+  { value: 'blue', label: 'Blue' },
 ];
 
 export function ProfilePicker({
@@ -72,62 +74,44 @@ export function ProfilePicker({
         </Text>
       ) : null}
 
-      <View style={styles.group}>
-        <Text style={[type.label, { color: colors.textMuted }]}>YOUR YEAR</Text>
-        <View style={styles.row} accessibilityRole="radiogroup" accessibilityLabel="Your year">
-          {CLASS_YEARS.map((year) => (
-            <Chip
-              key={year.key}
-              label={year.label}
-              selected={profile.classYear === year.key}
-              colors={colors}
-              onPress={() =>
-                setProfile({
-                  classYear: year.key,
-                  // Moving back to a year that cannot hold a permit drops the
-                  // one you had, rather than leaving state the engine would
-                  // reject on every call.
-                  permit: permitIsPlausible({ classYear: year.key, permit: profile.permit })
-                    ? profile.permit
-                    : 'none',
-                })
-              }
-            />
-          ))}
-        </View>
-      </View>
+      <Select
+        label="YOUR YEAR"
+        value={profile.classYear}
+        options={CLASS_YEARS}
+        colors={colors}
+        onChange={(classYear) =>
+          setProfile({
+            classYear,
+            // Moving back to a year that cannot hold a permit drops the one you
+            // had, rather than leaving state the engine would reject on every
+            // call.
+            permit: permitIsPlausible({ classYear, permit: profile.permit })
+              ? profile.permit
+              : 'none',
+          })
+        }
+      />
 
-      <View style={styles.group}>
-        <Text style={[type.label, { color: colors.textMuted }]}>YOUR PERMIT</Text>
-        <View
-          style={styles.row}
-          accessibilityRole="radiogroup"
-          accessibilityLabel="Permit you hold"
-        >
-          {PERMITS.map((permit) => {
-            // Whether this profile could legally hold it. The engine owns the
-            // rule; this only reflects it.
-            const holdable =
-              permit.key === 'none' ||
-              permitIsPlausible({ classYear: profile.classYear, permit: permit.key });
-            return (
-              <Chip
-                key={permit.key}
-                label={permit.label}
-                selected={profile.permit === permit.key}
-                disabled={!holdable}
-                colors={colors}
-                accessibilityLabel={
-                  holdable
-                    ? permit.label
-                    : `${permit.label} — U-M does not sell this to first-years or sophomores`
-                }
-                onPress={() => setProfile({ ...profile, permit: permit.key })}
-              />
-            );
-          })}
-        </View>
-      </View>
+      <Select
+        label="YOUR PERMIT"
+        value={profile.permit}
+        colors={colors}
+        options={PERMITS.map((permit) => {
+          // Whether this profile could legally hold it. The engine owns the
+          // rule; this only reflects it.
+          const holdable =
+            permit.value === 'none' ||
+            permitIsPlausible({ classYear: profile.classYear, permit: permit.value });
+          return {
+            ...permit,
+            disabled: !holdable,
+            accessibilityLabel: holdable
+              ? permit.label
+              : `${permit.label} — U-M does not sell this to first-years or sophomores`,
+          };
+        })}
+        onChange={(permit) => setProfile({ ...profile, permit })}
+      />
 
       {!canHoldPermit ? (
         <Callout tone="caution" colors={colors}>
@@ -144,6 +128,4 @@ export function ProfilePicker({
 
 const styles = StyleSheet.create({
   root: { gap: space.snug },
-  group: { gap: space.tight },
-  row: { flexDirection: 'row', flexWrap: 'wrap', gap: space.snug },
 });
