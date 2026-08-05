@@ -86,6 +86,8 @@ export const type = {
   body: { fontSize: 16, fontWeight: '400' as const },
   bodyStrong: { fontSize: 16, fontWeight: '600' as const },
   caption: { fontSize: 13, fontWeight: '400' as const },
+  /** A caption carrying state — a selected chip, a row's active label. */
+  captionStrong: { fontSize: 13, fontWeight: '600' as const },
   /** Map pills and legend keys. Small, so it carries extra weight. */
   label: { fontSize: 12, fontWeight: '700' as const },
 } as const;

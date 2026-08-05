@@ -12,8 +12,17 @@ export {
   colorsFor,
   darkColors,
   lightColors,
+  withAlpha,
   type ColorScheme,
   type ThemeName,
 } from './colors';
-export { MIN_TOUCH_TARGET, duration, radius, space } from './metrics';
+export {
+  MAX_MAP_TEXT_SCALE,
+  MIN_TOUCH_TARGET,
+  SIDEBAR_WIDTH,
+  WIDE_LAYOUT_MIN_WIDTH,
+  duration,
+  radius,
+  space,
+} from './metrics';
 export { fontFamily, tabularNumbers, type } from './typography';

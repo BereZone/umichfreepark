@@ -123,3 +123,22 @@ export type ThemeName = 'light' | 'dark';
 
 export const colorsFor = (theme: ThemeName): ColorScheme =>
   theme === 'dark' ? darkColors : lightColors;
+
+/**
+ * A token at partial opacity, as an 8-digit hex string.
+ *
+ * Two callers need this and they must agree: Apple Maps wants alpha baked into
+ * the fill colour rather than supplied as a separate prop, and callouts tint
+ * their surface with the status colour they are about. Both are translations of
+ * an existing token, not new colours — which is why this lives beside the
+ * tokens instead of in either caller.
+ *
+ * Kept free of React Native along with the rest of this file, so encoding.ts
+ * can use it without dragging a renderer into its tests.
+ */
+export const withAlpha = (hex: string, alpha: number): string => {
+  const clamped = Math.round(Math.min(Math.max(alpha, 0), 1) * 255)
+    .toString(16)
+    .padStart(2, '0');
+  return `${hex}${clamped}`;
+};
