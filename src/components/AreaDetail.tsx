@@ -1,5 +1,5 @@
 /**
- * Everything CURB knows about one area, as a panel.
+ * Everything MFreePark knows about one area, as a panel.
  *
  * Shared by the map's bottom sheet and, in the wide layout, its sidebar. The
  * order is the order of the questions people actually ask, most urgent first:
@@ -74,8 +74,20 @@ export function AreaDetail({
             </Text>
           </Text>
         ) : (
+          /*
+           * Two different reasons for "no next change", and they are opposites.
+           *
+           * `nextTransitionOf` returns null both for a lot that is free at every
+           * hour and for one that is enforced at every hour. Both used to print
+           * "it's enforced around the clock", so a free park-and-ride displayed
+           * the word Free in large green type and then told the reader it was
+           * enforced around the clock. That is the exact contradiction this app
+           * exists to remove.
+           */
           <Text style={[type.body, { color: colors.textMuted }]}>
-            This one doesn’t change — it’s enforced around the clock.
+            {status.paid
+              ? 'This one doesn’t change — it’s enforced around the clock.'
+              : 'This one doesn’t change — it’s free at every hour.'}
           </Text>
         )}
       </View>
@@ -121,6 +133,22 @@ export function AreaDetail({
         <Callout tone="caution" title="Home game Saturday" colors={colors}>
           <CalloutText colors={colors}>{gameDay}</CalloutText>
         </Callout>
+      ) : null}
+
+      {/*
+       * A park-and-ride's walking time is true and, on its own, misleading.
+       *
+       * These lots are 70+ minutes on foot from central campus, so ranked by
+       * cost they can win outright and then present "79 min walk" as the best
+       * option available — technically the answer, practically nonsense,
+       * because nobody walks it. A bus is the reason the lot exists, and the
+       * walking figure has to be read next to that fact rather than instead of
+       * it. Sourced the same place the Learn screen's claim is.
+       */}
+      {area.permitTier === 'Park & Ride' ? (
+        <Text style={[type.caption, { color: colors.free }]}>
+          A free bus runs from here to campus — you are not meant to walk it.
+        </Text>
       ) : null}
 
       {area.note ? (

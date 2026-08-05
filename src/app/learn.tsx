@@ -199,7 +199,7 @@ function ProfilePicker({ colors }: { colors: ColorScheme }) {
     <View style={styles.section}>
       <Text style={[type.heading, { color: colors.text }]}>Your situation</Text>
       <Text style={[type.body, { color: colors.textMuted }]}>
-        Everything else in CURB is answered for this. Change it and the map and
+        Everything else in MFreePark is answered for this. Change it and the map and
         the list change with it.
       </Text>
 

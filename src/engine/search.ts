@@ -65,7 +65,7 @@ function isSubsequence(query: string, target: string): boolean {
  * The building nearest a coordinate, and how far away it is in metres.
  *
  * This is how "use my location" works without adding anything to the engine's
- * shape. Every walking time CURB knows is precomputed from a building, so a raw
+ * shape. Every walking time MFreePark knows is precomputed from a building, so a raw
  * GPS fix cannot be ranked against — but the building you are standing next to
  * can be, and the answer is the same one you would have typed.
  *

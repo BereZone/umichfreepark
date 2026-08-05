@@ -18,7 +18,7 @@ import {
   type Ring,
 } from './polygons';
 
-/** Every real polygon CURB ships, as ring arrays. */
+/** Every real polygon MFreePark ships, as ring arrays. */
 const realPolygons: Ring[][] = (() => {
   const geo = JSON.parse(
     readFileSync(path.join(process.cwd(), 'data/raw/osm-parking.geojson'), 'utf8')

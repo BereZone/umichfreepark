@@ -1,7 +1,7 @@
 /**
  * The app's one piece of choreography: a panel arriving.
  *
- * CURB has exactly two moments worth animating, and this is the smaller one —
+ * MFreePark has exactly two moments worth animating, and this is the smaller one —
  * the sheet swapping between the trip controls and an area's detail. The other
  * is the 6pm sweep, which belongs to the map renderers because it is a property
  * change on hundreds of polygons rather than a view appearing.

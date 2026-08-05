@@ -1,0 +1,86 @@
+name: Deploy web
+
+# Only pushes to main deploy. Pull requests run the test workflow and stop
+# there — a preview URL per branch is not worth a second thing that can publish.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A newer push supersedes an older one. Without this, two quick commits race and
+# whichever export finishes last wins, which is not necessarily the newer one.
+concurrency:
+  group: deploy-web
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: export and deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # postinstall copies MapLibre's worker into public/, which the export then
+      # copies into dist/. That file is why the map draws anything at all; see
+      # the header of src/components/Map/Map.web.tsx.
+      - name: Install dependencies
+        run: npm ci
+
+      # THE DEPLOY GATE.
+      #
+      # Duplicated from test.yml rather than chained to it, on purpose. A
+      # workflow_run trigger would deploy from a separate run whose result can
+      # disagree with this commit, and GitHub offers no way to make one workflow
+      # a required predecessor of another. Re-running the checks here costs a
+      # couple of minutes and makes the guarantee local: nothing reaches the
+      # internet that did not just pass on exactly this tree.
+      #
+      # This matters more here than in most projects. The costliest bug this app
+      # can ship is a wrong "FREE", which is a $70 ticket for a student, and the
+      # engine tests are the only thing standing between a bad rule and a live
+      # site.
+      - name: Check version locations are in sync
+        run: node scripts/version.mjs check
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Export the web build
+        run: npx expo export -p web
+
+      # Fails loudly rather than deploying a map that renders nothing.
+      #
+      # MapLibre resolves its worker at runtime and reports nothing when the file
+      # is missing — the page loads, the network log is clean, and the map is a
+      # blank rectangle in the style's background colour. That shipped once
+      # already. An export that has lost the worker is not a deployable build.
+      - name: Verify the MapLibre worker survived the export
+        run: |
+          for file in maplibre-gl-worker.mjs maplibre-gl-shared.mjs; do
+            if [ ! -f "dist/maplibre/$file" ]; then
+              echo "::error::dist/maplibre/$file is missing — the web map would render nothing."
+              exit 1
+            fi
+          done
+          echo "Worker and shared chunk are both in dist/maplibre/."
+
+      - name: Deploy to EAS Hosting
+        run: npx eas-cli@latest deploy --prod --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}

@@ -2,7 +2,7 @@
 
 Instructions for coding agents working in this repository. Read this before changing anything.
 
-## What CURB is
+## What MFreePark is
 
 A parking app for University of Michigan students in Ann Arbor. One Expo codebase, web and iOS. It answers "what can I park in right now, for how much, near this building?" by unifying City of Ann Arbor and U-M parking rules — two authorities no existing app covers together.
 

@@ -1,19 +1,19 @@
 {
   "expo": {
-    "name": "CURB",
-    "slug": "curb",
+    "name": "MFreePark",
+    "slug": "mfreepark",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "curb",
+    "scheme": "mfreepark",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon",
       "buildNumber": "1",
       "supportsTablet": true,
-      "bundleIdentifier": "dev.berezone.curb",
+      "bundleIdentifier": "dev.berezone.mfreepark",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "CURB uses your location to show parking near you and how far each lot is to walk. Your location stays on your device and is never sent anywhere."
+        "NSLocationWhenInUseUsageDescription": "MFreePark uses your location to show parking near you and how far each lot is to walk. Your location stays on your device and is never sent anywhere."
       }
     },
     "android": {
@@ -44,7 +44,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "CURB uses your location to show parking near you and how far each lot is to walk. Your location stays on your device and is never sent anywhere.",
+          "locationWhenInUsePermission": "MFreePark uses your location to show parking near you and how far each lot is to walk. Your location stays on your device and is never sent anywhere.",
           "locationAlwaysAndWhenInUsePermission": false,
           "locationAlwaysPermission": false,
           "isIosBackgroundLocationEnabled": false,

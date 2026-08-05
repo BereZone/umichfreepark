@@ -53,18 +53,23 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - The map screen now has the controls it was missing: where you're going, how long you're staying, and how to sort. Previously the map was ranked against a destination you could only set on the other tab.
 - A key on the map, saying what the border styles and the fill colours mean. It draws its swatches from the same numbers the map draws with, so it cannot end up describing a map that no longer exists.
 - Tapping an area now shows what your stay costs and how far the walk is, not just whether it is free right now.
-- **Tell CURB who you are.** The Learn tab now takes your year and permit, and the whole app answers for that person. It always assumed a first-year with no permit, which meant a senior with a Blue permit was told they could not park in their own lot.
-- CURB remembers where you were going, how long for, how you sort, and your last five destinations. Opening the app no longer starts over at Mason Hall.
+- **Tell MFreePark who you are.** The Learn tab now takes your year and permit, and the whole app answers for that person. It always assumed a first-year with no permit, which meant a senior with a Blue permit was told they could not park in their own lot.
+- MFreePark remembers where you were going, how long for, how you sort, and your last five destinations. Opening the app no longer starts over at Mason Hall.
 - The destination field offers your recent buildings before you type.
 - Selecting an area from the list now moves the map to it. It used to select something you could not see.
 - On a wide screen the map keeps the ranked list beside it instead of under it, and the list and Learn screens stop stretching their text across the whole window.
-- **Use my location.** CURB finds the building you are standing next to and ranks parking from there. It asks only when you press it, never on launch, and says what to do instead if you refuse — or if there is no signal, which is normal inside a structure.
+- **Use my location.** MFreePark finds the building you are standing next to and ranks parking from there. It asks only when you press it, never on launch, and says what to do instead if you refuse — or if there is no signal, which is normal inside a structure.
 
 ### Changed
 
+- **The app is now called MFreePark.**
+- On a phone the map sheet opens small — where you're going and the one best option — and expands to the full controls when you tap Change. It used to take over half the screen before you had done anything.
+- Picking a destination moves the map to it. The pin could previously land off screen.
+- The close button on a selected lot is a filled circle rather than a grey word.
 - The map draws 161 parking areas, up from 101. Sixty more U-M lots now have a boundary and a label.
 - Which lots get a price label is now decided in one shared place instead of separately per platform, and the limit counts labels on your screen rather than in the whole dataset — so zooming in labels everything you can see, instead of spending the budget on lots a mile away. Labels also step aside for one another rather than stacking, and where two lots are too close to label both, the free one keeps its label.
 - The downtown meter district is drawn as a light outline rather than as a lot. It is two kilometres across and contains most of the structures the map is about, so at full weight it laid a slab over all of downtown and central campus and everything inside it was read through a wash.
+- Park & Ride lots say a free bus runs from them. Ranked on price they can win outright and then present a 79-minute walk as your best option, which reads as a broken app rather than as "take the bus".
 - The list no longer repeats the destination as a heading directly above the field that already shows it, and rows no longer all begin with the same word the price beside them is already saying.
 - Callouts carry their meaning as a tinted block rather than a coloured stripe down one edge. At large text sizes a callout wraps to five lines and the stripe was only ever next to one of them.
 
@@ -74,10 +79,11 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 ### Fixed
 
+- A lot that is free at every hour said "it's enforced around the clock" underneath the word Free. Both cases produce no next change, and only one of them was worded.
 - The map's tile attribution sat underneath the panel that slid up over it. Attribution is a licence condition of the tiles, so the panel now sits below the map rather than on top of it.
 - Building search results were drawn behind the duration and sort buttons underneath them, so choosing a building meant reading its name through a row of chips.
 - The web map drew nothing at all — no streets, no lots, no labels, just an empty rectangle. MapLibre could not locate its own background worker inside our bundle and failed without reporting it, so everything the worker draws was silently absent.
-- The "free right now" count was measured against the 101 areas the map could draw rather than the 262 CURB knows about, so both the count and the total it was shown against were wrong.
+- The "free right now" count was measured against the 101 areas the map could draw rather than the 262 MFreePark knows about, so both the count and the total it was shown against were wrong.
 - U-M's park-and-ride lots read as paid at every hour. They are free to anyone with no permit, but they also carry posted hours — the hours say who the lot is for, not what it costs — and the app was pricing the hours.
 - Sixty U-M lots were absent from the map because the join only read OpenStreetMap's `name`. The lot code usually lives in `ref` (`M28`, `NC60`, `M15`), and U-M publishes coordinates for lots that carry no code at all.
 - On iPhone the map labelled only 24 lots no matter how far you zoomed in, while the web labelled as many as fit. Both platforms now use the same rule.
@@ -87,7 +93,7 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - Metered surface lots were treated as gated, showing them as paid on a Tuesday evening when they are free after 6pm.
 - The iOS build failed in three places because the project path contains a space, each one a path interpolated into a shell command without quotes. Two are patched in dependencies, one in a config plugin; renaming the directory would remove the need for all three.
 - The iOS app did not compile at all under Xcode 26: `expo-modules-jsi` uses Swift that the current compiler rejects. Patched locally until upstream fixes it, with a note saying when to drop the patch.
-- The iOS build declared background-location and motion permissions the app never requests, two of them carrying Expo's placeholder "Allow CURB to access your location" text. Only the When In Use string ships now, and the build fails if the others come back.
+- The iOS build declared background-location and motion permissions the app never requests, two of them carrying Expo's placeholder "Allow MFreePark to access your location" text. Only the When In Use string ships now, and the build fails if the others come back.
 - At large text sizes the list screen showed no parking at all: the header filled the screen and pushed every result out of reach. The controls now scroll with the results.
 - Text at large accessibility sizes had huge gaps between lines and labels stuck to the top of their buttons, because the type scale pinned line height to a fixed number that could not scale with the reader's setting.
 - List rows announced themselves as buttons to a screen reader but did nothing when activated.
@@ -99,4 +105,4 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 ### Security
 
-[Unreleased]: https://github.com/BereZone/curb/commits/main
+[Unreleased]: https://github.com/BereZone/mfreepark/commits/main

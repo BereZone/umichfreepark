@@ -1,4 +1,4 @@
-# Claude Code build prompt — CURB
+# Claude Code build prompt — MFreePark
 
 > **How to use this file.** Start Claude Code in an empty directory. Press `Shift+Tab` twice for **plan mode**, paste everything below the divider, and review the plan before approving. After the first commit, copy "Architecture rules" and "Quality bar" into a `CLAUDE.md` at the repo root so they survive context compaction.
 
@@ -6,7 +6,7 @@
 
 ## The brief
 
-Build **CURB**, a parking app for University of Michigan students in Ann Arbor. Web and iOS from one codebase.
+Build **MFreePark**, a parking app for University of Michigan students in Ann Arbor. Web and iOS from one codebase.
 
 **The problem.** Ann Arbor parking is a *timing* problem as much as a location problem. Meters are free evenings, Sundays, and city holidays. Structures are free from 4 a.m. Sunday to 4 a.m. Monday. Students pay for spaces that go free in forty minutes, or eat $15–70 tickets guessing wrong. Existing apps don't solve this: U-M's **MGoPark** shows real-time availability but is organized around permits most students can't get (first-years and sophomores are ineligible entirely), and **ePark Ann Arbor** is a payment tool, not a finder.
 
@@ -119,7 +119,7 @@ The destination is a **specific U-M building**, not a zone. This is the feature 
 
 ## The dataset
 
-**This is the project's actual differentiator.** No existing app covers both authorities: MGoPark knows U-M permit parking and ignores the city; ePark and SpotAngels know city parking and ignore U-M. A student standing on State Street doesn't care who owns the asphalt — they care what they can legally park in, right now, for how much. CURB unifies both.
+**This is the project's actual differentiator.** No existing app covers both authorities: MGoPark knows U-M permit parking and ignores the city; ePark and SpotAngels know city parking and ignore U-M. A student standing on State Street doesn't care who owns the asphalt — they care what they can legally park in, right now, for how much. MFreePark unifies both.
 
 Every record carries `lastVerified` (date), `source` (URL), and `confidence: 'verified' | 'community'`.
 

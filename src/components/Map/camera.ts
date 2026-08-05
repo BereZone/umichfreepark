@@ -65,7 +65,24 @@ export const FOCUS_ZOOM = 16;
  * row for a lot two streets over wants to arrive at that lot, not to be pulled
  * back out to city scale.
  */
-export function focusFor(point: LatLng, view: CameraView): { center: LatLng; zoom: number } | null {
+export interface Focus {
+  center: LatLng;
+  zoom: number;
+}
+
+/**
+ * The camera that puts `point` in the middle at a useful scale.
+ *
+ * Unconditional, unlike `focusFor`. Some moves are not a judgement call: when
+ * the user picks a destination they have just named a place and expect to be
+ * looking at it, so there is nothing to decide. Shared so that "a useful scale"
+ * means the same thing whichever way the camera was asked to move.
+ */
+export function focusOn(point: LatLng, currentZoom: number): Focus {
+  return { center: point, zoom: Math.max(currentZoom, FOCUS_ZOOM) };
+}
+
+export function focusFor(point: LatLng, view: CameraView): Focus | null {
   if (!view.bounds) return null;
 
   const tooFarOut = view.zoom < FOCUS_ZOOM;
@@ -78,5 +95,5 @@ export function focusFor(point: LatLng, view: CameraView): { center: LatLng; zoo
     point.lon > view.bounds.east - lonInset;
 
   if (!tooFarOut && !offCentre) return null;
-  return { center: point, zoom: Math.max(view.zoom, FOCUS_ZOOM) };
+  return focusOn(point, view.zoom);
 }

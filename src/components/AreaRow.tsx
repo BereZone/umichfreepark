@@ -79,6 +79,15 @@ export function AreaRow({
         {!eligibility.eligible ? (
           <Text style={[type.caption, { color: colors.ineligible }]}>{eligibility.reason}</Text>
         ) : null}
+        {/*
+         * Said here as well as in the detail panel, because this row is where
+         * the misleading number appears. A park-and-ride can win the ranking on
+         * price and then show a 79-minute walk as the best option going, which
+         * reads as a broken app rather than as "take the bus".
+         */}
+        {area.permitTier === 'Park & Ride' ? (
+          <Text style={[type.caption, { color: colors.free }]}>Free bus from here to campus</Text>
+        ) : null}
         {!status.certain ? (
           <Text style={[type.caption, { color: colors.caution }]}>
             Holiday closures unconfirmed — check the sign.

@@ -1,12 +1,12 @@
 name: Feature request
-description: Suggest a capability CURB does not have yet.
+description: Suggest a capability MFreePark does not have yet.
 title: "Feature: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        CURB has no backend, no accounts, and no network at runtime — every rule
+        MFreePark has no backend, no accounts, and no network at runtime — every rule
         and polygon ships in the app so it works in the bottom of a parking
         structure. Ideas that need a server or a login are usually out of scope,
         but say it anyway; there is often an offline version of the same idea.

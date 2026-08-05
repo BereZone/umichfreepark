@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * The single owner of CURB's version numbers.
+ * The single owner of MFreePark's version numbers.
  *
  * An Expo app carries its version in four places, and they drift silently:
  * package.json looks right, CI is green, and the build that reaches TestFlight
@@ -518,7 +518,7 @@ function cmdBump(args) {
 }
 
 function usage() {
-  console.log(`scripts/version.mjs — the single owner of CURB's version numbers
+  console.log(`scripts/version.mjs — the single owner of MFreePark's version numbers
 
   node scripts/version.mjs check [--expect <version>]
       Print every version location and whether they agree.

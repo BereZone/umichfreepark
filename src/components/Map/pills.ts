@@ -12,7 +12,7 @@
  *
  * WHY CULL BEFORE CAPPING
  *
- * The old cap was a flat 24 applied to every area CURB can draw, at every zoom.
+ * The old cap was a flat 24 applied to every area MFreePark can draw, at every zoom.
  * That is the wrong axis. What makes a map unreadable is labels per screen, not
  * labels per dataset, and the two only coincide when the whole dataset is on
  * screen. Zoomed to one block, a flat cap hides labels on lots you are looking

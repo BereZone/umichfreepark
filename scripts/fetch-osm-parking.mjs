@@ -4,7 +4,7 @@
  *
  * WHY OSM AT ALL
  *
- * CURB's own data files carry hand-verified enforcement rules, but they don't
+ * MFreePark's own data files carry hand-verified enforcement rules, but they don't
  * carry polygons — drawing every lot and structure boundary by hand is slow and
  * error-prone. OpenStreetMap already has most of them traced (`amenity=parking`,
  * `building=parking`), under ODbL, with community upkeep. This script pulls that
@@ -57,7 +57,7 @@ const PRIMARY_ENDPOINT = 'https://overpass-api.de/api/interpreter';
 const FALLBACK_ENDPOINT = 'https://overpass.kumi.systems/api/interpreter';
 
 // amenity=parking_space is deliberately excluded: that's per-space granularity
-// (thousands of features for a handful of structures) and not what CURB draws.
+// (thousands of features for a handful of structures) and not what MFreePark draws.
 const QUERY = `[out:json][timeout:90];
 (
   way["amenity"="parking"](${SOUTH},${WEST},${NORTH},${EAST});
@@ -73,7 +73,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // Node's default, near-empty) User-Agent — mod_negotiation treats it as
 // "can't find an acceptable representation." curl sends one implicitly;
 // Node's fetch does not, so it has to be set explicitly here.
-const REQUEST_HEADERS = { 'User-Agent': 'curb-osm-parking-fetch/1.0', Accept: '*/*' };
+const REQUEST_HEADERS = { 'User-Agent': 'mfreepark-osm-parking-fetch/1.0', Accept: '*/*' };
 
 /**
  * Retries on 429 (rate limited) and 5xx (504 gateway timeout is Overpass's

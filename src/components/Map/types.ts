@@ -111,6 +111,6 @@ export const PILL_MIN_ZOOM = 14;
  * areas before applying it. That distinction is the whole reason a lot you have
  * zoomed in on now gets a label: the budget is no longer spent on lots a mile
  * away. Applied to the dataset instead, this number would hide labels on 137 of
- * the 161 areas CURB can draw, at every zoom, forever.
+ * the 161 areas MFreePark can draw, at every zoom, forever.
  */
 export const MAX_VISIBLE_PILLS = 48;

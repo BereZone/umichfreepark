@@ -23,7 +23,7 @@ import MapView, { Marker, Polygon, PROVIDER_DEFAULT, type Region } from 'react-n
 import { DEFAULT_PROFILE, eligibilityFor, statusOf } from '../../engine';
 import { colorsFor } from '../../theme/colors';
 import { MAX_MAP_TEXT_SCALE, radius, space, tabularNumbers, type } from '../../theme';
-import { focusFor } from './camera';
+import { focusFor, focusOn } from './camera';
 import { encodeArea } from './encoding';
 import { selectPills, type Viewport } from './pills';
 import { DEFAULT_CAMERA, type MapProps } from './types';
@@ -67,6 +67,8 @@ export default function Map({
   const [tracksChanges, setTracksChanges] = useState(true);
   const readyFired = useRef(false);
   const mapRef = useRef<MapView | null>(null);
+  /** False until the first destination has been seen and deliberately ignored. */
+  const followedDestination = useRef(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setTracksChanges(false), 500);
@@ -100,6 +102,34 @@ export default function Map({
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedAreaId, reduceMotion]);
+
+  /**
+   * Follow a newly chosen destination.
+   *
+   * The destination the app started with does not move the camera: it is
+   * restored from storage before the first paint, so treating it as a change
+   * would drag the map off its opening frame every launch for something the
+   * user did not ask for. Only a destination picked during the session counts.
+   */
+  useEffect(() => {
+    if (!destination) return;
+    if (!followedDestination.current) {
+      followedDestination.current = true;
+      return;
+    }
+    const focus = focusOn(destination, viewport.zoom);
+    const delta = zoomToDelta(focus.zoom);
+    mapRef.current?.animateToRegion(
+      {
+        latitude: focus.center.lat,
+        longitude: focus.center.lon,
+        latitudeDelta: delta,
+        longitudeDelta: delta,
+      },
+      reduceMotion ? 0 : 500
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destination, reduceMotion]);
 
   const initialRegion: Region = useMemo(
     () => ({

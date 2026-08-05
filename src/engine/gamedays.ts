@@ -49,7 +49,7 @@ export function gameDayAt(at: Date): GameDayLookup {
   if (year !== COVERED_YEAR) {
     return {
       known: false,
-      reason: `CURB only has the ${COVERED_YEAR} home schedule. Check before parking near the stadium.`,
+      reason: `MFreePark only has the ${COVERED_YEAR} home schedule. Check before parking near the stadium.`,
     };
   }
   return { known: true, isGameDay: HOME_GAMES.has(date) };

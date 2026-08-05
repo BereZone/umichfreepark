@@ -68,7 +68,7 @@ const ARCGIS_ITEM =
 const geojsonQuery = (base) => `${base}/query?where=1%3D1&outFields=*&outSR=4326&f=geojson`;
 
 /**
- * PCI's marker title -> the city's LotName, with the id CURB will use.
+ * PCI's marker title -> the city's LotName, with the id MFreePark will use.
  *
  * Every pair was checked against PCI's posted street address and the city
  * polygon's location. The two that do not look alike are the two worth
@@ -102,7 +102,7 @@ const decode = (s) =>
     .trim();
 
 async function getJson(url, label) {
-  const res = await fetch(url, { headers: { 'User-Agent': 'curb-dda-parking/1.0' } });
+  const res = await fetch(url, { headers: { 'User-Agent': 'mfreepark-dda-parking/1.0' } });
   if (!res.ok) throw new Error(`${label}: HTTP ${res.status}`);
   return res.json();
 }
@@ -185,7 +185,7 @@ async function main() {
   });
 
   // The city also publishes which lots are permit-only. That is worth carrying
-  // out even for lots CURB models from elsewhere, because it settles questions
+  // out even for lots MFreePark models from elsewhere, because it settles questions
   // no prose page answers.
   const lotTypes = lotsGeo.features
     .map((f) => ({

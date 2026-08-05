@@ -16,7 +16,11 @@
  * and selecting an area is what swaps them.
  *
  * The sheet is not draggable, deliberately. A drag handle on top of a pannable
- * map is a gesture conflict, and the sheet has no state worth the ambiguity.
+ * map is a gesture conflict, and two snap points are not worth the ambiguity —
+ * the collapsed/expanded toggle is a button that says which it is.
+ *
+ * It opens collapsed. At full height it took 54% of a phone, leaving the map a
+ * strip above a control panel, on the screen whose whole job is the map.
  *
  * WHY THE SHEET IS A SIBLING AND NOT AN OVERLAY
  *
@@ -81,11 +85,20 @@ export default function MapScreen() {
    * reading one screen rather than trusting two renderers.
    */
   const [showsUserLocation, setShowsUserLocation] = useState(false);
+  /*
+   * The sheet opens small.
+   *
+   * At full height it took 54% of a phone, so the map — the entire point of
+   * this screen — was a strip above a control panel. Collapsed it shows where
+   * you are going and the single best option, which is the answer most of the
+   * time; the controls are one tap away for the times it is not.
+   */
+  const [sheetExpanded, setSheetExpanded] = useState(false);
 
   const selected = selectedAreaId ? (areaById.get(selectedAreaId) ?? null) : null;
 
   /**
-   * The count is over EVERY area CURB knows, not the ones it can draw.
+   * The count is over EVERY area MFreePark knows, not the ones it can draw.
    *
    * It used to read `MAP_AREAS`, and so reported "0 / 101" while the app held
    * rules for 262 areas. Nothing labelled that 101 as a subset, so the
@@ -161,14 +174,33 @@ export default function MapScreen() {
   const detailHeader = selected ? (
     <View style={styles.panelHeader}>
       <Text style={[type.heading, styles.panelTitle, { color: colors.text }]}>{selected.name}</Text>
+      {/*
+       * A filled circle, not a text link.
+       *
+       * "Close" in muted grey read as a caption rather than a control, which is
+       * a bad thing to be unsure about on the one panel covering the map. It
+       * now carries the same filled treatment as a selected chip — the app's
+       * existing signal for "this is a control, and it is active".
+       */}
       <Pressable
         onPress={() => handleSelect(null)}
-        style={styles.close}
+        style={({ pressed }) => [
+          styles.close,
+          { backgroundColor: colors.text, opacity: pressed ? 0.7 : 1 },
+        ]}
         accessibilityRole="button"
         accessibilityLabel="Close details"
         hitSlop={space.snug}
       >
-        <Text style={[type.bodyStrong, { color: colors.textMuted }]}>Close</Text>
+        <Text
+          style={[type.heading, { color: colors.textInverse }]}
+          // The label above already says what this does; the glyph would only
+          // add "multiplication sign" to it.
+          accessibilityElementsHidden
+          importantForAccessibility="no"
+        >
+          ✕
+        </Text>
       </Pressable>
     </View>
   ) : null;
@@ -245,7 +277,7 @@ export default function MapScreen() {
             >
               <Text style={[type.bodyStrong, { color: colors.text }]}>The map didn’t load</Text>
               <Text style={[type.body, { color: colors.text }]}>
-                Tiles come from the network and the rest of CURB doesn’t. The list has every one of
+                Tiles come from the network and the rest of MFreePark doesn’t. The list has every one of
                 these {summary.total} areas and works offline.
               </Text>
             </View>
@@ -289,7 +321,56 @@ export default function MapScreen() {
                   </>
                 ) : (
                   <>
-                    <TripControls onLocated={setShowsUserLocation} />
+                    {/*
+                     * Collapsed, the sheet is a summary and one option. That is
+                     * the answer to "where do I park", and it leaves the map —
+                     * which is the screen — actually visible. Expanded it
+                     * becomes the full controls.
+                     *
+                     * A button rather than a drag handle. A draggable sheet
+                     * over a pannable map is a gesture conflict, and a two-state
+                     * panel has nothing worth the ambiguity.
+                     */}
+                    <Pressable
+                      onPress={() => setSheetExpanded((open) => !open)}
+                      style={({ pressed }) => [styles.sheetToggle, { opacity: pressed ? 0.7 : 1 }]}
+                      accessibilityRole="button"
+                      accessibilityState={{ expanded: sheetExpanded }}
+                      accessibilityLabel={
+                        sheetExpanded
+                          ? 'Hide the trip options'
+                          : 'Change where you are going, how long, or how to sort'
+                      }
+                    >
+                      {/*
+                       * The summary is the collapsed state's entire content, so
+                       * it steps aside when expanded — TripControls puts the
+                       * same destination under its own GOING TO label, and
+                       * showing both printed the heading twice in four lines.
+                       */}
+                      {sheetExpanded ? (
+                        <Text style={[type.label, styles.sheetSummary, { color: colors.textMuted }]}>
+                          TRIP OPTIONS
+                        </Text>
+                      ) : (
+                        <View style={styles.sheetSummary}>
+                          <Text style={[type.label, { color: colors.textMuted }]}>GOING TO</Text>
+                          <Text style={[type.bodyStrong, { color: colors.text }]} numberOfLines={1}>
+                            {destination?.name ?? 'Nowhere selected'}
+                            <Text style={[type.body, tabularNumbers, { color: colors.textMuted }]}>
+                              {'  ·  '}
+                              {durationHours}h
+                            </Text>
+                          </Text>
+                        </View>
+                      )}
+                      <Text style={[type.label, { color: colors.focus }]}>
+                        {sheetExpanded ? 'LESS' : 'CHANGE'}
+                      </Text>
+                    </Pressable>
+
+                    {sheetExpanded ? <TripControls onLocated={setShowsUserLocation} /> : null}
+
                     <BestOption
                       best={best}
                       ranked={ranked}
@@ -437,7 +518,7 @@ function EmptyRanking({
       <Text style={[type.body, { color: colors.textMuted }]}>
         {hasDestination
           ? 'Every area near here is either enforced right now or needs a permit you can’t buy. The Learn tab has what to do instead — the buses are free.'
-          : 'Search a building and CURB will rank every area by what it costs you to park there and how far you’d walk.'}
+          : 'Search a building and MFreePark will rank every area by what it costs you to park there and how far you’d walk.'}
       </Text>
     </View>
   );
@@ -498,6 +579,12 @@ const styles = StyleSheet.create({
    * 54% keeps at least the top of the map, so the sheet never becomes the whole
    * screen with a strip of map above it.
    */
+  /*
+   * Collapsed, the sheet takes only the height its content needs. The cap
+   * applies to the expanded state, where the controls scale with Dynamic Type
+   * and would otherwise grow without limit — a percentage rather than a
+   * constant for exactly that reason, with the ScrollView handling the rest.
+   */
   sheetWrap: { maxHeight: '54%' },
   sheet: {
     flexShrink: 1,
@@ -509,6 +596,14 @@ const styles = StyleSheet.create({
     padding: space.comfortable,
     gap: space.base,
   },
+  sheetToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: space.base,
+    minHeight: MIN_TOUCH_TARGET,
+  },
+  sheetSummary: { flex: 1, gap: space.hair },
   panelHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -517,9 +612,10 @@ const styles = StyleSheet.create({
   },
   panelTitle: { flex: 1 },
   close: {
-    minWidth: MIN_TOUCH_TARGET,
-    minHeight: MIN_TOUCH_TARGET,
-    alignItems: 'flex-end',
+    width: MIN_TOUCH_TARGET,
+    height: MIN_TOUCH_TARGET,
+    borderRadius: radius.pill,
+    alignItems: 'center',
     justifyContent: 'center',
   },
   sidebar: {

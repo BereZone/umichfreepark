@@ -22,7 +22,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { DEFAULT_PROFILE, eligibilityFor, statusOf } from '../../engine';
 import { colorsFor } from '../../theme/colors';
-import { focusFor } from './camera';
+import { focusFor, focusOn } from './camera';
 import { encodeArea } from './encoding';
 import { selectPills } from './pills';
 import { DEFAULT_CAMERA, PILL_MIN_ZOOM, type MapProps } from './types';
@@ -56,10 +56,10 @@ const WORKER_PUBLIC_PATH = '/maplibre/maplibre-gl-worker.mjs';
  */
 maplibregl.setWorkerUrl(WORKER_PUBLIC_PATH);
 
-const SOURCE_ID = 'curb-areas';
-const FILL_LAYER = 'curb-areas-fill';
-const LINE_LAYER = 'curb-areas-line';
-const PILL_LAYER = 'curb-areas-pill';
+const SOURCE_ID = 'mfreepark-areas';
+const FILL_LAYER = 'mfreepark-areas-fill';
+const LINE_LAYER = 'mfreepark-areas-line';
+const PILL_LAYER = 'mfreepark-areas-pill';
 
 export default function Map({
   areas,
@@ -77,6 +77,8 @@ export default function Map({
   const container = useRef<HTMLDivElement | null>(null);
   const map = useRef<MapLibreMap | null>(null);
   const destinationMarker = useRef<maplibregl.Marker | null>(null);
+  /** False until the first destination has been seen and deliberately ignored. */
+  const followedDestination = useRef(false);
   const [loaded, setLoaded] = useState(false);
   /**
    * Bumped on every camera settle, purely to re-run the data effect.
@@ -321,6 +323,32 @@ export default function Map({
       .setLngLat([destination.lon, destination.lat])
       .addTo(instance);
   }, [destination, loaded, scheme]);
+
+  // --- follow a newly chosen destination ------------------------------------
+  useEffect(() => {
+    const instance = map.current;
+    if (!instance || !loaded || !destination) return;
+
+    /*
+     * The destination the app started with does not move the camera.
+     *
+     * It is restored from storage before the first paint, so treating it as a
+     * change would drag the map off its opening frame every launch — and the
+     * user did nothing to ask for that. Only a destination they pick during the
+     * session is a request to look somewhere.
+     */
+    if (!followedDestination.current) {
+      followedDestination.current = true;
+      return;
+    }
+
+    const focus = focusOn(destination, instance.getZoom());
+    instance.easeTo({
+      center: [focus.center.lon, focus.center.lat],
+      zoom: focus.zoom,
+      duration: reduceMotion ? 0 : 500,
+    });
+  }, [destination, loaded, reduceMotion]);
 
   // --- user location --------------------------------------------------------
   useEffect(() => {
