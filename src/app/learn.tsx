@@ -13,9 +13,19 @@
 import { ScrollView, StyleSheet, Text, View, useColorScheme } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { AREAS, HOME_GAMES_2026, holidaysFor } from '../engine';
-import { radius, space, tabularNumbers, type } from '../theme';
-import { colorsFor } from '../theme/colors';
+import {
+  AREAS,
+  HOME_GAMES_2026,
+  holidaysFor,
+  permitIsPlausible,
+  type ClassYear,
+  type HeldPermit,
+} from '../engine';
+import { Callout, CalloutText } from '../components/Callout';
+import { Chip } from '../components/Chip';
+import { useTrip } from '../state/trip';
+import { WIDE_LAYOUT_MIN_WIDTH, space, tabularNumbers, type } from '../theme';
+import { colorsFor, type ColorScheme } from '../theme/colors';
 
 /** The freshest verification date across everything we ship. */
 const dataAsOf = AREAS.map((a) => a.provenance.lastVerified).sort().at(-1) ?? 'unknown';
@@ -37,6 +47,8 @@ export default function LearnScreen() {
       ]}
     >
       <Text style={[type.title, { color: colors.text }]}>How parking works here</Text>
+
+      <ProfilePicker colors={colors} />
 
       <Section title="What a ticket costs" colors={colors}>
         <Text style={[type.body, { color: colors.text }]}>
@@ -121,8 +133,7 @@ export default function LearnScreen() {
         </Text>
       </Section>
 
-      <View style={[styles.callout, { borderColor: colors.caution }]}>
-        <Text style={[type.bodyStrong, { color: colors.text }]}>What we don’t know</Text>
+      <Callout tone="caution" title="What we don’t know" colors={colors}>
         <Bullet colors={colors}>
           Whether city structures are free on holidays. The DDA says they follow
           PCI’s list, and PCI does not publish one. We assume they are paid.
@@ -140,13 +151,109 @@ export default function LearnScreen() {
           Where we are unsure, the app says so rather than guessing. The sign at
           the entrance always wins.
         </Text>
-      </View>
+      </Callout>
 
       <Text style={[type.caption, tabularNumbers, styles.asOf, { color: colors.textMuted }]}>
         Data as of {dataAsOf}. Rates last raised 2026-07-01. Rules are re-checked
         each August, before the term starts.
       </Text>
     </ScrollView>
+  );
+}
+
+const CLASS_YEARS: { key: ClassYear; label: string }[] = [
+  { key: 'first-year', label: 'First-year' },
+  { key: 'sophomore', label: 'Sophomore' },
+  { key: 'junior', label: 'Junior' },
+  { key: 'senior', label: 'Senior' },
+  { key: 'graduate', label: 'Grad' },
+];
+
+const PERMITS: { key: HeldPermit; label: string }[] = [
+  { key: 'none', label: 'No permit' },
+  { key: 'orange', label: 'Orange' },
+  { key: 'yellow-after-hours', label: 'Yellow' },
+  { key: 'after-hours', label: 'After Hours' },
+  { key: 'blue', label: 'Blue' },
+];
+
+/**
+ * Who the app should assume you are.
+ *
+ * This is the first thing on the Learn screen because it silently rewrites
+ * every other screen. The default is a first-year with no permit — the most
+ * restrictive case, chosen so an unconfigured app never tells someone they can
+ * park where they cannot — and a senior with a Blue permit who never finds this
+ * control sees half of campus greyed out for no reason they can see.
+ *
+ * The permit row disappears for first-years and sophomores rather than being
+ * shown and rejected. U-M does not sell them a commuter permit at all, so
+ * offering the choice and then explaining it away teaches the rule worse than
+ * stating it once.
+ */
+function ProfilePicker({ colors }: { colors: ColorScheme }) {
+  const { profile, setProfile } = useTrip();
+  const canHoldPermit = permitIsPlausible({ ...profile, permit: 'blue' });
+
+  return (
+    <View style={styles.section}>
+      <Text style={[type.heading, { color: colors.text }]}>Your situation</Text>
+      <Text style={[type.body, { color: colors.textMuted }]}>
+        Everything else in CURB is answered for this. Change it and the map and
+        the list change with it.
+      </Text>
+
+      <Text style={[type.label, styles.pickerLabel, { color: colors.textMuted }]}>YEAR</Text>
+      <View style={styles.chipRow} accessibilityRole="radiogroup" accessibilityLabel="Your year">
+        {CLASS_YEARS.map((year) => (
+          <Chip
+            key={year.key}
+            label={year.label}
+            selected={profile.classYear === year.key}
+            colors={colors}
+            onPress={() =>
+              setProfile({
+                classYear: year.key,
+                // Moving back to a year that cannot hold a permit drops the
+                // one you had, rather than leaving state the engine would
+                // reject on every call.
+                permit: permitIsPlausible({ classYear: year.key, permit: profile.permit })
+                  ? profile.permit
+                  : 'none',
+              })
+            }
+          />
+        ))}
+      </View>
+
+      {canHoldPermit ? (
+        <>
+          <Text style={[type.label, styles.pickerLabel, { color: colors.textMuted }]}>PERMIT</Text>
+          <View
+            style={styles.chipRow}
+            accessibilityRole="radiogroup"
+            accessibilityLabel="Permit you hold"
+          >
+            {PERMITS.map((permit) => (
+              <Chip
+                key={permit.key}
+                label={permit.label}
+                selected={profile.permit === permit.key}
+                colors={colors}
+                onPress={() => setProfile({ ...profile, permit: permit.key })}
+              />
+            ))}
+          </View>
+        </>
+      ) : (
+        <Callout tone="caution" colors={colors}>
+          <CalloutText colors={colors}>
+            U-M does not sell commuter permits to first-years or sophomores, so there is no permit
+            to pick. City parking and U-M lots outside their enforcement hours are open to you.
+          </CalloutText>
+        </Callout>
+      )}
+    </View>
   );
 }
 
@@ -193,16 +300,20 @@ function Bold({
 }
 
 const styles = StyleSheet.create({
-  content: { paddingHorizontal: space.comfortable, gap: space.roomy },
+  // Capped and centred so the prose keeps a readable measure on a wide browser
+  // window. This is the screen people screenshot; a 1440pt line of body copy is
+  // the one thing that would make it look unconsidered.
+  content: {
+    paddingHorizontal: space.comfortable,
+    gap: space.roomy,
+    width: '100%',
+    maxWidth: WIDE_LAYOUT_MIN_WIDTH,
+    alignSelf: 'center',
+  },
   section: { gap: space.snug },
   bullet: { flexDirection: 'row', gap: space.snug },
   bulletText: { flex: 1 },
-  callout: {
-    borderLeftWidth: 3,
-    paddingLeft: space.base,
-    paddingVertical: space.base,
-    gap: space.snug,
-    borderRadius: radius.sm,
-  },
+  pickerLabel: { paddingTop: space.snug },
+  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.snug },
   asOf: { paddingTop: space.base },
 });
