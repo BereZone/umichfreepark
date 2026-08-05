@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 
 import { searchBuildings, type Building } from '../engine';
+import { useTrip } from '../state/trip';
 import { MIN_TOUCH_TARGET, radius, space, type } from '../theme';
 import { colorsFor } from '../theme/colors';
 
@@ -32,14 +33,36 @@ export function BuildingSearch({
 }) {
   const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = colorsFor(scheme);
+  const { recentDestinations } = useTrip();
 
   const [query, setQuery] = useState('');
   const [focused, setFocused] = useState(false);
 
+  const trimmed = query.trim();
   const results = useMemo(() => searchBuildings(query), [query]);
-  // Results only while typing. Showing them under a chosen destination would
-  // cover the map for no reason.
-  const showResults = focused && query.trim().length > 0;
+
+  /**
+   * An empty field offers where you have been before rather than nothing.
+   *
+   * This is the whole reason recents are persisted: a student goes to the same
+   * few buildings all term, and the fastest possible path to "parking near
+   * Mason" should not require typing "Mason". Suppressed once the field has
+   * text, because at that point the user has told us what they want and a
+   * history list underneath their query is just noise.
+   */
+  const showing: 'results' | 'recents' | null = !focused
+    ? null
+    : trimmed.length > 0
+      ? 'results'
+      : recentDestinations.length > 0
+        ? 'recents'
+        : null;
+
+  const choose = (building: Building) => {
+    onSelect(building);
+    setQuery('');
+    setFocused(false);
+  };
 
   return (
     <View style={styles.wrapper}>
@@ -58,6 +81,10 @@ export function BuildingSearch({
             color: colors.text,
             backgroundColor: colors.surface,
             borderColor: focused ? colors.focus : colors.border,
+            // A focus ring the keyboard can see. On web the browser default is
+            // suppressed by react-native-web's reset, so without this a
+            // keyboard user has no idea where they are.
+            borderWidth: focused ? 2 : 1,
           },
         ]}
         accessibilityRole="search"
@@ -68,7 +95,7 @@ export function BuildingSearch({
         clearButtonMode="while-editing"
       />
 
-      {showResults ? (
+      {showing ? (
         <ScrollView
           style={[
             styles.results,
@@ -76,7 +103,24 @@ export function BuildingSearch({
           ]}
           keyboardShouldPersistTaps="handled"
         >
-          {results.length === 0 ? (
+          {showing === 'recents' ? (
+            <>
+              <Text style={[type.label, styles.groupLabel, { color: colors.textMuted }]}>
+                RECENT
+              </Text>
+              {recentDestinations.map((building) => (
+                <Pressable
+                  key={building.id}
+                  onPress={() => choose(building)}
+                  style={[styles.result, { borderColor: colors.border }]}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Go to ${building.name}, recently used`}
+                >
+                  <Text style={[type.bodyStrong, { color: colors.text }]}>{building.name}</Text>
+                </Pressable>
+              ))}
+            </>
+          ) : results.length === 0 ? (
             <Text style={[type.body, styles.empty, { color: colors.textMuted }]}>
               No building by that name. Try a nickname — “the dude”, “ugli”, “the big house”.
             </Text>
@@ -84,11 +128,7 @@ export function BuildingSearch({
             results.map((match) => (
               <Pressable
                 key={match.building.id}
-                onPress={() => {
-                  onSelect(match.building);
-                  setQuery('');
-                  setFocused(false);
-                }}
+                onPress={() => choose(match.building)}
                 style={[styles.result, { borderColor: colors.border }]}
                 accessibilityRole="button"
                 accessibilityLabel={`Go to ${match.building.name}`}
@@ -119,7 +159,6 @@ const styles = StyleSheet.create({
     minHeight: MIN_TOUCH_TARGET,
     paddingHorizontal: space.base,
     borderRadius: radius.md,
-    borderWidth: 1,
   },
   results: {
     position: 'absolute',
@@ -129,6 +168,11 @@ const styles = StyleSheet.create({
     maxHeight: 260,
     borderRadius: radius.md,
     borderWidth: 1,
+  },
+  groupLabel: {
+    paddingHorizontal: space.base,
+    paddingTop: space.snug,
+    paddingBottom: space.tight,
   },
   result: {
     minHeight: MIN_TOUCH_TARGET,
