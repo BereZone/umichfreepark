@@ -21,6 +21,8 @@ import { MIN_TOUCH_TARGET, radius, space, type } from '../theme';
 import { colorsFor } from '../theme/colors';
 import { BuildingSearch } from './BuildingSearch';
 import { Chip } from './Chip';
+import { ProfilePicker } from './ProfilePicker';
+import { TimePicker } from './TimePicker';
 
 const MODES: { key: RankingMode; label: string }[] = [
   { key: 'cheapest', label: 'Cheapest' },
@@ -137,6 +139,19 @@ export function TripControls({
           ))}
         </View>
       </View>
+
+      {/*
+       * Your year and permit sit here too, not only on the Learn screen.
+       *
+       * They are properties of a person rather than of a trip, which is why
+       * they started out over there — but functionally they are the same kind of
+       * input as the three above: they change which results you get. Filed under
+       * "Learn" they were asked for twice as a missing feature, because a tab
+       * that sounds like documentation is not where anyone looks for a setting.
+       */}
+      <ProfilePicker compact />
+
+      <TimePicker />
     </View>
   );
 }

@@ -17,15 +17,11 @@ import {
   AREAS,
   HOME_GAMES_2026,
   holidaysFor,
-  permitIsPlausible,
-  type ClassYear,
-  type HeldPermit,
 } from '../engine';
-import { Callout, CalloutText } from '../components/Callout';
-import { Chip } from '../components/Chip';
-import { useTrip } from '../state/trip';
+import { Callout } from '../components/Callout';
+import { ProfilePicker } from '../components/ProfilePicker';
 import { WIDE_LAYOUT_MIN_WIDTH, space, tabularNumbers, type } from '../theme';
-import { colorsFor, type ColorScheme } from '../theme/colors';
+import { colorsFor } from '../theme/colors';
 
 /** The freshest verification date across everything we ship. */
 const dataAsOf = AREAS.map((a) => a.provenance.lastVerified).sort().at(-1) ?? 'unknown';
@@ -48,7 +44,9 @@ export default function LearnScreen() {
     >
       <Text style={[type.title, { color: colors.text }]}>How parking works here</Text>
 
-      <ProfilePicker colors={colors} />
+      <Section title="Your situation" colors={colors}>
+        <ProfilePicker />
+      </Section>
 
       <Section title="What a ticket costs" colors={colors}>
         <Text style={[type.body, { color: colors.text }]}>
@@ -161,118 +159,6 @@ export default function LearnScreen() {
   );
 }
 
-const CLASS_YEARS: { key: ClassYear; label: string }[] = [
-  { key: 'first-year', label: 'First-year' },
-  { key: 'sophomore', label: 'Sophomore' },
-  { key: 'junior', label: 'Junior' },
-  { key: 'senior', label: 'Senior' },
-  { key: 'graduate', label: 'Grad' },
-];
-
-const PERMITS: { key: HeldPermit; label: string }[] = [
-  { key: 'none', label: 'No permit' },
-  { key: 'orange', label: 'Orange' },
-  { key: 'yellow-after-hours', label: 'Yellow' },
-  { key: 'after-hours', label: 'After Hours' },
-  { key: 'blue', label: 'Blue' },
-];
-
-/**
- * Who the app should assume you are.
- *
- * This is the first thing on the Learn screen because it silently rewrites
- * every other screen. The default is a first-year with no permit — the most
- * restrictive case, chosen so an unconfigured app never tells someone they can
- * park where they cannot — and a senior with a Blue permit who never finds this
- * control sees half of campus greyed out for no reason they can see.
- *
- * The permit row disappears for first-years and sophomores rather than being
- * The permit row is always visible, including for the first-years and
- * sophomores who cannot buy one. Hiding it was the first attempt and it was
- * wrong: the app ships defaulted to a first-year, so the setting simply did not
- * exist on the screen it lives on, and there was no way to discover that
- * choosing a later year would reveal it. The options are shown and disabled
- * instead, which makes the setting findable and states the rule where someone
- * is looking for it.
- */
-function ProfilePicker({ colors }: { colors: ColorScheme }) {
-  const { profile, setProfile } = useTrip();
-  const canHoldPermit = permitIsPlausible({ ...profile, permit: 'blue' });
-
-  return (
-    <View style={styles.section}>
-      <Text style={[type.heading, { color: colors.text }]}>Your situation</Text>
-      <Text style={[type.body, { color: colors.textMuted }]}>
-        Everything else in UMichFreePark is answered for this. Change it and the map and
-        the list change with it.
-      </Text>
-
-      <Text style={[type.label, styles.pickerLabel, { color: colors.textMuted }]}>YEAR</Text>
-      <View style={styles.chipRow} accessibilityRole="radiogroup" accessibilityLabel="Your year">
-        {CLASS_YEARS.map((year) => (
-          <Chip
-            key={year.key}
-            label={year.label}
-            selected={profile.classYear === year.key}
-            colors={colors}
-            onPress={() =>
-              setProfile({
-                classYear: year.key,
-                // Moving back to a year that cannot hold a permit drops the
-                // one you had, rather than leaving state the engine would
-                // reject on every call.
-                permit: permitIsPlausible({ classYear: year.key, permit: profile.permit })
-                  ? profile.permit
-                  : 'none',
-              })
-            }
-          />
-        ))}
-      </View>
-
-      <Text style={[type.label, styles.pickerLabel, { color: colors.textMuted }]}>PERMIT</Text>
-      <View
-        style={styles.chipRow}
-        accessibilityRole="radiogroup"
-        accessibilityLabel="Permit you hold"
-      >
-        {PERMITS.map((permit) => {
-          // Whether this profile could legally hold it. The engine owns the
-          // rule; this only reflects it.
-          const holdable =
-            permit.key === 'none' ||
-            permitIsPlausible({ classYear: profile.classYear, permit: permit.key });
-          return (
-            <Chip
-              key={permit.key}
-              label={permit.label}
-              selected={profile.permit === permit.key}
-              disabled={!holdable}
-              colors={colors}
-              accessibilityLabel={
-                holdable
-                  ? permit.label
-                  : `${permit.label} — U-M does not sell this to first-years or sophomores`
-              }
-              onPress={() => setProfile({ ...profile, permit: permit.key })}
-            />
-          );
-        })}
-      </View>
-
-      {!canHoldPermit ? (
-        <Callout tone="caution" colors={colors}>
-          <CalloutText colors={colors}>
-            U-M does not sell commuter permits to first-years or sophomores, so the options above
-            are greyed out. City parking and U-M lots outside their enforcement hours are still
-            open to you.
-          </CalloutText>
-        </Callout>
-      ) : null}
-    </View>
-  );
-}
-
 function Section({
   title,
   colors,
@@ -329,7 +215,5 @@ const styles = StyleSheet.create({
   section: { gap: space.snug },
   bullet: { flexDirection: 'row', gap: space.snug },
   bulletText: { flex: 1 },
-  pickerLabel: { paddingTop: space.snug },
-  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.snug },
   asOf: { paddingTop: space.base },
 });

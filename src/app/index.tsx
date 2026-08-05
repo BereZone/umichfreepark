@@ -47,10 +47,11 @@ import { AreaDetail } from '../components/AreaDetail';
 import { AreaRow } from '../components/AreaRow';
 import { Fade } from '../components/Fade';
 import { MapLegend } from '../components/MapLegend';
+import { PreviewBanner } from '../components/PreviewBanner';
 import { TripControls } from '../components/TripControls';
 import { useIsWideLayout } from '../hooks/use-layout';
 import { useReduceMotion } from '../hooks/use-accessibility';
-import { useNow } from '../hooks/use-now';
+import { useAt } from '../hooks/use-at';
 import { useTrip } from '../state/trip';
 import {
   MAX_MAP_TEXT_SCALE,
@@ -67,14 +68,22 @@ export default function MapScreen() {
   const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
   const colors = colorsFor(scheme);
   const insets = useSafeAreaInsets();
-  const now = useNow();
+  const { at: now, isLive } = useAt();
   const reduceMotion = useReduceMotion();
   const wide = useIsWideLayout();
 
   // Selection is shared with the list so a row tap and a polygon tap do the
   // same thing. See src/state/trip.tsx.
-  const { selectedAreaId, setSelectedAreaId, destination, durationHours, mode, profile } =
-    useTrip();
+  const {
+    selectedAreaId,
+    setSelectedAreaId,
+    destination,
+    durationHours,
+    mode,
+    profile,
+    previewAt,
+    setPreviewAt,
+  } = useTrip();
   const [tileError, setTileError] = useState<Error | null>(null);
   /*
    * The blue dot appears only after the user has asked for it.
@@ -243,13 +252,17 @@ export default function MapScreen() {
                 style={[type.label, { color: colors.textMuted }]}
                 maxFontSizeMultiplier={MAX_MAP_TEXT_SCALE}
               >
-                FREE RIGHT NOW
+                {isLive ? 'FREE RIGHT NOW' : 'FREE THEN'}
               </Text>
               <Text
                 style={[type.title, tabularNumbers, { color: colors.text }]}
                 // The count changes on its own, so a screen reader has to be told.
                 accessibilityLiveRegion="polite"
-                accessibilityLabel={`${summary.free} of ${summary.total} parking areas are free right now`}
+                accessibilityLabel={
+                isLive
+                  ? `${summary.free} of ${summary.total} parking areas are free right now`
+                  : `${summary.free} of ${summary.total} parking areas are free at the time you selected`
+              }
                 // Bounded so the card stays a card over the map. The sentence
                 // above is what a screen reader gets, at any size it likes.
                 maxFontSizeMultiplier={MAX_MAP_TEXT_SCALE}
@@ -283,6 +296,17 @@ export default function MapScreen() {
             </View>
           ) : null}
         </View>
+
+        {previewAt ? (
+          <View style={styles.previewSlot}>
+            <PreviewBanner
+              previewAt={previewAt}
+              now={new Date()}
+              onBackToNow={() => setPreviewAt(null)}
+              colors={colors}
+            />
+          </View>
+        ) : null}
 
         {/*
          * The sheet only exists in the compact layout. In the wide one its
@@ -387,6 +411,7 @@ export default function MapScreen() {
                       ranked={ranked}
                       colors={colors}
                       hasDestination={destination !== null}
+                      isLive={isLive}
                       onSelect={handleSelect}
                       selectedAreaId={selectedAreaId}
                     />
@@ -498,6 +523,7 @@ function BestOption({
   ranked,
   colors,
   hasDestination,
+  isLive,
   onSelect,
   selectedAreaId,
 }: {
@@ -505,6 +531,8 @@ function BestOption({
   ranked: ReturnType<typeof rank>;
   colors: ReturnType<typeof colorsFor>;
   hasDestination: boolean;
+  /** False while previewing another time, so the heading stops saying "now". */
+  isLive: boolean;
   onSelect: (id: string | null) => void;
   selectedAreaId: string | null;
 }) {
@@ -514,7 +542,9 @@ function BestOption({
 
   return (
     <View style={[styles.bestBlock, { borderColor: colors.border }]}>
-      <Text style={[type.label, { color: colors.textMuted }]}>BEST RIGHT NOW</Text>
+      <Text style={[type.label, { color: colors.textMuted }]}>
+        {isLive ? 'BEST RIGHT NOW' : 'BEST AT THAT TIME'}
+      </Text>
       <AreaRow
         option={best}
         best={null}
@@ -619,6 +649,7 @@ const styles = StyleSheet.create({
    * and would otherwise grow without limit — a percentage rather than a
    * constant for exactly that reason, with the ScrollView handling the rest.
    */
+  previewSlot: { paddingHorizontal: space.comfortable, paddingTop: space.snug },
   sheetWrap: { maxHeight: '54%' },
   sheet: {
     flexShrink: 1,

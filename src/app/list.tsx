@@ -16,8 +16,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AREAS, rank } from '../engine';
 import { AreaRow } from '../components/AreaRow';
+import { PreviewBanner } from '../components/PreviewBanner';
 import { TripControls } from '../components/TripControls';
-import { useNow } from '../hooks/use-now';
+import { useAt } from '../hooks/use-at';
 import { useTrip } from '../state/trip';
 import { WIDE_LAYOUT_MIN_WIDTH, space, type } from '../theme';
 import { colorsFor } from '../theme/colors';
@@ -28,9 +29,17 @@ export default function ListScreen() {
   const insets = useSafeAreaInsets();
   // A minute is enough here: the list shows costs and walk times, and a
   // per-second tick would re-sort 262 rows under the user's thumb for nothing.
-  const now = useNow(60_000);
-  const { destination, durationHours, mode, profile, selectedAreaId, setSelectedAreaId } =
-    useTrip();
+  const { at: now, isLive } = useAt(60_000);
+  const {
+    destination,
+    durationHours,
+    mode,
+    profile,
+    previewAt,
+    setPreviewAt,
+    selectedAreaId,
+    setSelectedAreaId,
+  } = useTrip();
 
   const ranked = useMemo(() => {
     if (!destination) return [];
@@ -70,10 +79,20 @@ export default function ListScreen() {
       <Text style={[type.title, { color: colors.text }]} accessibilityRole="header">
         Parking
       </Text>
+      {previewAt ? (
+        <View style={styles.banner}>
+          <PreviewBanner
+            previewAt={previewAt}
+            now={new Date()}
+            onBackToNow={() => setPreviewAt(null)}
+            colors={colors}
+          />
+        </View>
+      ) : null}
       <TripControls />
       {ranked.length > 0 ? (
         <Text style={[type.caption, { color: colors.textMuted }]} accessibilityLiveRegion="polite">
-          {freeCount} of {ranked.length} free right now.
+          {freeCount} of {ranked.length} free {isLive ? 'right now' : 'at that time'}.
         </Text>
       ) : null}
     </View>
@@ -134,5 +153,6 @@ const styles = StyleSheet.create({
     paddingBottom: space.base,
     gap: space.tight,
   },
+  banner: { paddingVertical: space.snug },
   empty: { paddingVertical: space.roomy, paddingHorizontal: space.comfortable, gap: space.snug },
 });

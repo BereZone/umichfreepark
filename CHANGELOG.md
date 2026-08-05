@@ -58,6 +58,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - The destination field offers your recent buildings before you type.
 - Selecting an area from the list now moves the map to it. It used to select something you could not see.
 - On a wide screen the map keeps the ranked list beside it instead of under it, and the list and Learn screens stop stretching their text across the whole window.
+- **Check another time.** Pick a day and an hour and the whole app answers for that moment — statuses, prices, countdowns, holidays and game-day warnings. A loud banner and a "back to now" button sit on every screen while you are looking at anything other than now, because a scrubbed "FREE" mistaken for a live one is the most expensive mistake this app can cause.
+- Your year and permit are now in the trip controls as well as on Learn, next to the destination and duration. Filed only under "Learn" they were impossible to find.
 - **Use my location.** UMichFreePark finds the building you are standing next to and ranks parking from there. It asks only when you press it, never on launch, and says what to do instead if you refuse — or if there is no signal, which is normal inside a structure.
 
 ### Changed

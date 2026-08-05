@@ -21,10 +21,12 @@ export type {
 
 export {
   ZONE,
+  atLocalTime,
   calendarDate,
   dayOfWeek,
   holidayAt,
   holidaysFor,
+  inZone,
   isHoliday,
   minutesIntoDay,
   type CalendarDate,

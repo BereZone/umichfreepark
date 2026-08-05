@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  SUNDAY,
+  atLocalTime,
   calendarDate,
   dayOfWeek,
   holidayAt,
   holidaysFor,
+  inZone,
   isHoliday,
   minutesIntoDay,
 } from './calendar';
@@ -268,5 +271,97 @@ describe('city structures: the holiday list is unknown, not empty', () => {
     // isHoliday collapses unknown to false, which is the safe direction: the
     // caller falls through to the normal paid rule rather than announcing FREE.
     expect(isHoliday('city-structure', utc('2026-12-25T16:00:00Z'))).toBe(false);
+  });
+});
+
+describe('atLocalTime', () => {
+  /*
+   * This is what the time picker is built on, so its failure mode is a screen
+   * of confidently wrong parking statuses for an hour the user did not ask for.
+   *
+   * The tests run under America/Los_Angeles (see vitest.config.ts), three hours
+   * behind Ann Arbor, so anything that reads the device zone instead of
+   * America/Detroit is off by three hours here rather than passing quietly.
+   */
+
+  const hourIn = (at: Date) => inZone(at).getHours();
+  const dayIn = (at: Date) => inZone(at).getDate();
+
+  it('hits the requested wall-clock hour in Ann Arbor, not on the device', () => {
+    const at = atLocalTime(new Date('2026-08-05T16:00:00Z'), 0, 18);
+    expect(hourIn(at)).toBe(18);
+    // 6pm EDT is 22:00 UTC. If this reads 01:00 the device zone leaked in.
+    expect(at.toISOString()).toBe('2026-08-05T22:00:00.000Z');
+  });
+
+  it('counts days by the calendar, not by adding 24 hours', () => {
+    const monday = new Date('2026-08-03T16:00:00Z');
+    const sunday = atLocalTime(monday, 6, 12);
+    expect(dayOfWeek(sunday)).toBe(SUNDAY);
+    expect(hourIn(sunday)).toBe(12);
+  });
+
+  it('rolls over the end of a month', () => {
+    const at = atLocalTime(new Date('2026-08-31T16:00:00Z'), 1, 9);
+    expect(calendarDate(at)).toBe('2026-09-01');
+    expect(hourIn(at)).toBe(9);
+  });
+
+  it('keeps 6pm at 6pm across spring forward', () => {
+    /*
+     * THE BUG THIS EXISTS FOR. 2026-03-08 is a 23-hour day in Detroit, so
+     * `reference.getTime() + 86_400_000` lands at 7pm rather than 6pm — an
+     * off-by-one-hour that flips city meters from free to enforced.
+     */
+    const saturday = new Date('2026-03-07T17:00:00Z');
+    const sunday = atLocalTime(saturday, 1, 18);
+    expect(hourIn(sunday)).toBe(18);
+    expect(dayIn(sunday)).toBe(8);
+  });
+
+  it('keeps 6pm at 6pm across fall back', () => {
+    // 2026-11-01 is a 25-hour day, the same bug in the other direction.
+    const at = atLocalTime(new Date('2026-10-31T17:00:00Z'), 1, 18);
+    expect(hourIn(at)).toBe(18);
+    expect(dayIn(at)).toBe(1);
+  });
+
+  it('resolves the hour that does not exist on the spring-forward date', () => {
+    /*
+     * 2am never happens on 2026-03-08: the clock jumps 1:59:59 to 3:00:00. The
+     * zone resolves it forward to 3am, and asking for 3am gives the same
+     * instant. Pinned rather than assumed — the point is that the behaviour is
+     * known and bounded, not that this particular resolution is ideal. The user
+     * sees an adjacent hour, on one night a year, and never a status for a
+     * moment that did not occur.
+     */
+    const two = atLocalTime(new Date('2026-03-07T17:00:00Z'), 1, 2);
+    const three = atLocalTime(new Date('2026-03-07T17:00:00Z'), 1, 3);
+    expect(hourIn(two)).toBe(3);
+    expect(two.getTime()).toBe(three.getTime());
+  });
+
+  it('picks the second of the two 1ams on the fall-back date', () => {
+    /*
+     * 1am happens twice on 2026-11-01: once at 05:00Z still on EDT, then again
+     * at 06:00Z after the clocks go back to EST. The zone resolves to the
+     * second, standard-time one.
+     *
+     * Pinned because it is arbitrary, not because it is important. No parking
+     * rule in this app distinguishes the two — city meters are free all Sunday
+     * and structures are free from 4am Sunday to 4am Monday, so both 1ams give
+     * the same answer. If a rule ever does turn on that hour, this test is where
+     * the ambiguity is already written down.
+     */
+    const at = atLocalTime(new Date('2026-10-31T17:00:00Z'), 1, 1);
+    expect(hourIn(at)).toBe(1);
+    expect(at.toISOString()).toBe('2026-11-01T06:00:00.000Z');
+  });
+
+  it('reaches every hour of the day', () => {
+    const reference = new Date('2026-08-05T16:00:00Z');
+    for (let hour = 0; hour < 24; hour += 1) {
+      expect(hourIn(atLocalTime(reference, 0, hour)), `hour ${hour}`).toBe(hour);
+    }
   });
 });

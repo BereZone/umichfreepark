@@ -51,6 +51,21 @@ interface TripState {
   profile: Profile;
   setProfile: (profile: Profile) => void;
   /**
+   * An instant to answer for instead of now, or null to stay live.
+   *
+   * This is the time scrubber, and it is the reason no engine function calls
+   * `new Date()` — scrubbing is just passing a different instant, so every
+   * status, price, countdown, holiday and game-day warning follows for free.
+   *
+   * DELIBERATELY NOT PERSISTED. Everything else here survives a relaunch
+   * because it describes the person; this describes a question they asked once.
+   * Restoring "Sunday 4pm" onto a Tuesday-morning launch would show a screen
+   * full of free parking that is not free, which is this app's single most
+   * expensive bug.
+   */
+  previewAt: Date | null;
+  setPreviewAt: (at: Date | null) => void;
+  /**
    * The area whose details are open, shared so the two views agree.
    *
    * This lives here rather than in the map screen because the list is the
@@ -118,6 +133,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<RankingMode>('closest');
   const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE);
   const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
+  const [previewAt, setPreviewAt] = useState<Date | null>(null);
 
   /**
    * Nothing is written until the first read has finished.
@@ -217,10 +233,21 @@ export function TripProvider({ children }: { children: ReactNode }) {
       setMode,
       profile,
       setProfile,
+      previewAt,
+      setPreviewAt,
       selectedAreaId,
       setSelectedAreaId,
     }),
-    [destination, setDestination, recentDestinations, durationHours, mode, profile, selectedAreaId]
+    [
+      destination,
+      setDestination,
+      recentDestinations,
+      durationHours,
+      mode,
+      profile,
+      previewAt,
+      selectedAreaId,
+    ]
   );
 
   return <TripContext.Provider value={value}>{children}</TripContext.Provider>;

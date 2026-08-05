@@ -261,3 +261,41 @@ export function isHoliday(authority: Authority, at: Date): boolean {
   const result = holidayAt(authority, at);
   return result.known && result.holiday !== null;
 }
+
+/**
+ * The instant at a given Ann Arbor wall-clock hour, `dayOffset` days from
+ * `reference`.
+ *
+ * This is what makes the time picker possible, and the reason it lives in the
+ * engine rather than in a screen: it is date arithmetic in a named zone, which
+ * is exactly the kind of thing that looks right and is wrong twice a year.
+ *
+ * NOT `reference.getTime() + dayOffset * 86_400_000`. Adding a fixed number of
+ * milliseconds crosses a DST boundary and lands an hour off — "tomorrow at 6pm"
+ * becomes 5pm or 7pm on the two changeover weekends. The calendar fields are
+ * incremented instead, and the zone resolves the offset, so 6pm means 6pm by
+ * the sign on the street on all 365 days.
+ *
+ * TWO HOURS A YEAR ARE GENUINELY AMBIGUOUS, and this does not pretend
+ * otherwise. On the spring-forward date 2am never happens; on the fall-back
+ * date 1am happens twice. The zone picks a resolution for both and the tests
+ * pin whichever it picks, so the behaviour is known rather than assumed. The
+ * consequence is bounded: at worst the user previews an hour adjacent to the
+ * one they tapped, on two nights a year, and the app never claims a status for
+ * an instant that does not exist.
+ */
+export function atLocalTime(reference: Date, dayOffset: number, hour: number): Date {
+  const local = inZone(reference);
+  // Day overflow past the end of a month is handled by Date's own normalization.
+  const target = new TZDate(
+    local.getFullYear(),
+    local.getMonth(),
+    local.getDate() + dayOffset,
+    hour,
+    0,
+    0,
+    0,
+    ZONE
+  );
+  return new Date(target.getTime());
+}
