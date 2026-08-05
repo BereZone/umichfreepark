@@ -50,11 +50,22 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - CI builds the iOS app on pushes to `main` and fails if the app declares a permission it does not request. Everything else runs on Linux and never touches the native half.
 
 - U-M's own published lot coordinates, used to find polygons for lots OpenStreetMap has mapped but never labelled. Coordinates only — the same source's enforcement hours disagree with the parking office for 100 of the 104 lots they share, so they are not carried at all.
+- The map screen now has the controls it was missing: where you're going, how long you're staying, and how to sort. Previously the map was ranked against a destination you could only set on the other tab.
+- A key on the map, saying what the border styles and the fill colours mean. It draws its swatches from the same numbers the map draws with, so it cannot end up describing a map that no longer exists.
+- Tapping an area now shows what your stay costs and how far the walk is, not just whether it is free right now.
+- **Tell CURB who you are.** The Learn tab now takes your year and permit, and the whole app answers for that person. It always assumed a first-year with no permit, which meant a senior with a Blue permit was told they could not park in their own lot.
+- CURB remembers where you were going, how long for, how you sort, and your last five destinations. Opening the app no longer starts over at Mason Hall.
+- The destination field offers your recent buildings before you type.
+- Selecting an area from the list now moves the map to it. It used to select something you could not see.
+- On a wide screen the map keeps the ranked list beside it instead of under it, and the list and Learn screens stop stretching their text across the whole window.
 
 ### Changed
 
 - The map draws 161 parking areas, up from 101. Sixty more U-M lots now have a boundary and a label.
 - Which lots get a price label is now decided in one shared place instead of separately per platform, and the limit counts labels on your screen rather than in the whole dataset — so zooming in labels everything you can see, instead of spending the budget on lots a mile away. Labels also step aside for one another rather than stacking, and where two lots are too close to label both, the free one keeps its label.
+- The downtown meter district is drawn as a light outline rather than as a lot. It is two kilometres across and contains most of the structures the map is about, so at full weight it laid a slab over all of downtown and central campus and everything inside it was read through a wash.
+- The list no longer repeats the destination as a heading directly above the field that already shows it, and rows no longer all begin with the same word the price beside them is already saying.
+- Callouts carry their meaning as a tinted block rather than a coloured stripe down one edge. At large text sizes a callout wraps to five lines and the stripe was only ever next to one of them.
 
 ### Deprecated
 
@@ -62,6 +73,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 ### Fixed
 
+- The map's tile attribution sat underneath the panel that slid up over it. Attribution is a licence condition of the tiles, so the panel now sits below the map rather than on top of it.
+- Building search results were drawn behind the duration and sort buttons underneath them, so choosing a building meant reading its name through a row of chips.
 - The web map drew nothing at all — no streets, no lots, no labels, just an empty rectangle. MapLibre could not locate its own background worker inside our bundle and failed without reporting it, so everything the worker draws was silently absent.
 - The "free right now" count was measured against the 101 areas the map could draw rather than the 262 CURB knows about, so both the count and the total it was shown against were wrong.
 - U-M's park-and-ride lots read as paid at every hour. They are free to anyone with no permit, but they also carry posted hours — the hours say who the lot is for, not what it costs — and the app was pricing the hours.
