@@ -65,6 +65,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 - **The app is now called UMichFreePark.** It was CURB, then briefly MFreePark.
 - On a phone the trip is a closed dropdown: where you're going and for how long, on one row with a caret. The search field and the duration and sort buttons only appear once you open it, so the map keeps most of the screen. The map key's colour list is the same kind of control.
 - American spelling throughout — "colors", not "colours".
+- Options are sorted by closest lot by default. "Best balance" trades ten minutes of walking against a dollar, which is a call you should make on purpose rather than inherit.
+- The permit setting is always on the Learn screen. It used to appear only after you picked junior or later, so at the default — a first-year — there was no permit setting to find at all. The options you cannot buy are shown greyed out with the reason.
 - Picking a destination moves the map to it. The pin could previously land off screen.
 - The close button on a selected lot is a filled circle rather than a grey word.
 - The map draws 161 parking areas, up from 101. Sixty more U-M lots now have a boundary and a label.

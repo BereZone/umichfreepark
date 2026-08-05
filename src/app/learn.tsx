@@ -187,9 +187,13 @@ const PERMITS: { key: HeldPermit; label: string }[] = [
  * control sees half of campus greyed out for no reason they can see.
  *
  * The permit row disappears for first-years and sophomores rather than being
- * shown and rejected. U-M does not sell them a commuter permit at all, so
- * offering the choice and then explaining it away teaches the rule worse than
- * stating it once.
+ * The permit row is always visible, including for the first-years and
+ * sophomores who cannot buy one. Hiding it was the first attempt and it was
+ * wrong: the app ships defaulted to a first-year, so the setting simply did not
+ * exist on the screen it lives on, and there was no way to discover that
+ * choosing a later year would reveal it. The options are shown and disabled
+ * instead, which makes the setting findable and states the rule where someone
+ * is looking for it.
  */
 function ProfilePicker({ colors }: { colors: ColorScheme }) {
   const { profile, setProfile } = useTrip();
@@ -226,33 +230,45 @@ function ProfilePicker({ colors }: { colors: ColorScheme }) {
         ))}
       </View>
 
-      {canHoldPermit ? (
-        <>
-          <Text style={[type.label, styles.pickerLabel, { color: colors.textMuted }]}>PERMIT</Text>
-          <View
-            style={styles.chipRow}
-            accessibilityRole="radiogroup"
-            accessibilityLabel="Permit you hold"
-          >
-            {PERMITS.map((permit) => (
-              <Chip
-                key={permit.key}
-                label={permit.label}
-                selected={profile.permit === permit.key}
-                colors={colors}
-                onPress={() => setProfile({ ...profile, permit: permit.key })}
-              />
-            ))}
-          </View>
-        </>
-      ) : (
+      <Text style={[type.label, styles.pickerLabel, { color: colors.textMuted }]}>PERMIT</Text>
+      <View
+        style={styles.chipRow}
+        accessibilityRole="radiogroup"
+        accessibilityLabel="Permit you hold"
+      >
+        {PERMITS.map((permit) => {
+          // Whether this profile could legally hold it. The engine owns the
+          // rule; this only reflects it.
+          const holdable =
+            permit.key === 'none' ||
+            permitIsPlausible({ classYear: profile.classYear, permit: permit.key });
+          return (
+            <Chip
+              key={permit.key}
+              label={permit.label}
+              selected={profile.permit === permit.key}
+              disabled={!holdable}
+              colors={colors}
+              accessibilityLabel={
+                holdable
+                  ? permit.label
+                  : `${permit.label} — U-M does not sell this to first-years or sophomores`
+              }
+              onPress={() => setProfile({ ...profile, permit: permit.key })}
+            />
+          );
+        })}
+      </View>
+
+      {!canHoldPermit ? (
         <Callout tone="caution" colors={colors}>
           <CalloutText colors={colors}>
-            U-M does not sell commuter permits to first-years or sophomores, so there is no permit
-            to pick. City parking and U-M lots outside their enforcement hours are open to you.
+            U-M does not sell commuter permits to first-years or sophomores, so the options above
+            are greyed out. City parking and U-M lots outside their enforcement hours are still
+            open to you.
           </CalloutText>
         </Callout>
-      )}
+      ) : null}
     </View>
   );
 }

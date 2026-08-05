@@ -17,7 +17,7 @@
 import { describe, expect, it } from 'vitest';
 
 // Not from the barrel: it re-exports typography.ts, which imports react-native.
-import { darkColors, lightColors, type ColorScheme } from './colors';
+import { darkColors, lightColors, withAlpha, type ColorScheme } from './colors';
 import { MIN_TOUCH_TARGET, duration } from './metrics';
 
 /** WCAG 2.1 relative luminance. */
@@ -137,6 +137,60 @@ describe('color contrast', () => {
    * channels a user actually reads. Do not re-add a threshold here; tune the
    * one that measures the property being relied on.
    */
+});
+
+describe('callouts, against the surface they actually composite to', () => {
+  /*
+   * A callout does not sit on `surfaceRaised`. It sits on its own tone at 10%
+   * *over* `surfaceRaised`, and its title is that same tone at full strength.
+   * Checking the title against the plain token is optimistic in exactly the
+   * direction that hides a failure: the tinted background is always closer to
+   * the title colour than the untinted one is.
+   *
+   * The margins here are genuinely thin — caution on the page clears 4.5:1 by
+   * 0.31 in light mode, blocked on the sheet by 0.25 in dark — which is the
+   * reason this is asserted rather than eyeballed. A small nudge to `caution`
+   * or `ineligible` would drop it below, and nothing else would notice.
+   */
+  const composite = (fg: string, alpha: number, bg: string) => {
+    const channel = (i: number) => {
+      const f = parseInt(fg.slice(i, i + 2), 16);
+      const b = parseInt(bg.slice(i, i + 2), 16);
+      return Math.round(f * alpha + b * (1 - alpha))
+        .toString(16)
+        .padStart(2, '0');
+    };
+    return `#${channel(1)}${channel(3)}${channel(5)}`;
+  };
+
+  /** Mirrors Callout.tsx: a 10% wash of the tone over whatever it is placed on. */
+  const CALLOUT_TINT = 0.1;
+
+  it('keeps the title and body readable on the tinted block', () => {
+    for (const [themeName, c] of themes) {
+      for (const tone of ['ineligible', 'caution'] as const) {
+        for (const under of ['surfaceRaised', 'background'] as const) {
+          const bg = composite(c[tone], CALLOUT_TINT, c[under]);
+          expect(
+            ratio(c[tone], bg),
+            `${themeName}: ${tone} title on ${under}`
+          ).toBeGreaterThanOrEqual(4.5);
+          expect(
+            ratio(c.text, bg),
+            `${themeName}: body text in a ${tone} callout on ${under}`
+          ).toBeGreaterThanOrEqual(4.5);
+        }
+      }
+    }
+  });
+
+  it('composites the way the component does', () => {
+    // Guards the helper above against drifting from `withAlpha`'s contract:
+    // full alpha must return the tone unchanged.
+    expect(withAlpha('#B3261E', 1)).toBe('#B3261Eff');
+    expect(composite('#000000', 1, '#FFFFFF')).toBe('#000000');
+    expect(composite('#000000', 0, '#FFFFFF')).toBe('#ffffff');
+  });
 });
 
 describe('touch targets', () => {

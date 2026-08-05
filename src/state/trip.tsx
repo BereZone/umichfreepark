@@ -106,7 +106,16 @@ export function TripProvider({ children }: { children: ReactNode }) {
   const [destination, setDestinationState] = useState<Building | null>(DEFAULT_DESTINATION);
   const [recentIds, setRecentIds] = useState<string[]>([]);
   const [durationHours, setDurationHours] = useState(2);
-  const [mode, setMode] = useState<RankingMode>('balanced');
+  /*
+   * Closest by default.
+   *
+   * "Best balance" trades ten minutes of walking against a dollar, which is a
+   * judgement someone should make on purpose rather than inherit. Distance is
+   * the thing a person can actually picture before they have opened the app,
+   * and at the moment this gets used — already driving, deciding where to turn
+   * — the nearest option is the one being asked for.
+   */
+  const [mode, setMode] = useState<RankingMode>('closest');
   const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE);
   const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
 
