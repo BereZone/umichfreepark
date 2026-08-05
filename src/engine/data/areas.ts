@@ -1,5 +1,5 @@
 /**
- * Every parkable area MFreePark knows about, as one typed list.
+ * Every parkable area UMichFreePark knows about, as one typed list.
  *
  * Two sources feed this, and they are shaped differently on purpose:
  *

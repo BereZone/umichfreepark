@@ -10,7 +10,7 @@
  *   NSLocationAlwaysAndWhenInUseUsageDescription "Allow $(PRODUCT_NAME) to …"
  *   NSMotionUsageDescription                     "Allow $(PRODUCT_NAME) to …"
  *
- * MFreePark requests When In Use and nothing else. It never asks for background
+ * UMichFreePark requests When In Use and nothing else. It never asks for background
  * location and never reads motion. Shipping those keys is wrong twice over: a
  * vague purpose string is the thing App Review rejects by name, and declaring a
  * capability you do not use invites the reviewer to ask why.
@@ -32,13 +32,13 @@
  * has added anything, so it deletes nothing and silently passes. Listed first,
  * it runs last and actually sees the finished plist.
  *
- * Verified by inspecting the generated ios/MFreePark/Info.plist, which is the only
+ * Verified by inspecting the generated ios/UMichFreePark/Info.plist, which is the only
  * way to know: both orderings "succeed".
  */
 
 const { withInfoPlist } = require('expo/config-plugins');
 
-/** Permissions MFreePark genuinely does not use. */
+/** Permissions UMichFreePark genuinely does not use. */
 const UNUSED = ['NSMotionUsageDescription'];
 
 /** Permissions that must never appear, whatever a dependency thinks. */
@@ -54,7 +54,7 @@ module.exports = function withLeanIosPermissions(config) {
     const reintroduced = FORBIDDEN.filter((key) => mod.modResults[key] !== undefined);
     if (reintroduced.length > 0) {
       throw new Error(
-        `Info.plist declares background-location permissions MFreePark does not request: ` +
+        `Info.plist declares background-location permissions UMichFreePark does not request: ` +
           `${reintroduced.join(', ')}. A dependency added them back. Suppress them in ` +
           `the expo-location plugin options in app.json rather than deleting them here — ` +
           `if the app genuinely needs Always now, that is a decision to make deliberately.`

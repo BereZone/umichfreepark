@@ -1,8 +1,8 @@
-# MFreePark
+# UMichFreePark
 
 Find free and cheap parking near University of Michigan buildings — a map that knows Ann Arbor's rules change by the hour. Web and iOS.
 
-Ann Arbor parking is a *timing* problem as much as a location problem. Meters are free evenings, Sundays, and city holidays. Structures are free from 4 a.m. Sunday to 4 a.m. Monday. MFreePark shows you which parking is free *right now*, what any lot's rules are, and ranks your options by cost against walking distance to the specific building you're headed to.
+Ann Arbor parking is a *timing* problem as much as a location problem. Meters are free evenings, Sundays, and city holidays. Structures are free from 4 a.m. Sunday to 4 a.m. Monday. UMichFreePark shows you which parking is free *right now*, what any lot's rules are, and ranks your options by cost against walking distance to the specific building you're headed to.
 
 It covers both authorities — City of Ann Arbor and U-M — because a student standing on State Street doesn't care who owns the asphalt.
 

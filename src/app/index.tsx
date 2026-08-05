@@ -98,7 +98,7 @@ export default function MapScreen() {
   const selected = selectedAreaId ? (areaById.get(selectedAreaId) ?? null) : null;
 
   /**
-   * The count is over EVERY area MFreePark knows, not the ones it can draw.
+   * The count is over EVERY area UMichFreePark knows, not the ones it can draw.
    *
    * It used to read `MAP_AREAS`, and so reported "0 / 101" while the app held
    * rules for 262 areas. Nothing labelled that 101 as a subset, so the
@@ -277,7 +277,7 @@ export default function MapScreen() {
             >
               <Text style={[type.bodyStrong, { color: colors.text }]}>The map didn’t load</Text>
               <Text style={[type.body, { color: colors.text }]}>
-                Tiles come from the network and the rest of MFreePark doesn’t. The list has every one of
+                Tiles come from the network and the rest of UMichFreePark doesn’t. The list has every one of
                 these {summary.total} areas and works offline.
               </Text>
             </View>
@@ -518,7 +518,7 @@ function EmptyRanking({
       <Text style={[type.body, { color: colors.textMuted }]}>
         {hasDestination
           ? 'Every area near here is either enforced right now or needs a permit you can’t buy. The Learn tab has what to do instead — the buses are free.'
-          : 'Search a building and MFreePark will rank every area by what it costs you to park there and how far you’d walk.'}
+          : 'Search a building and UMichFreePark will rank every area by what it costs you to park there and how far you’d walk.'}
       </Text>
     </View>
   );

@@ -85,17 +85,17 @@ jobs:
       - name: Generate the native project
         run: npx expo prebuild -p ios --no-install
 
-      # The permission rule is a product decision, not a build detail: MFreePark asks
+      # The permission rule is a product decision, not a build detail: UMichFreePark asks
       # for location When In Use and nothing else. Checking the generated plist
       # is the only way to know, since a dependency can add keys back silently.
       - name: Check iOS asks for no permissions it does not use
         run: |
-          PLIST=ios/MFreePark/Info.plist
+          PLIST=ios/UMichFreePark/Info.plist
           for key in NSLocationAlwaysUsageDescription \
                      NSLocationAlwaysAndWhenInUseUsageDescription \
                      NSMotionUsageDescription; do
             if /usr/libexec/PlistBuddy -c "Print :$key" "$PLIST" >/dev/null 2>&1; then
-              echo "::error::$PLIST declares $key, which MFreePark never requests."
+              echo "::error::$PLIST declares $key, which UMichFreePark never requests."
               exit 1
             fi
           done
@@ -114,8 +114,8 @@ jobs:
       - name: Build for the simulator
         run: |
           xcodebuild \
-            -workspace ios/MFreePark.xcworkspace \
-            -scheme MFreePark \
+            -workspace ios/UMichFreePark.xcworkspace \
+            -scheme UMichFreePark \
             -configuration Debug \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \

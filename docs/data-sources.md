@@ -1,6 +1,6 @@
 # Data sources
 
-Where every parking rule in MFreePark comes from, and — just as importantly — what we don't know.
+Where every parking rule in UMichFreePark comes from, and — just as importantly — what we don't know.
 
 ## The rule
 
@@ -95,7 +95,7 @@ From the [Locations and Enforcement](https://ltp.umich.edu/parking/locations-and
 
 > Parking facilities are open to the public **outside enforcement hours**.
 
-Stated campus-wide, not as a per-lot carve-out. This is what lets MFreePark tell a student without a permit that a Blue lot is legal at 7pm.
+Stated campus-wide, not as a per-lot carve-out. This is what lets UMichFreePark tell a student without a permit that a Blue lot is legal at 7pm.
 
 The corollary matters just as much: **117 of the 242 lots are enforced "24 hrs, 7 days"** and are therefore *never* open to the public. Almost all of the Medical campus falls in this bucket. Those must never render as free.
 
@@ -154,9 +154,9 @@ Nine meter lots ship: Palio, Main & Ann, City Hall, Community High, Farmer's Mar
 
 Polygons come from [OpenStreetMap](https://www.openstreetmap.org/) via the [Overpass API](https://overpass-api.de/), queried by `scripts/fetch-osm-parking.mjs` (`npm run data:polygons`). Raw output is committed **un-edited** to `data/raw/osm-parking.geojson` so that hand-tagging appears as a reviewable diff.
 
-As of 2026-08-03: **1,646 features** — 1,634 polygons and 12 multipolygons — of which only 129 carry a `name`. That count is not the target dataset. It includes every private residential and business lot in the bbox; the ~25–30 areas MFreePark actually models get selected by hand out of it.
+As of 2026-08-03: **1,646 features** — 1,634 polygons and 12 multipolygons — of which only 129 carry a `name`. That count is not the target dataset. It includes every private residential and business lot in the bbox; the ~25–30 areas UMichFreePark actually models get selected by hand out of it.
 
-`amenity=parking_space` is deliberately excluded — that is per-space granularity, thousands of features for a handful of structures, and not what MFreePark draws.
+`amenity=parking_space` is deliberately excluded — that is per-space granularity, thousands of features for a handful of structures, and not what UMichFreePark draws.
 
 **This file is geometry only.** It is not a source of truth for rates, access, or enforcement. OSM `fee` and `access` tags are present and are frequently stale, incomplete, or free-text (one Ann Arbor lot tags `fee` as `yes @ (visitor AND Mo-Fr 06:00-17:00)`). Rules come from the authorities, hand-verified; OSM only answers "where is the polygon."
 

@@ -100,7 +100,7 @@ describe('building search', () => {
 describe('nearestBuilding', () => {
   /*
    * "Use my location" resolves a GPS fix to a building because every walking
-   * time MFreePark holds is precomputed from one. The risk is entirely in the
+   * time UMichFreePark holds is precomputed from one. The risk is entirely in the
    * out-of-range case: returning the closest building unconditionally would
    * hand a student in Detroit a destination forty miles away and then rank
    * every lot in Ann Arbor as a short walk from it.

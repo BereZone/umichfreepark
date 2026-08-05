@@ -1,4 +1,4 @@
-# MFreePark — release automation.
+# UMichFreePark — release automation.
 #
 # Every version number in this repo is owned by scripts/version.mjs. This file
 # never computes a version itself; it prompts, validates, and delegates. See
@@ -19,7 +19,7 @@ V              = $(NODE) $(VERSION_SCRIPT)
 
 # First target is the default goal in both BSD and GNU make.
 help:
-	@echo "MFreePark release targets"
+	@echo "UMichFreePark release targets"
 	@echo ""
 	@echo "  make check-version              Show all version locations and whether they agree"
 	@echo "  make bump [PART=patch]          Bump major|minor|patch|prerelease (confirms first)"
@@ -122,7 +122,7 @@ tag:
 	  echo "       If the version is right, run \`make bump\` and commit before tagging."; \
 	  exit 1; \
 	fi; \
-	git tag -a "$$tag" -m "MFreePark $$ver" || exit 1; \
+	git tag -a "$$tag" -m "UMichFreePark $$ver" || exit 1; \
 	echo ""; \
 	echo "Created annotated tag $$tag. Nothing has been pushed."; \
 	echo "To ship it:"; \

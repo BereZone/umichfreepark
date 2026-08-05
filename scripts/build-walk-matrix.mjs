@@ -4,7 +4,7 @@
  *
  * WHY THIS IS A BUILD STEP AND NOT A RUNTIME CALL
  *
- * MFreePark has no backend and must work with no signal, because the place it gets
+ * UMichFreePark has no backend and must work with no signal, because the place it gets
  * used is inside a parking structure. Ranking "cheapest within a 10 minute
  * walk" therefore has to be answerable offline, which means the walking times
  * ship in the bundle. Computing them here also keeps `rank()` pure and
@@ -115,7 +115,7 @@ async function postWithRetry(body, attempts = 4) {
     try {
       const res = await fetch(ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'User-Agent': 'mfreepark-walk-matrix/1.0' },
+        headers: { 'Content-Type': 'application/json', 'User-Agent': 'umichfreepark-walk-matrix/1.0' },
         body: JSON.stringify(body),
       });
       if (res.ok) return await res.json();

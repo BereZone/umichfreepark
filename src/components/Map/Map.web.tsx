@@ -56,10 +56,10 @@ const WORKER_PUBLIC_PATH = '/maplibre/maplibre-gl-worker.mjs';
  */
 maplibregl.setWorkerUrl(WORKER_PUBLIC_PATH);
 
-const SOURCE_ID = 'mfreepark-areas';
-const FILL_LAYER = 'mfreepark-areas-fill';
-const LINE_LAYER = 'mfreepark-areas-line';
-const PILL_LAYER = 'mfreepark-areas-pill';
+const SOURCE_ID = 'umichfreepark-areas';
+const FILL_LAYER = 'umichfreepark-areas-fill';
+const LINE_LAYER = 'umichfreepark-areas-line';
+const PILL_LAYER = 'umichfreepark-areas-pill';
 
 export default function Map({
   areas,

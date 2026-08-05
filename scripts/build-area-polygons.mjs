@@ -6,7 +6,7 @@
  * WHY NOT JUST SHIP THE RAW FILE
  *
  * data/raw/osm-parking.geojson is 2 MB and holds 1,646 features, of which 73
- * are areas MFreePark models. The rest are private residential and business lots
+ * are areas UMichFreePark models. The rest are private residential and business lots
  * that exist only so hand-tagging can select from them. Bundling all of it
  * would put 2 MB into an app whose entire premise is working offline on a
  * phone, to draw 4% of it.

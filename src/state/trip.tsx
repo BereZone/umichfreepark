@@ -84,7 +84,7 @@ const MAX_RECENTS = 5;
  * how a persistence layer turns into a startup failure the user cannot clear.
  * Bumping this key retires the old value instead.
  */
-const STORAGE_KEY = 'mfreepark.trip.v1';
+const STORAGE_KEY = 'umichfreepark.trip.v1';
 
 /** What actually goes to disk. Ids, not objects — the datasets are the source of truth. */
 interface StoredTrip {

@@ -45,7 +45,7 @@ export function TripControls({
   /**
    * A fix becomes a destination by way of the building you are standing next to.
    *
-   * Every walking time MFreePark holds is precomputed from a building, so the answer
+   * Every walking time UMichFreePark holds is precomputed from a building, so the answer
    * to "what's near me" has to route through one. Choosing it here rather than
    * ranking against raw coordinates also means the user can see and correct
    * what we decided — the field fills in with a building name, not a dot.
@@ -60,11 +60,11 @@ export function TripControls({
 
   const locationMessage =
     location.status === 'denied'
-      ? 'Location is off for MFreePark. Search a building instead, or turn it on in Settings.'
+      ? 'Location is off for UMichFreePark. Search a building instead, or turn it on in Settings.'
       : location.status === 'unavailable'
         ? 'No signal for a location fix — which is normal inside a structure. Search a building instead.'
         : location.status === 'granted' && !destination
-          ? 'You’re not near any building MFreePark knows. Search one instead.'
+          ? 'You’re not near any building UMichFreePark knows. Search one instead.'
           : null;
 
   return (

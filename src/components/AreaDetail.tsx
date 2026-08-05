@@ -1,5 +1,5 @@
 /**
- * Everything MFreePark knows about one area, as a panel.
+ * Everything UMichFreePark knows about one area, as a panel.
  *
  * Shared by the map's bottom sheet and, in the wide layout, its sidebar. The
  * order is the order of the questions people actually ask, most urgent first:

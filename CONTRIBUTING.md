@@ -1,4 +1,4 @@
-# Contributing to MFreePark
+# Contributing to UMichFreePark
 
 Setup and local development live in [`docs/development.md`](docs/development.md). This file covers how we commit, changelog, and version.
 

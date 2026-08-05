@@ -168,7 +168,7 @@ jobs:
       - name: Zip web export
         env:
           TAG: ${{ github.ref_name }}
-        run: zip -r -q "mfreepark-web-${TAG}.zip" dist
+        run: zip -r -q "umichfreepark-web-${TAG}.zip" dist
 
       # 6. Publish ------------------------------------------------------------
       # The action upserts: re-running against an existing tag updates that
@@ -177,9 +177,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          name: MFreePark ${{ steps.policy.outputs.version }}
+          name: UMichFreePark ${{ steps.policy.outputs.version }}
           body_path: release-notes.md
           draft: ${{ steps.policy.outputs.draft }}
           prerelease: ${{ steps.policy.outputs.prerelease }}
-          files: mfreepark-web-${{ github.ref_name }}.zip
+          files: umichfreepark-web-${{ github.ref_name }}.zip
           fail_on_unmatched_files: true

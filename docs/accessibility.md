@@ -84,7 +84,7 @@ state also writes the word *Free* or *Paid*.
 
 ## Permission strings
 
-MFreePark requests **location When In Use and nothing else**. It never asks for
+UMichFreePark requests **location When In Use and nothing else**. It never asks for
 background location and never reads motion.
 
 That takes active effort, because `expo-location` adds three usage descriptions
@@ -99,7 +99,7 @@ Always key reappears or if the When In Use string is missing or still the
 placeholder. A dependency reintroducing them is silent otherwise: nothing
 breaks, the app simply starts declaring permissions nobody chose.
 
-Verified against the generated `ios/MFreePark/Info.plist`, not assumed from config.
+Verified against the generated `ios/UMichFreePark/Info.plist`, not assumed from config.
 
 The other half of that guarantee is that the app now actually *requests* what it
 declares. Until the location control shipped, `NSLocationWhenInUseUsageDescription`
@@ -112,7 +112,7 @@ until they go into Settings.
 
 All three refusal paths say what to do instead rather than failing silently:
 denied, no fix available (normal inside a structure — which is exactly where
-this app is used), and a fix that lands nowhere near a building MFreePark knows.
+this app is used), and a fix that lands nowhere near a building UMichFreePark knows.
 
 ## Verified on the Simulator
 
