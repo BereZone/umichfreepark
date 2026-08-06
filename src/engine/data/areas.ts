@@ -26,6 +26,7 @@ import areaPolygons from './area-polygons.json';
 import { CITY_AREAS } from './city-areas';
 import { METER_LOT_AREAS, ON_STREET_METER_AREA } from './meter-lots';
 import umichAreas from './umich-areas.json';
+import { UMICH_CORRECTIONS } from './umich-corrections';
 
 /** An area with its schedule resolved, which is what the engine actually consumes. */
 export interface ResolvedArea extends ParkingArea {
@@ -85,25 +86,43 @@ const resolvedCity: ResolvedArea[] = [
   schedule: CITY_SCHEDULES[area.authority] ?? null,
 }));
 
-const resolvedUmich: ResolvedArea[] = umichAreas.areas.map((lot) => ({
-  id: lot.id,
-  name: `${lot.name} (${lot.lot})`,
-  authority: 'umich' as const,
-  kind: 'lot' as const,
-  // null when nobody has named this lot in OpenStreetMap yet. It still ships:
-  // the list can show its rules, only the map cannot draw it.
-  osmId: lot.osmId,
-  rate: umichRate(lot.permitTier),
-  // Absent tier stays absent rather than becoming a guessed color.
-  permitTier: lot.permitTier ?? undefined,
-  schedule: parseEnforcementHours(lot.enforcementHours),
-  provenance: {
-    lastVerified: umichAreas.generatedAt,
-    source: LTP_ENFORCEMENT,
-    confidence: 'verified' as const,
-  },
-  note: postedNote(lot.enforcementHours),
-}));
+const resolvedUmich: ResolvedArea[] = umichAreas.areas.map((lot) => {
+  /*
+   * A hand correction wins over the generated row, and drags its own
+   * provenance with it. See umich-corrections.ts: a correction that
+   * contradicts LTP without a published source is `community`, so the app
+   * shows the caveat rather than presenting a ground report as authoritative.
+   */
+  const correction = UMICH_CORRECTIONS[lot.id];
+  const hours = correction?.enforcementHours ?? lot.enforcementHours;
+  const tier = correction && 'permitTier' in correction ? correction.permitTier : lot.permitTier;
+
+  return {
+    id: lot.id,
+    name: `${lot.name} (${lot.lot})`,
+    authority: 'umich' as const,
+    kind: 'lot' as const,
+    // null when nobody has named this lot in OpenStreetMap yet. It still ships:
+    // the list can show its rules, only the map cannot draw it.
+    osmId: lot.osmId,
+    rate: umichRate(tier ?? null),
+    // Absent tier stays absent rather than becoming a guessed color.
+    permitTier: tier ?? undefined,
+    schedule: parseEnforcementHours(hours),
+    provenance: correction
+      ? {
+          lastVerified: correction.correctedOn,
+          source: correction.source,
+          confidence: correction.confidence,
+        }
+      : {
+          lastVerified: umichAreas.generatedAt,
+          source: LTP_ENFORCEMENT,
+          confidence: 'verified' as const,
+        },
+    note: correction?.note ?? postedNote(hours),
+  };
+});
 
 export const AREAS: ResolvedArea[] = [...resolvedCity, ...resolvedUmich];
 

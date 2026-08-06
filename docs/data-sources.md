@@ -16,6 +16,43 @@ Every record in `src/engine/data/` carries:
 
 **A wrong "FREE" costs a student a $70 ticket.** That asymmetry drives every decision here: when in doubt, downgrade the confidence rather than the caveat.
 
+## Hand corrections to LTP's table
+
+LTP's published lot table is the source of record for U-M parking, and
+`umich-areas.json` is generated from it. A few rows are wrong on the ground.
+Those corrections live in `src/engine/data/umich-corrections.ts` and are applied
+downstream in `areas.ts`, never edited into the generated file — a correction
+baked into generated data survives until the next `npm run data:umich-areas`
+and then silently reverts, which is the worst way for parking data to fail.
+
+Two rules govern the file:
+
+- **A correction carries its own provenance.** Anything contradicting LTP
+  without a published URL is `confidence: 'community'`, which the app renders
+  with a visible caveat. It never borrows LTP's authority.
+- **A correction may only make the app more cautious.** Turning "free after
+  5pm" into "enforced around the clock" costs a wasted walk if the report is
+  wrong. The reverse costs a $70 ticket. Only the first direction is allowed on
+  an unverified report.
+
+### C5 — Libraries Service Areas
+
+| | |
+|---|---|
+| LTP publishes | Blue permit, enforced 6am–5pm Mon–Fri |
+| Reported | Service vehicles only, monitored 24/7 |
+| Shipped as | Restricted, enforced 24/7, `community` |
+
+Reported 2026-08-06. Could not be re-verified: `ltp.umich.edu` returns 403 to
+automated requests, and the newest Wayback capture is the same 2026-07-31 one
+this dataset was built from, which still shows Blue / 6am–5pm.
+
+Applied regardless because it only narrows what the app offers — previously
+MFreePark told students this lot was free every weekday evening and all
+weekend — and because the lot's own published name supports the report. The
+tier moves to Restricted because no student permit admits anyone to a service
+area; leaving it Blue would actively direct a Blue holder there.
+
 ## What we model, and what we don't
 
 We model the **published rules from the authorities themselves**. We do not pull from SpotAngels, MGoPark, ParkMe, or Parkopedia. Their compiled datasets are their product, and copying them would be both wrong and unverifiable — you can't cite a competitor's guess.

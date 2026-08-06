@@ -90,6 +90,8 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 ### Fixed
 
+- **Libraries Service Areas (C5) no longer shows as free.** U-M publishes it as a Blue lot enforced 6am–5pm Mon–Fri, which meant the app called it free every weekday evening and all weekend. It is a service-only lot monitored around the clock. Reported from the ground and shipped as community-reported with a caveat, because U-M's own table still says otherwise and we could not re-verify it.
+
 - A lot that is free at every hour said "it's enforced around the clock" underneath the word Free. Both cases produce no next change, and only one of them was worded.
 - The map's tile attribution sat underneath the panel that slid up over it. Attribution is a licence condition of the tiles, so the panel now sits below the map rather than on top of it.
 - Building search results were drawn behind the duration and sort buttons underneath them, so choosing a building meant reading its name through a row of chips.

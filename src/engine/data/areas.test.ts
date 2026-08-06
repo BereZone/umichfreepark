@@ -3,8 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
+import { eligibilityFor } from '../ranking';
 import { statusAt } from '../rules';
 import { AREAS, MAPPABLE_AREAS, areaById } from './areas';
+import { UMICH_CORRECTIONS } from './umich-corrections';
 
 // Read rather than import: the extension is .geojson, which the bundler does
 // not treat as JSON, and renaming it would obscure what the file is.
@@ -29,9 +31,31 @@ describe('the area dataset', () => {
 
   it('carries provenance on every record', () => {
     for (const area of AREAS) {
-      expect(area.provenance.source, area.id).toMatch(/^https:\/\//);
       expect(area.provenance.lastVerified, area.id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(['verified', 'community']).toContain(area.provenance.confidence);
+    }
+  });
+
+  it('only calls a record verified when its source is a URL', () => {
+    /*
+     * This used to demand an https source on every record, which was right
+     * while every record came from a published page. Hand corrections broke
+     * that: a lot reported from the ground has no URL to cite, and inventing
+     * one — pointing at the very table it contradicts — would be worse than
+     * having none.
+     *
+     * So the invariant moves to where it belongs. `verified` still means "a
+     * primary source says so, here it is". `community` is what carries a claim
+     * we could not source, and it is the value the app pairs with a caveat.
+     * This is a stronger assertion than the one it replaces, not a looser one.
+     */
+    for (const area of AREAS) {
+      if (area.provenance.confidence === 'verified') {
+        expect(area.provenance.source, `${area.id} is verified`).toMatch(/^https:\/\//);
+      } else {
+        expect(area.provenance.source.length, `${area.id} must say where it came from`)
+          .toBeGreaterThan(20);
+      }
     }
   });
 
@@ -215,11 +239,82 @@ describe('schedules resolve to real behaviour', () => {
   it('shows the posted string so a user can check it against the sign', () => {
     const umich = AREAS.filter((a) => a.authority === 'umich');
     for (const area of umich) {
+      // Corrected lots say something else — they have to explain why they
+      // disagree with the table — but they are still held to the same purpose
+      // below: sending the reader to the sign.
+      if (UMICH_CORRECTIONS[area.id]) continue;
       // Either we quote LTP's cell verbatim, or — for the handful of docks LTP
       // prints "NA" for — we say plainly that no hours are published. What must
       // never happen is echoing "NA" back at the user as if it were a schedule.
       expect(area.note, area.id).toMatch(/^(Posted enforcement: |U-M does not publish)/);
       expect(area.note, area.id).not.toMatch(/^Posted enforcement: NA/i);
+    }
+  });
+
+  it('sends the reader to the sign on any lot we have corrected by hand', () => {
+    // The whole point of the note on a corrected lot: we are contradicting the
+    // published table on a ground report, so the entrance sign is the tiebreak
+    // and the user has to be told to look at it.
+    for (const id of Object.keys(UMICH_CORRECTIONS)) {
+      expect(areaById.get(id)!.note, id).toMatch(/check the sign/i);
+    }
+  });
+});
+
+describe('hand corrections to the LTP table', () => {
+  /*
+   * The generated dataset is rebuilt by `npm run data:umich-areas`, and these
+   * corrections live outside it precisely so a rebuild cannot lose them. That
+   * is the property worth testing: not that C5 has particular hours today, but
+   * that the override layer is still wired in at all.
+   */
+
+  it('overrides the generated row for every corrected lot', () => {
+    for (const [id, correction] of Object.entries(UMICH_CORRECTIONS)) {
+      const area = areaById.get(id);
+      expect(area, `${id} is corrected but not in the dataset`).toBeDefined();
+      expect(area!.provenance.confidence).toBe(correction.confidence);
+      expect(area!.provenance.lastVerified).toBe(correction.correctedOn);
+      expect(area!.note).toBe(correction.note);
+    }
+  });
+
+  it('keeps C5 permit-only at every hour of the week', () => {
+    /*
+     * The correction that matters most. LTP publishes C5 as Blue, enforced
+     * 6am–5pm Mon–Fri, which made the app say a service-only lot was free on a
+     * Saturday afternoon and every weekday evening. Reported from the ground as
+     * monitored around the clock.
+     *
+     * Sampling every hour of a full week rather than a few spot checks: the
+     * failure being guarded against is a schedule that reverts to weekday-only
+     * and opens a window somewhere nobody happened to look.
+     */
+    const c5 = areaById.get('umich-c5')!;
+    const start = utc('2026-08-03T04:00:00Z'); // Monday 00:00 in Ann Arbor
+    for (let hour = 0; hour < 24 * 7; hour += 1) {
+      const at = new Date(start.getTime() + hour * 3_600_000);
+      expect(statusAt(c5.authority, c5.schedule, at).paid, at.toISOString()).toBe(true);
+    }
+  });
+
+  it('admits no permit to C5, since a service area is not a commuter lot', () => {
+    const c5 = areaById.get('umich-c5')!;
+    expect(c5.permitTier).toBe('Restricted');
+    expect(c5.rate.kind).toBe('permit-only');
+    for (const permit of ['none', 'orange', 'yellow-after-hours', 'blue'] as const) {
+      const status = statusAt(c5.authority, c5.schedule, utc('2026-08-08T18:00:00Z'));
+      const eligibility = eligibilityFor(c5, { classYear: 'graduate', permit }, status);
+      expect(eligibility.eligible, permit).toBe(false);
+    }
+  });
+
+  it('never launders an unsourced correction into a verified one', () => {
+    // The rule the file is built on: a ground report may narrow what the app
+    // offers, but it must not borrow LTP's authority while contradicting it.
+    for (const [id, correction] of Object.entries(UMICH_CORRECTIONS)) {
+      if (correction.source.startsWith('http')) continue;
+      expect(correction.confidence, `${id} contradicts LTP with no URL`).toBe('community');
     }
   });
 });
