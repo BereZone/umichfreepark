@@ -56,7 +56,11 @@ describe('the area dataset', () => {
     // silently hid 160 lots whose hours we had verified.
     const drawable = new Set(MAPPABLE_AREAS.map((a) => a.id));
     const unmapped = AREAS.filter((a) => !drawable.has(a.id));
-    expect(unmapped.length).toBeGreaterThan(100);
+    // A floor, not a target. Mapping more lots is progress and should be free
+    // to drive this number down — what must never change is the loop below,
+    // which is the actual invariant. Treat a failure here as "update the floor",
+    // and a failure below as "a lot lost its rules".
+    expect(unmapped.length).toBeGreaterThan(50);
 
     for (const area of unmapped) {
       // Only two things may legitimately lack a polygon: a meter zone named in

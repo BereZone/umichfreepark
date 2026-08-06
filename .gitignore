@@ -26,6 +26,11 @@ npm-debug.*
 yarn-debug.*
 yarn-error.*
 
+# Editor and agent settings. These arrived with create-expo-app, nobody chose
+# them, and they impose one person's tooling on everyone who clones the repo.
+.vscode/
+.claude/
+
 # macOS
 .DS_Store
 *.pem

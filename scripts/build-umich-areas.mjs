@@ -17,10 +17,20 @@
  *
  *   1. CODE      OSM tags the lot with its official code, in `ref`, `name` or
  *                `alt_name` — `ref=NC60`, "U of M Lot NC 47".
- *   2. CONTAINS  U-M's own campus map publishes a coordinate for the lot, and
- *                exactly one mapped parking area contains that point.
+ *   2. CONTAINS  a coordinate is known for the lot, and exactly one mapped
+ *                parking area contains that point.
  *   3. NEAR      the same coordinate falls just outside a parking area that
  *                claims no lot code of its own, within NEAR_LIMIT_M.
+ *
+ * The coordinate feeding passes 2 and 3 comes from one of two places: U-M's own
+ * campus map (umich-locations.json, generated) or umich-lot-points.json, which
+ * is hand-maintained for the lots U-M's map omits. Published points are offered
+ * first, so a hand-placed one can only ever fill a gap, never override the
+ * university. Which kind supplied a shape is recorded in `geometryVia`.
+ *
+ * A hand-placed coordinate is safe in a way a hand-written rule would not be:
+ * it decides only which polygon gets drawn. Get it wrong and the map shows the
+ * wrong outline — it cannot produce a wrong "free".
  *
  * Pass 2 is the one that changed the numbers. Reading only the OSM name found
  * 82 lots; adding `ref` found 116; asking "which mapped parking area contains
@@ -45,7 +55,7 @@
  *
  * WHAT IS STILL NOT DRAWN, AND WHY THAT IS CORRECT
  *
- * About 89 rows end with no geometry from any pass, and they are overwhelmingly
+ * About 95 rows end with no geometry from any pass, and they are overwhelmingly
  * loading docks rather than parking lots: "Mason Hall Dock", "Chemistry Dock",
  * "Pharmacy Service Center". LTP lists them because they have permit rules;
  * their addresses are things like "Canal Street (behind building)". Nobody has
@@ -81,6 +91,7 @@ const ENVELOPE_EXCEPTIONS = {
   // someone maps the U-M lot, the campus check does not then throw it away.
   NC37: 'Printing Services, 1919 Green Road — the Green Road service cluster, east of North Campus.',
   NC62: 'North Campus Facilities Services Bldg, 3231 Baxter Rd — same service cluster, east of North Campus.',
+  NC39: 'Property Disposition/Housing, 3241 Baxter — next door to NC62 in that same Baxter Road cluster.',
   // NC103 (Housing Services) is deliberately absent. LTP publishes no address
   // for it, so there is nothing to justify the exception with, and U-M's map
   // puts its point inside the same polygon as NC62 — one shape cannot be two
@@ -256,7 +267,11 @@ function main() {
   const buildings = read('src/engine/data/buildings.json').buildings;
   // Coordinates only. This file carries no rules by design — see
   // scripts/fetch-umich-locations.mjs for why we throw the rest away.
-  const locations = read('src/engine/data/umich-locations.json').locations;
+  const published = read('src/engine/data/umich-locations.json').locations;
+  // The hand-maintained supplement. `pending` entries are deliberately not read:
+  // a coordinate somebody has flagged as doubtful must not be able to claim a
+  // polygon just because OSM later maps something near it.
+  const handPoints = read('src/engine/data/umich-lot-points.json').points;
 
   const table = new Map();
   for (const campus of lots.campuses) {
@@ -266,6 +281,55 @@ function main() {
       if (!table.has(lot.lot)) table.set(lot.lot, { ...lot, campus: campus.campus });
     }
   }
+
+  /**
+   * Merge the hand-placed points, published ones first.
+   *
+   * Pass 2 skips any lot that already has a polygon, so ordering alone gives
+   * U-M's coordinate precedence — a hand-placed point is only ever consulted
+   * for a lot the university's own map left out.
+   *
+   * The checks below fail the build rather than warn, because every one of them
+   * describes a point that cannot do anything useful and will quietly rot: a
+   * code LTP does not publish can never be joined to a lot, and a duplicate of a
+   * published point is dead weight pretending to be a fix.
+   */
+  const handByLot = new Map();
+  for (const p of handPoints) {
+    if (!table.has(p.lot)) {
+      throw new Error(
+        `umich-lot-points.json: "${p.lot}" is not a lot LTP publishes. Check the code, ` +
+          'or the lot may be one of the rows LTP omits entirely — those need a rules source, not a pin.'
+      );
+    }
+    if (published.some((l) => l.lot === p.lot)) {
+      throw new Error(
+        `umich-lot-points.json: "${p.lot}" already has a coordinate from U-M's campus map. ` +
+          'Remove the hand-placed one; if U-M\'s point is wrong, that is a different fix.'
+      );
+    }
+    if (handByLot.has(p.lot)) throw new Error(`umich-lot-points.json: "${p.lot}" listed twice.`);
+    handByLot.set(p.lot, p);
+  }
+
+  // Two lots pinned to the same spot is not fatal — LTP really does give some
+  // pairs one address — but only one of them can win a containment test, and
+  // which one is an accident of iteration order. Say so out loud.
+  const byCoord = new Map();
+  for (const p of handPoints) {
+    const key = `${p.lat},${p.lon}`;
+    byCoord.set(key, [...(byCoord.get(key) ?? []), p.lot]);
+  }
+  for (const [key, codes] of byCoord) {
+    if (codes.length > 1) {
+      console.warn(
+        `warning: ${codes.join(' and ')} share the coordinate ${key}. At most one can claim a ` +
+          'polygon, and which one is arbitrary. Pin them separately.'
+      );
+    }
+  }
+
+  const locations = [...published, ...handPoints.map((p) => ({ ...p, handPlaced: true }))];
 
   const env = campusEnvelopes(buildings);
   const PAD = 0.015; // ~1.6 km, enough to cover lots at a campus edge.
@@ -361,7 +425,8 @@ function main() {
       rejected.push(`${location.lot}: point falls inside ${hits.length} parking areas — ambiguous`);
       continue;
     }
-    if (claim(location.lot, hits[0], 'contains')) taken.add(hits[0].properties.osm_id);
+    const via = location.handPlaced ? 'contains (hand-placed point)' : 'contains';
+    if (claim(location.lot, hits[0], via)) taken.add(hits[0].properties.osm_id);
   }
 
   // --- pass 3: U-M's published point, just outside an unclaimed polygon ----
@@ -381,7 +446,9 @@ function main() {
       }
     }
     if (!best || bestMetres > NEAR_LIMIT_M) continue;
-    if (claim(location.lot, best, `near ${Math.round(bestMetres)}m`)) {
+    const via =
+      `near ${Math.round(bestMetres)}m` + (location.handPlaced ? ' (hand-placed point)' : '');
+    if (claim(location.lot, best, via)) {
       taken.add(best.properties.osm_id);
     }
   }
@@ -418,7 +485,10 @@ function main() {
   const byPass = {};
   for (const a of areas) {
     if (!a.geometryVia) continue;
-    const key = a.geometryVia.startsWith('near') ? 'near' : a.geometryVia;
+    // Collapse the distance out of "near 18m", but keep the hand-placed marker:
+    // knowing how many shapes rest on a local pin rather than on U-M's own data
+    // is the number worth watching in this summary.
+    const key = a.geometryVia.replace(/^near \d+m/, 'near');
     byPass[key] = (byPass[key] ?? 0) + 1;
   }
 

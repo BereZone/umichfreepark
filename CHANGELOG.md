@@ -12,6 +12,9 @@ is to describe what changed for a *user*, which commit subjects do not do.
 
 ### Added
 
+- Five more U-M lots now appear on the map instead of list-only: C5, E17, N31, NC39, and NC105. Their rules were already correct; nobody had established which polygon to draw.
+- `src/engine/data/umich-lot-points.json`, a hand-maintained coordinate for lots U-M's campus map omits. It selects geometry only and can never contribute an hour, a tier, or a rate.
+
 - Expo SDK 57 project skeleton with Expo Router, TypeScript `strict`, and a minimal app shell.
 - Repository conventions: Conventional Commits, Keep a Changelog, Semantic Versioning.
 - `AGENTS.md` documenting the engine purity rule, the `encoding.ts` anti-drift rule, and the data-sourcing rules.

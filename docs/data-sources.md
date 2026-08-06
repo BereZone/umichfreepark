@@ -196,9 +196,19 @@ Believing the campus map on `W9` would tell a student the lot goes free at 5pm o
 
 A wrong coordinate also fails safe in a way a wrong hour does not: the join simply drops it.
 
+#### Hand-placed lot points — also geometry only
+
+U-M's map omits a coordinate for 89 of the lots LTP publishes, which leaves passes 2 and 3 with no input at all. `src/engine/data/umich-lot-points.json` supplies those coordinates by hand. It is the one file under `src/engine/data/` that is neither generated nor a rules source.
+
+It is safe to hand-maintain for the same reason the campus map's coordinates are safe to trust: **a point here only decides which polygon gets drawn.** It contributes no hour, no tier, no rate. Place one badly and the map shows the wrong outline — it cannot produce a wrong "free". A rule may never be added on local knowledge; a pin may.
+
+Published points are offered to the join first, so a hand-placed one can only fill a gap, never override the university. `geometryVia` records which kind supplied each shape (`contains (hand-placed point)`, `near 18m (hand-placed point)`), so a reviewer can re-check those first. The build refuses a pin for a lot code LTP does not publish, or for one that already has a published coordinate.
+
+Entries under `pending` are deliberately not read by the build — a coordinate someone has flagged as doubtful must not be able to claim a polygon just because OSM later maps something nearby.
+
 #### What is still not drawn
 
-161 of 262 areas have a polygon. Of the 101 that do not, 99 are U-M rows, and they are overwhelmingly **loading docks rather than parking lots** — "Mason Hall Dock", "Chemistry Dock", "Pharmacy Service Center" — with addresses like `Canal Street (behind building)` or none at all. LTP lists them because they carry permit rules. Nobody has mapped them because they are not places anyone parks.
+166 of 262 areas have a polygon. Of the 96 that do not, 95 are U-M rows, and they are overwhelmingly **loading docks rather than parking lots** — "Mason Hall Dock", "Chemistry Dock", "Pharmacy Service Center" — with addresses like `Canal Street (behind building)` or none at all. LTP lists them because they carry permit rules. Nobody has mapped them because they are not places anyone parks.
 
 They ship with their rules and no geometry. Geocoding a building's street address and drawing a boundary there would put a lot across a lecture hall, which is a worse answer than no answer.
 

@@ -1,0 +1,43 @@
+{
+  "_comment": "Hand-placed coordinates for lots U-M's campus map does not publish a point for. HAND-MAINTAINED — unlike umich-locations.json, no script writes this file.",
+  "note": "These coordinates SELECT GEOMETRY AND NOTHING ELSE. They pick which OSM polygon a lot is drawn as; they never contribute an enforcement hour, a tier, or a rate. A point in the wrong place yields a wrong outline on the map, never a wrong 'free' answer. That is why a lot code may be added here on local knowledge, while a rule may not.",
+  "howToAdd": "Drop a pin in the middle of the lot's asphalt (not on the building), and add { lot, lat, lon }. Then: npm run data:umich-areas && npm run data:area-polygons. The build reports which passes claimed a shape and which found nothing.",
+  "points": [
+    { "lot": "C5", "lat": 42.27572, "lon": -83.737588 },
+    { "lot": "E16", "lat": 42.27477, "lon": -83.72987 },
+    { "lot": "E17", "lat": 42.276412, "lon": -83.731837 },
+    { "lot": "M84", "lat": 42.285054, "lon": -83.735828 },
+    { "lot": "M97", "lat": 42.285187, "lon": -83.735954 },
+    { "lot": "N31", "lat": 42.28144, "lon": -83.74113 },
+    { "lot": "NC105", "lat": 42.29977, "lon": -83.70861 },
+    {
+      "lot": "NC108",
+      "lat": 42.301063,
+      "lon": -83.691938,
+      "note": "Same coordinate as NC109 — LTP lists both as 'Green Court'. Whichever is tested first would take any polygon found here, so neither should be drawn until they are pinned separately. The build warns about the collision."
+    },
+    {
+      "lot": "NC109",
+      "lat": 42.301063,
+      "lon": -83.691938,
+      "note": "See NC108."
+    },
+    { "lot": "NC110", "lat": 42.302827, "lon": -83.693462 },
+    { "lot": "NC39", "lat": 42.29879, "lon": -83.69627 },
+    { "lot": "NC66", "lat": 42.296908, "lon": -83.698201 },
+    {
+      "lot": "NW1",
+      "lat": 42.297084,
+      "lon": -83.719744,
+      "note": "Lands inside way/228360914, which OSM draws as one parking area covering both NC45 (Blue) and NW1 (Orange). NC45 claims it via U-M's own published point, so this pin cannot take it — and should not: one shape cannot be two lots with two permit colours. Fixing this means splitting the way in OSM. Kept so the split is picked up automatically when it happens."
+    }
+  ],
+  "pending": [
+    {
+      "lot": "SC43",
+      "lat": 42.235628,
+      "lon": -83.728106,
+      "why": "Held back, not used by the build. LTP gives SC43 as 3600 Varsity Drive, but this point is roughly 1.3 km south of there and 457 m from the nearest mapped parking area of any kind. Most likely a mis-drop. Move to `points` once re-pinned."
+    }
+  ]
+}
