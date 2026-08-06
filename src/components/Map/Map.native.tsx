@@ -161,7 +161,12 @@ export default function Map({
   const visiblePills = useMemo(
     () =>
       selectPills(
-        encoded.map((item) => ({ ...item, labelPoint: item.mapArea.labelPoint, free: !item.status.paid })),
+        encoded.map((item) => ({
+          ...item,
+          labelPoint: item.mapArea.labelPoint,
+          free: !item.status.paid,
+          showsPill: item.encoding.showsPill,
+        })),
         viewport
       ),
     [encoded, viewport]

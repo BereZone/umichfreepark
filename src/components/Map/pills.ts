@@ -42,6 +42,12 @@ export interface Pillable {
   labelPoint: LatLng;
   /** Free areas win the cap. See below. */
   free: boolean;
+  /**
+   * Set false by `encoding.ts` for districts, which have no single point worth
+   * labelling. Optional because most areas never think about it: anything that
+   * does not say otherwise is pillable.
+   */
+  showsPill?: boolean;
 }
 
 /**
@@ -114,9 +120,13 @@ export function selectPills<T extends Pillable>(areas: readonly T[], viewport: V
   // turn the map to soup. Both platforms have always agreed on this part.
   if (viewport.zoom < PILL_MIN_ZOOM) return [];
 
+  // Districts drop out before anything else: they are not competing for a slot,
+  // they are not eligible for one.
+  const pillable = areas.filter((area) => area.showsPill !== false);
+
   const onScreen = viewport.bounds
-    ? areas.filter((area) => withinBounds(area.labelPoint, viewport.bounds!))
-    : [...areas];
+    ? pillable.filter((area) => withinBounds(area.labelPoint, viewport.bounds!))
+    : [...pillable];
 
   // Stable within each group: equal-priority areas keep dataset order, so the
   // set does not reshuffle on a clock tick and make pills flicker.

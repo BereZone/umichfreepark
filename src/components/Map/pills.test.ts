@@ -195,3 +195,24 @@ describe('against the shipped areas', () => {
     }
   });
 });
+
+describe('areas that opt out of a pill', () => {
+  it('never selects one, however much room there is', () => {
+    const district = { ...area(42.279, -83.74), showsPill: false };
+    const lot = area(42.2795, -83.7405);
+    expect(selectPills([district, lot], { zoom: 18, bounds: CAMPUS })).toEqual([lot]);
+  });
+
+  it('does not let one consume a slot in the cap', () => {
+    // The district is dropped before ranking, so a crowded screen is not one
+    // pill poorer for its presence.
+    const districts = spacedApart(3, 400).map((a) => ({ ...a, showsPill: false }));
+    const lots = spacedApart(3, 400);
+    expect(selectPills([...districts, ...lots], { zoom: 17, bounds: null })).toHaveLength(3);
+  });
+
+  it('treats an unset flag as pillable, so ordinary areas need not mention it', () => {
+    const plain = area(42.279, -83.74);
+    expect(selectPills([plain], { zoom: 17, bounds: CAMPUS })).toEqual([plain]);
+  });
+});

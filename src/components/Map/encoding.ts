@@ -47,6 +47,20 @@ export interface AreaEncoding {
   label: string;
   labelColor: string;
   labelBackground: string;
+  /**
+   * Whether this area gets a centroid pill at all.
+   *
+   * False for districts. A pill is drawn at one point and reads as a claim
+   * about that point — "FREE, here" — which is true of a lot and false of the
+   * downtown meter boundary, where the centroid is very likely a building. The
+   * outline still draws and the area is still tappable, so nothing is hidden;
+   * what goes away is a specific-sounding answer at a place you cannot park.
+   *
+   * The decision lives here rather than in the renderers for the usual reason:
+   * two implementations each holding "districts are different" is two chances
+   * to disagree about it.
+   */
+  showsPill: boolean;
   /** True when the area should read as closed to this user. */
   muted: boolean;
   /** Screen-reader description. The map's accessible equivalent starts here. */
@@ -228,6 +242,7 @@ export function encodeArea(
     label,
     labelColor: free ? c.textInverse : c.text,
     labelBackground: free ? c.free : c.surface,
+    showsPill: !isDistrict,
     muted,
     accessibilityLabel,
   };

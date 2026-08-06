@@ -206,11 +206,13 @@ export default function Map({
     const encoded = areas.map((mapArea) => {
       const status = statusOf(mapArea.area, at);
       const eligibility = eligibilityFor(mapArea.area, profile, status);
+      const encoding = encodeArea(mapArea.area, status, eligibility, scheme);
       return {
         mapArea,
         labelPoint: mapArea.labelPoint,
         free: !status.paid,
-        encoding: encodeArea(mapArea.area, status, eligibility, scheme),
+        encoding,
+        showsPill: encoding.showsPill,
       };
     });
 

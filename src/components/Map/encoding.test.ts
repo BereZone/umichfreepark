@@ -294,3 +294,59 @@ describe('a district is drawn as context, not as a lot', () => {
     }
   });
 });
+
+describe('districts carry no centroid pill', () => {
+  /*
+   * A pill sits at one point and reads as a claim about that point. For a lot
+   * that is exactly right. For the downtown meter district — the city's
+   * published on-street boundary, kilometres across — the centroid is some
+   * building on Liberty, and a "FREE" tag floating over it says you may park at
+   * a spot where you may not.
+   *
+   * The outline stays and the area stays tappable, so the district is still on
+   * the map and still explains itself when opened. Only the point claim goes.
+   */
+  it('suppresses the pill for every meter-zone area', () => {
+    const districts = AREAS.filter((area) => area.kind === 'meter-zone');
+    expect(districts.length).toBeGreaterThan(0);
+    for (const area of districts) {
+      const status = statusAt(area.authority, area.schedule, SUNDAY_NOON);
+      const encoding = encodeArea(
+        area,
+        status,
+        eligibilityFor(area, DEFAULT_PROFILE, status),
+        'light'
+      );
+      // Free on a Sunday, so without this rule it would read "FREE".
+      expect(status.paid, area.id).toBe(false);
+      expect(encoding.showsPill, area.id).toBe(false);
+    }
+  });
+
+  it('keeps the pill on everything that is an actual place to park', () => {
+    for (const area of AREAS) {
+      if (area.kind === 'meter-zone') continue;
+      const status = statusAt(area.authority, area.schedule, WEEKDAY_NOON);
+      const encoding = encodeArea(
+        area,
+        status,
+        eligibilityFor(area, DEFAULT_PROFILE, status),
+        'light'
+      );
+      expect(encoding.showsPill, area.id).toBe(true);
+    }
+  });
+
+  it('still computes the label text, which the detail panel and tests use', () => {
+    // Suppression is about where the text is drawn, not about knowing it.
+    const district = AREAS.find((area) => area.kind === 'meter-zone')!;
+    const status = statusAt(district.authority, district.schedule, SUNDAY_NOON);
+    const encoding = encodeArea(
+      district,
+      status,
+      eligibilityFor(district, DEFAULT_PROFILE, status),
+      'light'
+    );
+    expect(encoding.label).toBe('FREE');
+  });
+});
