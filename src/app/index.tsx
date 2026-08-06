@@ -102,7 +102,7 @@ export default function MapScreen() {
    * you are going and the single best option, which is the answer most of the
    * time; the controls are one tap away for the times it is not.
    */
-  const [sheetExpanded, setSheetExpanded] = useState(false);
+  const [controlsExpanded, setControlsExpanded] = useState(false);
 
   const selected = selectedAreaId ? (areaById.get(selectedAreaId) ?? null) : null;
 
@@ -361,50 +361,15 @@ export default function MapScreen() {
                      * word beside it, because the previous version read as a
                      * label and nothing suggested it opened.
                      */}
-                    <Pressable
-                      onPress={() => setSheetExpanded((open) => !open)}
-                      style={({ pressed }) => [
-                        styles.sheetToggle,
-                        {
-                          backgroundColor: colors.surface,
-                          borderColor: sheetExpanded ? colors.borderStrong : colors.border,
-                          opacity: pressed ? 0.7 : 1,
-                        },
-                      ]}
-                      accessibilityRole="button"
-                      accessibilityState={{ expanded: sheetExpanded }}
-                      accessibilityLabel={
-                        sheetExpanded
-                          ? 'Hide the trip options'
-                          : `Going to ${destination?.name ?? 'nowhere selected'} for ${durationHours} hours. Open to change it or search a building.`
-                      }
-                    >
-                      {/*
-                       * The summary is the closed state's whole content, and it
-                       * steps aside when open: TripControls puts the same
-                       * destination under its own GOING TO label, and showing
-                       * both printed that heading twice within four lines.
-                       */}
-                      {sheetExpanded ? (
-                        <Text style={[type.label, styles.sheetSummary, { color: colors.textMuted }]}>
-                          TRIP OPTIONS
-                        </Text>
-                      ) : (
-                        <View style={styles.sheetSummary}>
-                          <Text style={[type.label, { color: colors.textMuted }]}>GOING TO</Text>
-                          <Text style={[type.bodyStrong, { color: colors.text }]} numberOfLines={1}>
-                            {destination?.name ?? 'Nowhere selected'}
-                            <Text style={[type.body, tabularNumbers, { color: colors.textMuted }]}>
-                              {'  ·  '}
-                              {durationHours}h
-                            </Text>
-                          </Text>
-                        </View>
-                      )}
-                      <Caret open={sheetExpanded} color={colors.text} />
-                    </Pressable>
+                    <TripToggle
+                      expanded={controlsExpanded}
+                      onToggle={() => setControlsExpanded((open) => !open)}
+                      destination={destination}
+                      durationHours={durationHours}
+                      colors={colors}
+                    />
 
-                    {sheetExpanded ? <TripControls onLocated={setShowsUserLocation} /> : null}
+                    {controlsExpanded ? <TripControls onLocated={setShowsUserLocation} /> : null}
 
                     <BestOption
                       best={best}
@@ -434,12 +399,31 @@ export default function MapScreen() {
             },
           ]}
         >
+          {/*
+           * The sidebar collapses its controls for the same reason the phone
+           * sheet does, and it matters more here: this column exists to show the
+           * ranked list, and expanded the settings pushed that list down to
+           * about two visible rows.
+           */}
           <View style={styles.sidebarControls}>
-            <TripControls onLocated={setShowsUserLocation} />
+            <TripToggle
+              expanded={controlsExpanded}
+              onToggle={() => setControlsExpanded((open) => !open)}
+              destination={destination}
+              durationHours={durationHours}
+              colors={colors}
+            />
+            {controlsExpanded ? (
+              <ScrollView style={styles.sidebarControlsOpen}>
+                <TripControls onLocated={setShowsUserLocation} />
+              </ScrollView>
+            ) : null}
+
           </View>
 
           {selected ? (
             <ScrollView
+              style={styles.sidebarScroll}
               contentContainerStyle={[
                 styles.sidebarDetail,
                 { paddingBottom: insets.bottom + space.roomy },
@@ -450,6 +434,7 @@ export default function MapScreen() {
             </ScrollView>
           ) : (
             <ScrollView
+              style={styles.sidebarScroll}
               contentContainerStyle={{
                 paddingBottom: insets.bottom + space.roomy,
               }}
@@ -498,6 +483,75 @@ function Caret({ open, color }: { open: boolean; color: string }) {
     >
       {open ? '\u25B4' : '\u25BE'}
     </Text>
+  );
+}
+
+/**
+ * The disclosure that opens the trip settings.
+ *
+ * Used by the phone sheet and by the wide sidebar, so the two cannot drift into
+ * opening the same panel differently. Closed it is the summary — where you are
+ * going and for how long, which is what the ranking below it was computed from.
+ *
+ * Both layouts collapse it by default and for the same reason: the settings are
+ * set rarely and read never, while the thing beside them, the map or the ranked
+ * list, is the point of the screen.
+ */
+function TripToggle({
+  expanded,
+  onToggle,
+  destination,
+  durationHours,
+  colors,
+}: {
+  expanded: boolean;
+  onToggle: () => void;
+  destination: { name: string } | null;
+  durationHours: number;
+  colors: ReturnType<typeof colorsFor>;
+}) {
+  return (
+    <Pressable
+      onPress={onToggle}
+      style={({ pressed }) => [
+        styles.sheetToggle,
+        {
+          backgroundColor: colors.surface,
+          borderColor: expanded ? colors.borderStrong : colors.border,
+          opacity: pressed ? 0.7 : 1,
+        },
+      ]}
+      accessibilityRole="button"
+      accessibilityState={{ expanded }}
+      accessibilityLabel={
+        expanded
+          ? 'Hide the trip options'
+          : `Going to ${destination?.name ?? 'nowhere selected'} for ${durationHours} hours. Open to change it or search a building.`
+      }
+    >
+      {/*
+       * The summary is the closed state's whole content, and it steps aside when
+       * open: TripControls puts the same destination under its own GOING TO
+       * label, and showing both printed that heading twice within four lines.
+       */}
+      {expanded ? (
+        <Text style={[type.label, styles.sheetSummary, { color: colors.textMuted }]}>
+          TRIP OPTIONS
+        </Text>
+      ) : (
+        <View style={styles.sheetSummary}>
+          <Text style={[type.label, { color: colors.textMuted }]}>GOING TO</Text>
+          <Text style={[type.bodyStrong, { color: colors.text }]} numberOfLines={1}>
+            {destination?.name ?? 'Nowhere selected'}
+            <Text style={[type.body, tabularNumbers, { color: colors.textMuted }]}>
+              {'  ·  '}
+              {durationHours}h
+            </Text>
+          </Text>
+        </View>
+      )}
+      <Caret open={expanded} color={colors.text} />
+    </Pressable>
   );
 }
 
@@ -691,11 +745,28 @@ const styles = StyleSheet.create({
     width: SIDEBAR_WIDTH,
     borderLeftWidth: StyleSheet.hairlineWidth,
   },
+  // flex 1 so the list takes the column that is left rather than its own
+  // content height, which is what leaves a blank gap under an open panel.
+  sidebarScroll: { flex: 1 },
   sidebarControls: {
     paddingHorizontal: space.comfortable,
     paddingBottom: space.base,
     zIndex: 10,
+    // Direct child of `sidebar`, which fills the screen, so this percentage has
+    // something definite to resolve against. Open controls stop here and the
+    // ranked list keeps the rest of the column.
+    maxHeight: '58%',
   },
+  /*
+   * The cap lives on this View, not on the ScrollView inside it.
+   *
+   * A percentage resolves against the containing block, and `sidebar` is the
+   * only ancestor here with a definite height — it fills the screen. On the
+   * auto-height ScrollView the same `55%` meant nothing, so the open panel grew
+   * to its content and pushed the ranked list clean off the bottom of the
+   * column: settings visible, results gone. Exactly the bug the phone sheet had.
+   */
+  sidebarControlsOpen: { flexShrink: 1 },
   sidebarDetail: { padding: space.comfortable, gap: space.base },
   bestBlock: {
     gap: space.tight,
